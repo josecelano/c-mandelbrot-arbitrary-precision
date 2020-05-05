@@ -40,15 +40,39 @@ Mandelbrot Set is inside those limits.
 
 * Docker version 18.09.7
 
-## Install
+## Installation
 
->IMPORTANT: Not tested yet. It's just a copy&paste from Dockerfile.
+IMPORTANT!: installation is only tested for this Ubuntu version:
 
+```
+Distributor ID:	Ubuntu
+Description:	Ubuntu 18.04.4 LTS
+Release:	18.04
+Codename:	bionic
+```
+
+Install dependencies:
+```
+./install_dependencies
+```
+
+Install app from source dir (after installing dependencies):
 ```
 ./install
 ```
 
-## Development commands
+## Run
+
+Run:
+```
+./run
+```
+
+`run` command will create 2 files in the root dir:
+* mandelbrot-256x256.ppm (Mandelbrot image)
+* mandelbrot-256x256.txt (Mandelbrot ASCII version)
+
+## Development
 
 All commands use docker under the hood.
 
@@ -62,9 +86,9 @@ Only compile code:
 ./compile
 ```
 
-Run main program (it generates a ppm image and txt file with Mandelbrot fractal):
+Run main program:
 ```
-./run
+./dev_run
 ```
 
 Execute tests:
@@ -74,7 +98,7 @@ Execute tests:
 
 Compile and run:
 ```
-./compile && ./run
+./compile && ./dev_run
 ```
 
 ## Related projects

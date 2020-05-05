@@ -13,18 +13,18 @@ RUN apt-get update && apt-get install -y \
     libtool \
     pkg-config \
     xz-utils \
-    # install arb dependencies
+    # install_dependencies
     libgmp-dev \
     libmpfr-dev \
     libflint-dev \
     libflint-arb-dev libflint-arb-doc libflint-arb2 \
-    # install image libraries
+    # install_dependencies image libraries
     libpng-dev libjpeg-dev \
     && rm -rf /var/lib/apt/lists/*
 
 ADD ./2.17.0.tar.gz /tmp
 
-# install arb
+# install arb dependency
 RUN cd /tmp/arb-2.17.0 \
 	# && ./.build_dependencies \
 	&& ./configure \

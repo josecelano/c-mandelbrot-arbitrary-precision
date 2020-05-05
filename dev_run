@@ -2,4 +2,4 @@ docker run -it --rm \
   -v "$PWD":/usr/src/app \
   -w /usr/src/app -u "$(id -u ${USER}):$(id -g ${USER})" \
   c-mandelbrot \
-  bash -c "cmake . && make"
+  bash -c "./mandelbrot"
