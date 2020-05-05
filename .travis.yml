@@ -1,0 +1,15 @@
+language: c
+sudo: false
+
+services:
+  - docker
+
+os:
+  - linux
+
+compiler:
+  - gcc
+
+script:
+  - ./dev_setup
+  - ./test

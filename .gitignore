@@ -1,0 +1,49 @@
+CMakeCache.txt
+CMakeFiles
+Makefile
+cmake_install.cmake
+cmake-build-debug
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+*.ko
+*.elf
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+*.so.*
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+/**/build
+/**/build.*
+
+.tags
+.vscode
+.idea
+
+# Executables
+mandelbrot
+mandelbrot-test
+
+# Test files
+mandelbrot-256x256.ppm
+mandelbrot-256x256.txt
