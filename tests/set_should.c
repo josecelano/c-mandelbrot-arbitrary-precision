@@ -3,6 +3,7 @@
 #include "../external/unity/unity_fixture.h"
 #include "../src/complex.h"
 #include "../src/set.h"
+#include "../src/zpoint.h"
 
 TEST_GROUP(set_should);
 
@@ -19,10 +20,10 @@ TEST(set_should, contain_known_points_inside)
     const int max_iterations = 200;
     int i, ret;
     slong prec = 32;
-    acb_t c;
+    zpoint point;
     char message[100];
 
-    acb_init(c);
+    zpoint_init(&point);
 
     // Some complex number inside the Mandelbrot Set
     struct complex_dto z_in[6] = {
@@ -36,26 +37,26 @@ TEST(set_should, contain_known_points_inside)
 
     for (i = 0; i < 6; ++i)
     {
-        complex_set_from_re_im_str(c, z_in[i].re, z_in[i].im, prec);
+        zpoint_set_from_re_im_str(&point, z_in[i].re, z_in[i].im, prec);
 
-        ret = mandelbrot_set_contains(c, max_iterations, prec);
+        ret = mandelbrot_set_contains(point, max_iterations, prec);
 
         sprintf(message, "complex number (%s,%s) in test case #%d should be in Mandelbrot Set", z_in[i].re, z_in[i].im, i);
 
         TEST_ASSERT_EQUAL_MESSAGE(-1, ret, message);
     }
 
-    acb_clear(c);
+    zpoint_clean(&point);
 }
 
 TEST(set_should, not_contain_known_points_outside)
 {
     slong prec = 32;
     int i, ret, max_iterations = 200;
-    acb_t c;
+    zpoint point;
     char message[100];
 
-    acb_init(c);
+    zpoint_init(&point);
 
     // Some complex number inside the Mandelbrot Set
     struct complex_dto z_out[7] = {
@@ -69,16 +70,16 @@ TEST(set_should, not_contain_known_points_outside)
 
     for (i = 0; i < 7; ++i)
     {
-        complex_set_from_re_im_str(c, z_out[i].re, z_out[i].im, prec);
+        zpoint_set_from_re_im_str(&point, z_out[i].re, z_out[i].im, prec);
 
-        ret = mandelbrot_set_contains(c, max_iterations, prec);
+        ret = mandelbrot_set_contains(point, max_iterations, prec);
 
         sprintf(message, "complex number (%s,%s) in test case #%d should not be in Mandelbrot Set", z_out[i].re, z_out[i].im, i);
 
         TEST_ASSERT_NOT_EQUAL_MESSAGE(-1, ret, message);
     }
 
-    acb_clear(c);
+    zpoint_clean(&point);
 }
 
 TEST_GROUP_RUNNER(set_should)

@@ -1,14 +1,17 @@
 #include "acb.h"
 #include "arb.h"
+#include "complex.h"
 #include "formula.h"
 #include "set.h"
+#include "zpoint.h"
 
-int mandelbrot_set_contains(acb_t c, int max_iterations, slong prec) {
+int mandelbrot_set_contains(zpoint point, int max_iterations, slong prec) {
 
     int i;
-    acb_t zero, z, f;
+    acb_t c, zero, z, f;
     arb_t re, im, re_abs, im_abs, two;
 
+    acb_init(c);
     acb_init(zero);
     acb_init(z);
     acb_init(f);
@@ -19,6 +22,7 @@ int mandelbrot_set_contains(acb_t c, int max_iterations, slong prec) {
     arb_init(im_abs);
     arb_init(two);
 
+    acb_set_from_re_im(c, point.re, point.im);
     arb_set_str(two, "2", prec);
 
     for (i = 0; i < max_iterations; ++i)
@@ -49,6 +53,7 @@ int mandelbrot_set_contains(acb_t c, int max_iterations, slong prec) {
         acb_set(z, f);
     }
 
+    acb_clear(c);
     acb_clear(zero);
     acb_clear(z);
     acb_clear(f);

@@ -10,7 +10,7 @@ void calculate_points(int res_x, int res_y, int max_iterations, slong prec, int 
     int img_idx = 0;
     int iterations_taken;
 
-    zpoint left_bottom_point, right_top_point, z_pixel, zx_pixel_increment, zy_pixel_increment;
+    zpoint left_bottom_point, right_top_point, z_current_point, zx_point_increment, zy_point_increment;
 
     // Complex numbers
     acb_t point;
@@ -25,9 +25,9 @@ void calculate_points(int res_x, int res_y, int max_iterations, slong prec, int 
 
     zpoint_init(&left_bottom_point);
     zpoint_init(&right_top_point);
-    zpoint_init(&z_pixel);
-    zpoint_init(&zx_pixel_increment);
-    zpoint_init(&zy_pixel_increment);
+    zpoint_init(&z_current_point);
+    zpoint_init(&zx_point_increment);
+    zpoint_init(&zy_point_increment);
 
     arb_init(zero);
     arb_init(res_x_t);
@@ -66,30 +66,29 @@ void calculate_points(int res_x, int res_y, int max_iterations, slong prec, int 
 
     // Complex parts of complex representing the pixel being calculated.
     // Starting at left bottom corner of the image.
-    zpoint_set(&z_pixel, &left_bottom_point);
+    zpoint_set(&z_current_point, &left_bottom_point);
 
-    zpoint_set_from_re_im(&zx_pixel_increment, step_re, zero);
-    zpoint_set_from_re_im(&zy_pixel_increment, zero, step_im);
+    zpoint_set_from_re_im(&zx_point_increment, step_re, zero);
+    zpoint_set_from_re_im(&zy_point_increment, zero, step_im);
 
     for (y = 0; y < res_y; y++) {
         for (x = 0; x < res_x; x++) {
 
-            acb_set_from_re_im(point, z_pixel.re, z_pixel.im);
-
             // Check if point belongs to Mandelbrot Set
-            iterations_taken = mandelbrot_set_contains(point, max_iterations, prec);
+            iterations_taken = mandelbrot_set_contains(z_current_point, max_iterations, prec);
 
+            // Update matrix with iterations counter for each point
             iterations_taken_matrix[(y * res_x) + x] = iterations_taken;
 
             // Increase real part to move one pixel to the right
-            zpoint_add(&z_pixel, z_pixel, zx_pixel_increment, prec);
+            zpoint_add(&z_current_point, z_current_point, zx_point_increment, prec);
         }
 
         // Return back to first image column (pixel)
-        zpoint_set_re(&z_pixel, left_bottom_point.re);
+        zpoint_set_re(&z_current_point, left_bottom_point.re);
 
         // Increase imaginary part to move one pixel to the top
-        zpoint_add(&z_pixel, z_pixel, zy_pixel_increment, prec);
+        zpoint_add(&z_current_point, z_current_point, zy_point_increment, prec);
     }
 
     // Clean variables
@@ -98,9 +97,9 @@ void calculate_points(int res_x, int res_y, int max_iterations, slong prec, int 
 
     zpoint_clean(&left_bottom_point);
     zpoint_clean(&right_top_point);
-    zpoint_clean(&z_pixel);
-    zpoint_clean(&zx_pixel_increment);
-    zpoint_clean(&zy_pixel_increment);
+    zpoint_clean(&z_current_point);
+    zpoint_clean(&zx_point_increment);
+    zpoint_clean(&zy_point_increment);
 
     arb_clear(zero);
     arb_clear(res_x_t);

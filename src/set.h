@@ -2,6 +2,7 @@
 #define C_MANDELBROT_ARBITRARY_PRECISION_SET_H
 
 #include "acb.h"
+#include "zpoint.h"
 
 #define MAX_ITERATIONS  -1
 
@@ -14,6 +15,6 @@
  * @param prec
  * @return
  */
-int mandelbrot_set_contains(acb_t c, int max_iterations, slong prec);
+int mandelbrot_set_contains(zpoint point, int max_iterations, slong prec);
 
 #endif //C_MANDELBROT_ARBITRARY_PRECISION_SET_H
