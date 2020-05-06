@@ -6,30 +6,28 @@
 
 /**
  * It renders a Mandelbrot fractal image in PPM format.
- * @param res_x
- * @param res_y
+ * @param fractal_resolution resolution
  * @param iterations_taken_matrix
  */
-void render_ppm_image(int res_x, int res_y, int *iterations_taken_matrix) {
+void render_ppm_image(fractal_resolution resolution, int *iterations_taken_matrix) {
     char img_filename[50];
 
-    sprintf(img_filename, "mandelbrot-%dx%d.ppm", res_x, res_y);
+    sprintf(img_filename, "mandelbrot-%dx%d.ppm", resolution.width, resolution.height);
 
-    render_and_write_out_image(img_filename, res_x, res_y, iterations_taken_matrix);
+    render_and_write_out_image(img_filename, resolution, iterations_taken_matrix);
 }
 
 /**
  * It renders a txt file with a Mandelbrot ASCII graph.
- * @param columns
- * @param rows
+ * @param fractal_resolution resolution
  * @param iterations_taken_matrix
  */
-void render_ascii_graph(int columns, int rows, int *iterations_taken_matrix) {
+void render_ascii_graph(fractal_resolution resolution, int *iterations_taken_matrix) {
     char txt_filename[50];
 
-    sprintf(txt_filename, "mandelbrot-%dx%d.txt", columns, rows);
+    sprintf(txt_filename, "mandelbrot-%dx%d.txt", resolution.width, resolution.height);
 
-    render_and_write_out_ascii_graph(txt_filename, columns, rows, iterations_taken_matrix);
+    render_and_write_out_ascii_graph(txt_filename, resolution, iterations_taken_matrix);
 }
 
 int main(int argc, const char *argv[]) {
@@ -38,20 +36,20 @@ int main(int argc, const char *argv[]) {
     slong prec = 32;
 
     // Resolution for output image and ASCII graph
-    int res_x = 256, res_y = 256;
+    fractal_resolution resolution = {256, 256};
 
     // Max number of iterations for Mandelbrot formula
     int max_iterations = 200;
 
-    // Matrix[res_x][res_y] with number of Mandelbrot formula iterations needed for each pixel to diverge.
+    // Matrix[width][height] with number of Mandelbrot formula iterations needed for each pixel to diverge.
     // -1 for point/pixel inside Mandelbrot Set
-    int *iterations_taken_matrix = malloc(res_x * res_y * sizeof *iterations_taken_matrix);
+    int *iterations_taken_matrix = malloc(resolution.width * resolution.height * sizeof *iterations_taken_matrix);
 
-    calculate_points(res_x, res_y, max_iterations, prec, iterations_taken_matrix);
+    calculate_points(resolution, max_iterations, prec, iterations_taken_matrix);
 
-    render_ppm_image(res_x, res_y, iterations_taken_matrix);
+    render_ppm_image(resolution, iterations_taken_matrix);
 
-    render_ascii_graph(res_x, res_y, iterations_taken_matrix);
+    render_ascii_graph(resolution, iterations_taken_matrix);
 
     free(iterations_taken_matrix);
 

@@ -5,7 +5,7 @@
 #include "set.h"
 #include "zpoint.h"
 
-void calculate_points(int res_x, int res_y, int max_iterations, slong prec, int *iterations_taken_matrix) {
+void calculate_points(fractal_resolution resolution, int max_iterations, slong prec, int *iterations_taken_matrix) {
     int x, y;
     int img_idx = 0;
     int iterations_taken;
@@ -43,15 +43,15 @@ void calculate_points(int res_x, int res_y, int max_iterations, slong prec, int 
     // Fix tile size.
     // Initial complex point -2,-2
     // Final complex point 2, 2
-    // height step_im 4 / res_y
-    // width step_re 4 / res_x
+    // height step_im 4 / resolution.height
+    // width step_re 4 / resolution.width
     // Each iter:
     // For width: previous re + step_re
     // For height: previous im + step_im
 
     // Convert resolution parameter to arb type in order to use them in arb operations
-    arb_set_d(res_x_t, (double) res_x);
-    arb_set_d(res_y_t, (double) res_y);
+    arb_set_d(res_x_t, (double) resolution.width);
+    arb_set_d(res_y_t, (double) resolution.height);
 
     // Left bottom corner and right top corner complex number of the graph tile we are going to draw
     zpoint_set_from_re_im_str(&left_bottom_point, "-2", "-2", prec);
@@ -71,14 +71,14 @@ void calculate_points(int res_x, int res_y, int max_iterations, slong prec, int 
     zpoint_set_from_re_im(&zx_point_increment, step_re, zero);
     zpoint_set_from_re_im(&zy_point_increment, zero, step_im);
 
-    for (y = 0; y < res_y; y++) {
-        for (x = 0; x < res_x; x++) {
+    for (y = 0; y < resolution.height; y++) {
+        for (x = 0; x < resolution.width; x++) {
 
             // Check if point belongs to Mandelbrot Set
             iterations_taken = mandelbrot_set_contains(z_current_point, max_iterations, prec);
 
             // Update matrix with iterations counter for each point
-            iterations_taken_matrix[(y * res_x) + x] = iterations_taken;
+            iterations_taken_matrix[(y * resolution.width) + x] = iterations_taken;
 
             // Increase real part to move one pixel to the right
             zpoint_add(&z_current_point, z_current_point, zx_point_increment, prec);

@@ -2,15 +2,15 @@
 #include "image.h"
 #include "set.h"
 
-void render_and_write_out_image(char *filename, int width, int height, int *iterations_taken_matrix) {
+void render_and_write_out_image(char *filename, fractal_resolution resolution, int *iterations_taken_matrix) {
     const char black[3] = {0, 0, 0};
     const char white[3] = {255, 255, 255};
     FILE *fp;
 
     fp = fopen(filename, "wb");
 
-    print_ppm_image_header(fp, width, height);
-    print_ppm_image_pixels(fp, width, height, black, white, iterations_taken_matrix);
+    print_ppm_image_header(fp, resolution.width, resolution.height);
+    print_ppm_image_pixels(fp, resolution.width, resolution.height, black, white, iterations_taken_matrix);
 
     fclose(fp);
 }

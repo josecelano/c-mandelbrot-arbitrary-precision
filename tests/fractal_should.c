@@ -16,7 +16,7 @@ TEST_TEAR_DOWN(fractal_should)
 TEST(fractal_should, calculate_complex_points_for_a_given_resolution_and_check_if_the_belong_to_the_mandelbrot_set)
 {
     slong prec = 32;
-    int res_x = 10, res_y = 10;
+    fractal_resolution resolution = {10, 10};
     int max_iterations = 200;
     char* image;
     int *iterations_taken_matrix;
@@ -24,10 +24,10 @@ TEST(fractal_should, calculate_complex_points_for_a_given_resolution_and_check_i
     int x, y;
     char message[100];
 
-    image = malloc(res_x * res_y * 3);
-    iterations_taken_matrix = malloc(res_x * res_y * sizeof *iterations_taken_matrix);
+    image = malloc(resolution.width * resolution.height * 3);
+    iterations_taken_matrix = malloc(resolution.width * resolution.height * sizeof *iterations_taken_matrix);
 
-    calculate_points(res_x, res_y, max_iterations, prec, iterations_taken_matrix);
+    calculate_points(resolution, max_iterations, prec, iterations_taken_matrix);
 
     int expected_iterations_taken_matrix[100] = {
     // x 0, 1, 2, 3, 4, 5, 6, 7, 8, 9  // y
@@ -43,15 +43,15 @@ TEST(fractal_should, calculate_complex_points_for_a_given_resolution_and_check_i
          2, 2, 2, 2, 2, 2, 2, 2, 2, 2  // 9
     };
 
-    for (y = 0; y < res_y; y++) {
-        for (x = 0; x < res_x; x++) {
+    for (y = 0; y < resolution.height; y++) {
+        for (x = 0; x < resolution.width; x++) {
             sprintf(message, "expected number of iterations %d does not match actual %d for pixel (x,y) = (%d, %d)",
-                    expected_iterations_taken_matrix[(y * res_x) + x],
-                    iterations_taken_matrix[(y * res_x) + x],
+                    expected_iterations_taken_matrix[(y * resolution.width) + x],
+                    iterations_taken_matrix[(y * resolution.width) + x],
                     x, y
                     );
 
-            TEST_ASSERT_EQUAL_MESSAGE(expected_iterations_taken_matrix[(y * res_x) + x], iterations_taken_matrix[(y * res_x) + x], message);
+            TEST_ASSERT_EQUAL_MESSAGE(expected_iterations_taken_matrix[(y * resolution.width) + x], iterations_taken_matrix[(y * resolution.width) + x], message);
         }
     }
 
