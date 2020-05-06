@@ -2,7 +2,7 @@
 #include "ascii_graph.h"
 #include "set.h"
 
-void render_and_write_out_ascii_graph(char *filename, int width, int height, int *iterations_map) {
+void render_and_write_out_ascii_graph(char *filename, int width, int height, int *iterations_taken_matrix) {
     const char black[3] = {0, 0, 0};
     const char white[3] = {255, 255, 255};
     int x, y, num_iter_for_pixel;
@@ -13,7 +13,7 @@ void render_and_write_out_ascii_graph(char *filename, int width, int height, int
     for (y = 0; y < height; y++) {
         for (x = 0; x < width; x++) {
 
-            num_iter_for_pixel = iterations_map[(y * width) + x];
+            num_iter_for_pixel = iterations_taken_matrix[(y * width) + x];
 
             if (num_iter_for_pixel == MAX_ITERATIONS) {
                 // Inside Mandelbrot Set

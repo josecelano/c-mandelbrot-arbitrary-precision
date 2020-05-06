@@ -19,17 +19,17 @@ TEST(fractal_should, calculate_complex_points_for_a_given_resolution_and_check_i
     int res_x = 10, res_y = 10;
     int max_iterations = 200;
     char* image;
-    int *iterations_map;
+    int *iterations_taken_matrix;
     FILE *fp;
     int x, y;
     char message[100];
 
     image = malloc(res_x * res_y * 3);
-    iterations_map = malloc(res_x * res_y * sizeof *iterations_map);
+    iterations_taken_matrix = malloc(res_x * res_y * sizeof *iterations_taken_matrix);
 
-    calculate_points(res_x, res_y, max_iterations, prec, iterations_map);
+    calculate_points(res_x, res_y, max_iterations, prec, iterations_taken_matrix);
 
-    int expected_iterations_map[100] = {
+    int expected_iterations_taken_matrix[100] = {
     // x 0, 1, 2, 3, 4, 5, 6, 7, 8, 9  // y
          2, 2, 2, 2, 2, 2, 2, 2, 2, 2, // 0
          2, 2, 2, 2, 2, 2, 2, 2, 2, 2, // 1
@@ -46,17 +46,17 @@ TEST(fractal_should, calculate_complex_points_for_a_given_resolution_and_check_i
     for (y = 0; y < res_y; y++) {
         for (x = 0; x < res_x; x++) {
             sprintf(message, "expected number of iterations %d does not match actual %d for pixel (x,y) = (%d, %d)",
-                    expected_iterations_map[(y * res_x) + x],
-                    iterations_map[(y * res_x) + x],
+                    expected_iterations_taken_matrix[(y * res_x) + x],
+                    iterations_taken_matrix[(y * res_x) + x],
                     x, y
                     );
 
-            TEST_ASSERT_EQUAL_MESSAGE(expected_iterations_map[(y * res_x) + x], iterations_map[(y * res_x) + x], message);
+            TEST_ASSERT_EQUAL_MESSAGE(expected_iterations_taken_matrix[(y * res_x) + x], iterations_taken_matrix[(y * res_x) + x], message);
         }
     }
 
     free(image);
-    free(iterations_map);
+    free(iterations_taken_matrix);
 }
 
 TEST_GROUP_RUNNER(fractal_should)
