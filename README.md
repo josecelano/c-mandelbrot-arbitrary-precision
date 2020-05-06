@@ -53,19 +53,19 @@ Codename:	bionic
 
 Install dependencies:
 ```
-./install_dependencies
+./bin/install_dependencies
 ```
 
 Install app from source dir (after installing dependencies):
 ```
-./install
+./bin/install
 ```
 
 ## Run
 
 Run:
 ```
-./run
+./bin/run
 ```
 
 `run` command will create 2 files in the root dir:
@@ -78,27 +78,27 @@ All commands use docker under the hood.
 
 Setup:
 ```
-./dev_setup
+./bin/dev_setup
 ```
 
 Only compile code:
 ```
-./compile
+./bin/compile
 ```
 
 Run main program:
 ```
-./dev_run
+./bin/dev_run
 ```
 
 Execute tests:
 ```
-./test
+./bin/test
 ```
 
 Compile and run:
 ```
-./compile && ./dev_run
+./bin/compile && ./bin/dev_run
 ```
 
 ## Related projects
