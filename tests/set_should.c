@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include "../external/unity/unity.h"
 #include "../external/unity/unity_fixture.h"
-#include "../src/complex.h"
-#include "../src/set.h"
-#include "../src/zpoint.h"
+#include "../src/mandelbrot/complex.h"
+#include "../src/mandelbrot/set.h"
+#include "../src/mandelbrot/zpoint.h"
 
 TEST_GROUP(set_should);
 

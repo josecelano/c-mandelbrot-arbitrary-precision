@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "src/fractal.h"
-#include "src/image.h"
-#include "src/ascii_graph.h"
+#include "mandelbrot/fractal.h"
+#include "mandelbrot/image.h"
+#include "mandelbrot/ascii_graph.h"
 
 /**
  * It renders a Mandelbrot fractal image in PPM format.

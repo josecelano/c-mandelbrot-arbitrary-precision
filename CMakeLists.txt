@@ -10,8 +10,8 @@ file(GLOB EXTERNAL_CODE
         )
 
 file(GLOB PRODUCTION_CODE
-        ${PROJECT_SOURCE_DIR}/src/*.h
-        ${PROJECT_SOURCE_DIR}/src/*.c
+        ${PROJECT_SOURCE_DIR}/src/mandelbrot/*.h
+        ${PROJECT_SOURCE_DIR}/src/mandelbrot/*.c
         )
 
 file(GLOB TEST_CODE
@@ -21,7 +21,7 @@ file(GLOB TEST_CODE
 
 add_executable(
         mandelbrot-test
-        main_test.c
+        src/main_test.c
         ${EXTERNAL_CODE}
         ${PRODUCTION_CODE}
         ${TEST_CODE}
@@ -29,7 +29,7 @@ add_executable(
 
 add_executable(
         mandelbrot
-        main.c
+        src/main.c
         ${EXTERNAL_CODE}
         ${PRODUCTION_CODE}
         )
