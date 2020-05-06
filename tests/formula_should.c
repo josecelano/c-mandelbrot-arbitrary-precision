@@ -55,9 +55,9 @@ TEST(formula_should, calculate_the_mandelbrot_function)
 
     for (i = 0; i < 9; ++i)
     {
-        complex_set_from_str(z, zf[i][0].re, zf[i][0].im, prec);
-        complex_set_from_str(c, zf[i][1].re, zf[i][1].im, prec);
-        complex_set_from_str(expected_result, zf[i][2].re, zf[i][2].im, prec);
+        complex_set_from_re_im_str(z, zf[i][0].re, zf[i][0].im, prec);
+        complex_set_from_re_im_str(c, zf[i][1].re, zf[i][1].im, prec);
+        complex_set_from_re_im_str(expected_result, zf[i][2].re, zf[i][2].im, prec);
 
         mandelbrot_formula(result, z, c, prec);
 

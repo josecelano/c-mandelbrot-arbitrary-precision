@@ -36,7 +36,7 @@ TEST(set_should, contain_known_points_inside)
 
     for (i = 0; i < 6; ++i)
     {
-        complex_set_from_str(c, z_in[i].re, z_in[i].im, prec);
+        complex_set_from_re_im_str(c, z_in[i].re, z_in[i].im, prec);
 
         ret = mandelbrot_set_contains(c, max_iterations, prec);
 
@@ -69,7 +69,7 @@ TEST(set_should, not_contain_known_points_outside)
 
     for (i = 0; i < 7; ++i)
     {
-        complex_set_from_str(c, z_out[i].re, z_out[i].im, prec);
+        complex_set_from_re_im_str(c, z_out[i].re, z_out[i].im, prec);
 
         ret = mandelbrot_set_contains(c, max_iterations, prec);
 
