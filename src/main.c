@@ -39,7 +39,7 @@ int main(int argc, const char *argv[]) {
     fractal_resolution resolution = {256, 256};
 
     // Max number of iterations for Mandelbrot formula
-    int max_iterations = 200;
+    int max_iterations = 100;
 
     // Matrix[width][height] with number of Mandelbrot formula iterations needed for each pixel to diverge.
     // -1 for point/pixel inside Mandelbrot Set

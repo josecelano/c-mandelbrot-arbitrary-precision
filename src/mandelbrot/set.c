@@ -30,8 +30,8 @@ int mandelbrot_set_contains(zpoint point, int max_iterations, slong prec) {
         mandelbrot_formula(f, z, c, prec);
 
         // Get real and imaginary parts
-        acb_get_real(re, z);
-        acb_get_imag(im, z);
+        acb_get_real(re, f);
+        acb_get_imag(im, f);
 
         // Get absolute value of real and imaginary parts
         arb_abs(re_abs, re);
