@@ -59,7 +59,7 @@ TEST(set_should, not_contain_known_points_outside)
     zpoint_init(&point);
 
     // Some complex number inside the Mandelbrot Set
-    struct complex_dto z_out[7] = {
+    struct complex_dto z_out[6] = {
             { "-2", "2" },
             { "0", "2" },
             { "2", "2" },
@@ -68,7 +68,7 @@ TEST(set_should, not_contain_known_points_outside)
             { "-2", "-2" }
     };
 
-    for (i = 0; i < 7; ++i)
+    for (i = 0; i < 6; ++i)
     {
         zpoint_set_from_re_im_str(&point, z_out[i].re, z_out[i].im, prec);
 

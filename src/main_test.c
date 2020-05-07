@@ -7,6 +7,6 @@ static void RunAllTests(void)
     RUN_TEST_GROUP(set_should);
 }
 
-int main(int argc, const char * argv[]) {
+int main(int argc, const char *argv[]) {
     return UnityMain(argc, argv, RunAllTests);
 }
