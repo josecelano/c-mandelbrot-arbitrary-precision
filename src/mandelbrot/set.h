@@ -17,4 +17,9 @@
  */
 int mandelbrot_set_contains(zpoint point, int max_iterations, slong prec);
 
+/**
+ * It returns 1 if we have reached the escape condition. The points diverges (does not belong to set)
+ */
+int bailout(acb_t c, slong prec);
+
 #endif //C_MANDELBROT_ARBITRARY_PRECISION_SET_H
