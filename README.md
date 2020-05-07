@@ -116,6 +116,12 @@ For 8192px image:
 * Performance: 26822,09014892578125 ns/px
 * Min number step: 0,00048828125 (4/8192)
 
+Performance links:
+* [Post with different performance improvement](https://www.martin-ueding.de/posts/mandelbrot-performance/)
+* [Another article about Mandelbrot algorithm improvements](https://gist.github.com/mrange/20fa976388167e294aa01a1266ad0a8c)
+* [Performance ranking](https://benchmarksgame-team.pages.debian.net/benchmarksgame/performance/mandelbrot.html)
+* [List of speed improvements](https://en.wikibooks.org/wiki/Fractals/Iterations_in_the_complex_plane/Mandelbrot_set/mandelbrot#Speed_improvements_-_optimisation)
+
 ## TODO
 
 * Get `main` arguments from console (resolution and filenames).
