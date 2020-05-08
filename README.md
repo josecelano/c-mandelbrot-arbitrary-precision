@@ -70,9 +70,12 @@ Run:
 ./bin/run
 ```
 
-`run` command will create 2 files in the root dir:
+`run` command will create 2 files in the `output` dir:
 * mandelbrot-256x256.ppm (Mandelbrot image)
 * mandelbrot-256x256.txt (Mandelbrot ASCII version)
+* mandelbrot-iter-256x256.txt (Mandelbrot Iterations Taken Matrix txt version)
+
+You can see those samples files in folder `samples`.
 
 ## Development
 
