@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "mandelbrot/ascii_graph.h"
 #include "mandelbrot/fractal.h"
 #include "mandelbrot/image.h"
-#include "mandelbrot/ascii_graph.h"
 #include "mandelbrot/ztile.h"
+#include "mandelbrot/set.h"
 
 /**
  * It renders a Mandelbrot fractal image in PPM format.
@@ -29,6 +30,19 @@ void render_ascii_graph(fractal_resolution resolution, int *iterations_taken_mat
     sprintf(txt_filename, "./output/mandelbrot-%dx%d.txt", resolution.width, resolution.height);
 
     render_and_write_out_ascii_graph(txt_filename, resolution, iterations_taken_matrix);
+}
+
+/**
+ * It renders a txt file with a Mandelbrot iterations matrix.
+ * @param fractal_resolution resolution
+ * @param iterations_taken_matrix
+ */
+void render_iterations_taken_matrix(fractal_resolution resolution, int *iterations_taken_matrix) {
+    char txt_filename[50];
+
+    sprintf(txt_filename, "./output/mandelbrot-iter-%dx%d.txt", resolution.width, resolution.height);
+
+    render_and_write_out_iterations_matrix(txt_filename, resolution, iterations_taken_matrix);
 }
 
 int main(int argc, const char *argv[]) {
@@ -59,6 +73,8 @@ int main(int argc, const char *argv[]) {
     render_ppm_image(resolution, iterations_taken_matrix);
 
     render_ascii_graph(resolution, iterations_taken_matrix);
+
+    render_iterations_taken_matrix(resolution, iterations_taken_matrix);
 
     free(iterations_taken_matrix);
 
