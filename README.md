@@ -118,6 +118,14 @@ For 8192px image:
 * Performance: 26822,09014892578125 ns/px
 * Min number step: 0,00048828125 (4/8192)
 
+For 16384 image:
+* Size: 16384x16384px
+* Iter: 100
+* Precision: 32
+* Time: 83m54s
+* Performance: 18753,111362457275390625 ns/px
+* Min number step: 0,000244140625 (4/16384)
+
 Performance links:
 * [Post with different performance improvement](https://www.martin-ueding.de/posts/mandelbrot-performance/)
 * [Another article about Mandelbrot algorithm improvements](https://gist.github.com/mrange/20fa976388167e294aa01a1266ad0a8c)
@@ -135,4 +143,3 @@ Performance links:
 * Get `main` arguments from console (resolution and filenames).
 * Calculate dynamically needed precision.
 * Allow to set a fractal tile and zoom level.
-* Performance test for 16K px image.
