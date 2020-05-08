@@ -2,6 +2,7 @@
 #define C_MANDELBROT_ARBITRARY_PRECISION_FRACTAL_H
 
 #include "acb.h"
+#include "ztile.h"
 
 typedef struct {
     int width;
@@ -16,6 +17,7 @@ typedef struct {
  * @param prec
  * @param iterations_taken_matrix
  */
-void calculate_points(fractal_resolution resolution, int max_iterations, slong prec, int *iterations_taken_matrix);
+void calculate_points(ztile tile, fractal_resolution resolution, int max_iterations, slong prec,
+                      int *iterations_taken_matrix);
 
 #endif //C_MANDELBROT_ARBITRARY_PRECISION_FRACTAL_H

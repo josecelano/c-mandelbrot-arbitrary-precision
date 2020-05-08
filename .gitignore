@@ -41,8 +41,8 @@ cmake-build-debug
 .idea
 
 # Executables
-mandelbrot
-mandelbrot-test
+/mandelbrot
+/mandelbrot-test
 
 # Test files
 mandelbrot-256x256.ppm

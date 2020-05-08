@@ -4,6 +4,7 @@
 #include "fractal.h"
 #include "set.h"
 #include "zpoint.h"
+#include "ztile.h"
 
 void calculate_matrix_point(
         zpoint z_current_point,
@@ -85,12 +86,17 @@ void calculate_matrix(
     zpoint_clean(&z_current_point);
 }
 
-void calculate_points(fractal_resolution resolution, int max_iterations, slong prec, int *iterations_taken_matrix) {
+void calculate_points(
+        ztile tile, fractal_resolution resolution,
+        int max_iterations,
+        slong prec,
+        int *iterations_taken_matrix
+) {
     int x, y;
     int img_idx = 0;
     int iterations_taken;
 
-    zpoint left_bottom_point, right_top_point, zx_point_increment, zy_point_increment;
+    zpoint zx_point_increment, zy_point_increment;
 
     // Complex numbers
     acb_t point;
@@ -103,8 +109,6 @@ void calculate_points(fractal_resolution resolution, int max_iterations, slong p
 
     acb_init(point);
 
-    zpoint_init(&left_bottom_point);
-    zpoint_init(&right_top_point);
     zpoint_init(&zx_point_increment);
     zpoint_init(&zy_point_increment);
 
@@ -119,9 +123,6 @@ void calculate_points(fractal_resolution resolution, int max_iterations, slong p
     arb_init(step_im);
 
     // Image is rendered from left bottom corner to right top corner
-    // Fix tile size.
-    // Initial complex point -2,-2
-    // Final complex point 2, 2
     // height step_im 4 / resolution.height
     // width step_re 4 / resolution.width
     // Each iter:
@@ -132,13 +133,9 @@ void calculate_points(fractal_resolution resolution, int max_iterations, slong p
     arb_set_d(res_x_t, (double) resolution.width);
     arb_set_d(res_y_t, (double) resolution.height);
 
-    // Left bottom corner and right top corner complex number of the graph tile we are going to draw
-    zpoint_set_from_re_im_str(&left_bottom_point, "-2", "-2", prec);
-    zpoint_set_from_re_im_str(&right_top_point, "2", "2", prec);
-
     // Calculate step between pixels
-    arb_sub(width, right_top_point.re, left_bottom_point.re, prec);
-    arb_sub(height, right_top_point.im, left_bottom_point.im, prec);
+    arb_sub(width, tile.right_top_point.re, tile.left_bottom_point.re, prec);
+    arb_sub(height, tile.right_top_point.im, tile.left_bottom_point.im, prec);
 
     arb_div(step_re, width, res_x_t, prec);
     arb_div(step_im, height, res_y_t, prec);
@@ -146,8 +143,10 @@ void calculate_points(fractal_resolution resolution, int max_iterations, slong p
     zpoint_set_from_re_im(&zx_point_increment, step_re, zero);
     zpoint_set_from_re_im(&zy_point_increment, zero, step_im);
 
+    // TODO: extraer el cálculo del incremento en x e y
+
     calculate_matrix(
-            left_bottom_point,
+            tile.left_bottom_point,
             zx_point_increment,
             zy_point_increment,
             max_iterations,
@@ -161,8 +160,6 @@ void calculate_points(fractal_resolution resolution, int max_iterations, slong p
 
     acb_clear(point);
 
-    zpoint_clean(&left_bottom_point);
-    zpoint_clean(&right_top_point);
     zpoint_clean(&zx_point_increment);
     zpoint_clean(&zy_point_increment);
 

@@ -23,11 +23,17 @@ TEST(fractal_should, calculate_complex_points_for_a_given_resolution_and_check_i
     FILE *fp;
     int x, y;
     char message[100];
+    ztile tile;
 
     image = malloc(resolution.width * resolution.height * 3);
     iterations_taken_matrix = malloc(resolution.width * resolution.height * sizeof *iterations_taken_matrix);
 
-    calculate_points(resolution, max_iterations, prec, iterations_taken_matrix);
+    ztile_init(&tile);
+    ztile_set_completed_mandelbrot_set(&tile, prec);
+
+    calculate_points(tile, resolution, max_iterations, prec, iterations_taken_matrix);
+
+    ztile_clean(&tile);
 
     int expected_iterations_taken_matrix[100] = {
     // x 0, 1, 2, 3, 4, 5, 6, 7, 8, 9  // y
