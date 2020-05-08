@@ -124,9 +124,15 @@ Performance links:
 * [Performance ranking](https://benchmarksgame-team.pages.debian.net/benchmarksgame/performance/mandelbrot.html)
 * [List of speed improvements](https://en.wikibooks.org/wiki/Fractals/Iterations_in_the_complex_plane/Mandelbrot_set/mandelbrot#Speed_improvements_-_optimisation)
 
+## Enhancements
+
+* Do not use arbitrary precision when it's not needed.
+* Use a better color map, maybe copy from: https://github.com/josch/mandelbrot/blob/master/mandel_mpfr.c
+* Improve performance with "period checking", see also from https://github.com/josch/mandelbrot/blob/master/mandel_mpfr.c
+
 ## TODO
 
 * Get `main` arguments from console (resolution and filenames).
 * Calculate dynamically needed precision.
 * Allow to set a fractal tile and zoom level.
-* Refactor fractal::calculate_points function.
+* Performance test for 16K px image.
