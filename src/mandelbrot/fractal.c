@@ -54,10 +54,15 @@ void calculate_matrix(
         slong prec,
         fractal_resolution resolution,
         // Output
-        int *iterations_taken_matrix,
-        zpoint *z_current_point
+        int *iterations_taken_matrix
 ) {
     int y;
+    zpoint z_current_point; // Represents the pixel being calculated
+
+    zpoint_init(&z_current_point);
+
+    // Starting at left bottom corner of the image.
+    zpoint_set(&z_current_point, &left_bottom_point);
 
     for (y = 0; y < resolution.height; y++) {
 
@@ -67,15 +72,17 @@ void calculate_matrix(
                 prec,
                 y, resolution.width,
                 iterations_taken_matrix,
-                z_current_point
+                &z_current_point
         );
 
         // Return back to first image column (pixel)
-        zpoint_set_re(z_current_point, left_bottom_point.re);
+        zpoint_set_re(&z_current_point, left_bottom_point.re);
 
         // Increase imaginary part to move one pixel to the top
-        zpoint_add(z_current_point, *z_current_point, zy_point_increment, prec);
+        zpoint_add(&z_current_point, z_current_point, zy_point_increment, prec);
     }
+
+    zpoint_clean(&z_current_point);
 }
 
 void calculate_points(fractal_resolution resolution, int max_iterations, slong prec, int *iterations_taken_matrix) {
@@ -83,7 +90,7 @@ void calculate_points(fractal_resolution resolution, int max_iterations, slong p
     int img_idx = 0;
     int iterations_taken;
 
-    zpoint left_bottom_point, right_top_point, z_current_point, zx_point_increment, zy_point_increment;
+    zpoint left_bottom_point, right_top_point, zx_point_increment, zy_point_increment;
 
     // Complex numbers
     acb_t point;
@@ -98,7 +105,6 @@ void calculate_points(fractal_resolution resolution, int max_iterations, slong p
 
     zpoint_init(&left_bottom_point);
     zpoint_init(&right_top_point);
-    zpoint_init(&z_current_point);
     zpoint_init(&zx_point_increment);
     zpoint_init(&zy_point_increment);
 
@@ -137,10 +143,6 @@ void calculate_points(fractal_resolution resolution, int max_iterations, slong p
     arb_div(step_re, width, res_x_t, prec);
     arb_div(step_im, height, res_y_t, prec);
 
-    // Complex parts of complex representing the pixel being calculated.
-    // Starting at left bottom corner of the image.
-    zpoint_set(&z_current_point, &left_bottom_point);
-
     zpoint_set_from_re_im(&zx_point_increment, step_re, zero);
     zpoint_set_from_re_im(&zy_point_increment, zero, step_im);
 
@@ -152,8 +154,7 @@ void calculate_points(fractal_resolution resolution, int max_iterations, slong p
             prec,
             resolution,
             // Output
-            iterations_taken_matrix,
-            &z_current_point
+            iterations_taken_matrix
     );
 
     // Clean variables
@@ -162,7 +163,6 @@ void calculate_points(fractal_resolution resolution, int max_iterations, slong p
 
     zpoint_clean(&left_bottom_point);
     zpoint_clean(&right_top_point);
-    zpoint_clean(&z_current_point);
     zpoint_clean(&zx_point_increment);
     zpoint_clean(&zy_point_increment);
 
