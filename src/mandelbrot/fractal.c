@@ -5,6 +5,79 @@
 #include "set.h"
 #include "zpoint.h"
 
+void calculate_matrix_point(
+        zpoint z_current_point,
+        int max_iterations,
+        slong prec,
+        int x, int y, int width,
+        int *iterations_taken_matrix
+) {
+    int iterations_taken;
+
+    // Check if point belongs to Mandelbrot Set
+    iterations_taken = mandelbrot_set_contains(z_current_point, max_iterations, prec);
+
+    // Update matrix with iterations counter for each point
+    iterations_taken_matrix[(y * width) + x] = iterations_taken;
+}
+
+void calculate_matrix_row(
+        zpoint zx_point_increment,
+        int max_iterations,
+        slong prec,
+        int y, int width,
+        // Output
+        int *iterations_taken_matrix,
+        zpoint *z_current_point
+) {
+    int x;
+
+    for (x = 0; x < width; x++) {
+        calculate_matrix_point(
+                *z_current_point,
+                max_iterations,
+                prec,
+                x, y, width,
+                iterations_taken_matrix
+        );
+
+        // Increase real part to move one pixel to the right
+        zpoint_add(z_current_point, *z_current_point, zx_point_increment, prec);
+    }
+}
+
+void calculate_matrix(
+        zpoint left_bottom_point,
+        zpoint zx_point_increment,
+        zpoint zy_point_increment,
+        int max_iterations,
+        slong prec,
+        fractal_resolution resolution,
+        // Output
+        int *iterations_taken_matrix,
+        zpoint *z_current_point
+) {
+    int y;
+
+    for (y = 0; y < resolution.height; y++) {
+
+        calculate_matrix_row(
+                zx_point_increment,
+                max_iterations,
+                prec,
+                y, resolution.width,
+                iterations_taken_matrix,
+                z_current_point
+        );
+
+        // Return back to first image column (pixel)
+        zpoint_set_re(z_current_point, left_bottom_point.re);
+
+        // Increase imaginary part to move one pixel to the top
+        zpoint_add(z_current_point, *z_current_point, zy_point_increment, prec);
+    }
+}
+
 void calculate_points(fractal_resolution resolution, int max_iterations, slong prec, int *iterations_taken_matrix) {
     int x, y;
     int img_idx = 0;
@@ -71,25 +144,17 @@ void calculate_points(fractal_resolution resolution, int max_iterations, slong p
     zpoint_set_from_re_im(&zx_point_increment, step_re, zero);
     zpoint_set_from_re_im(&zy_point_increment, zero, step_im);
 
-    for (y = 0; y < resolution.height; y++) {
-        for (x = 0; x < resolution.width; x++) {
-
-            // Check if point belongs to Mandelbrot Set
-            iterations_taken = mandelbrot_set_contains(z_current_point, max_iterations, prec);
-
-            // Update matrix with iterations counter for each point
-            iterations_taken_matrix[(y * resolution.width) + x] = iterations_taken;
-
-            // Increase real part to move one pixel to the right
-            zpoint_add(&z_current_point, z_current_point, zx_point_increment, prec);
-        }
-
-        // Return back to first image column (pixel)
-        zpoint_set_re(&z_current_point, left_bottom_point.re);
-
-        // Increase imaginary part to move one pixel to the top
-        zpoint_add(&z_current_point, z_current_point, zy_point_increment, prec);
-    }
+    calculate_matrix(
+            left_bottom_point,
+            zx_point_increment,
+            zy_point_increment,
+            max_iterations,
+            prec,
+            resolution,
+            // Output
+            iterations_taken_matrix,
+            &z_current_point
+    );
 
     // Clean variables
 
