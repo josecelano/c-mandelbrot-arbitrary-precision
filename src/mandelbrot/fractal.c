@@ -143,8 +143,6 @@ void calculate_points(
     zpoint_set_from_re_im(&zx_point_increment, step_re, zero);
     zpoint_set_from_re_im(&zy_point_increment, zero, step_im);
 
-    // TODO: extraer el cálculo del incremento en x e y
-
     calculate_matrix(
             tile.left_bottom_point,
             zx_point_increment,
