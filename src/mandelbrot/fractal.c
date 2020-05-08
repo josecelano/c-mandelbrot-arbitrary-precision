@@ -47,7 +47,7 @@ void calculate_matrix_row(
     }
 }
 
-void calculate_matrix(
+void calculate_iterations_taken_matrix(
         zpoint left_bottom_point,
         zpoint zx_point_increment,
         zpoint zy_point_increment,
@@ -86,6 +86,65 @@ void calculate_matrix(
     zpoint_clean(&z_current_point);
 }
 
+void calculate_real_and_imaginary_increments_per_point(
+        ztile tile,
+        fractal_resolution resolution,
+        slong prec,
+        // Output
+        zpoint *zx_point_increment,
+        zpoint *zy_point_increment
+) {
+    arb_t zero;
+    arb_t res_x_t, res_y_t;
+    arb_t width, height;
+    arb_t step_re, step_im;
+
+    arb_init(zero);
+
+    arb_init(res_x_t);
+    arb_init(res_y_t);
+
+    arb_init(width);
+    arb_init(height);
+
+    arb_init(step_re);
+    arb_init(step_im);
+
+    // Image is rendered from left bottom corner to right top corner
+    // Assuming completed Mandelbrot set tile:
+    // height step_im 4 / resolution.height
+    // width step_re 4 / resolution.width
+    // Each iteration we calculate the complex number for the pixel/point increasing the current one parts (re,im):
+    // For width: previous re + step_re
+    // For height: previous im + step_im
+
+    // Convert resolution parameter to arb type in order to use them in arb operations
+    arb_set_d(res_x_t, (double) resolution.width);
+    arb_set_d(res_y_t, (double) resolution.height);
+
+    // Calculate width and height of the fractal to draw in real numbers
+    arb_sub(width, tile.right_top_point.re, tile.left_bottom_point.re, prec);
+    arb_sub(height, tile.right_top_point.im, tile.left_bottom_point.im, prec);
+
+    // Calculate step/delta/increment between pixels/points
+    arb_div(step_re, width, res_x_t, prec);
+    arb_div(step_im, height, res_y_t, prec);
+
+    zpoint_set_from_re_im(zx_point_increment, step_re, zero);
+    zpoint_set_from_re_im(zy_point_increment, zero, step_im);
+
+    arb_clear(zero);
+
+    arb_clear(res_x_t);
+    arb_clear(res_y_t);
+
+    arb_clear(width);
+    arb_clear(height);
+
+    arb_clear(step_re);
+    arb_clear(step_im);
+}
+
 void calculate_points(
         ztile tile, fractal_resolution resolution,
         int max_iterations,
@@ -98,52 +157,19 @@ void calculate_points(
 
     zpoint zx_point_increment, zy_point_increment;
 
-    // Complex numbers
-    acb_t point;
-
-    // Real numbers
-    arb_t zero;
-    arb_t res_x_t, res_y_t;
-    arb_t width, height;
-    arb_t step_re, step_im;
-
-    acb_init(point);
-
     zpoint_init(&zx_point_increment);
     zpoint_init(&zy_point_increment);
 
-    arb_init(zero);
-    arb_init(res_x_t);
-    arb_init(res_y_t);
+    calculate_real_and_imaginary_increments_per_point(
+            tile,
+            resolution,
+            prec,
+            // Output
+            &zx_point_increment,
+            &zy_point_increment
+    );
 
-    arb_init(width);
-    arb_init(height);
-
-    arb_init(step_re);
-    arb_init(step_im);
-
-    // Image is rendered from left bottom corner to right top corner
-    // height step_im 4 / resolution.height
-    // width step_re 4 / resolution.width
-    // Each iter:
-    // For width: previous re + step_re
-    // For height: previous im + step_im
-
-    // Convert resolution parameter to arb type in order to use them in arb operations
-    arb_set_d(res_x_t, (double) resolution.width);
-    arb_set_d(res_y_t, (double) resolution.height);
-
-    // Calculate step between pixels
-    arb_sub(width, tile.right_top_point.re, tile.left_bottom_point.re, prec);
-    arb_sub(height, tile.right_top_point.im, tile.left_bottom_point.im, prec);
-
-    arb_div(step_re, width, res_x_t, prec);
-    arb_div(step_im, height, res_y_t, prec);
-
-    zpoint_set_from_re_im(&zx_point_increment, step_re, zero);
-    zpoint_set_from_re_im(&zy_point_increment, zero, step_im);
-
-    calculate_matrix(
+    calculate_iterations_taken_matrix(
             tile.left_bottom_point,
             zx_point_increment,
             zy_point_increment,
@@ -154,20 +180,6 @@ void calculate_points(
             iterations_taken_matrix
     );
 
-    // Clean variables
-
-    acb_clear(point);
-
     zpoint_clean(&zx_point_increment);
     zpoint_clean(&zy_point_increment);
-
-    arb_clear(zero);
-    arb_clear(res_x_t);
-    arb_clear(res_y_t);
-
-    arb_clear(width);
-    arb_clear(height);
-
-    arb_clear(step_re);
-    arb_clear(step_im);
 }
