@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/josecelano/c-mandelbrot-arbitrary-precision.svg?branch=master)](https://travis-ci.org/josecelano/c-mandelbrot-arbitrary-precision)
+
 # Mandelbrot in C language with arbitrary precision
 
 This is a proof of concept project. The main goal is do some research in order to allow zooming further than limits of double-precision in the Fractal generation software GNofract4D. More details about the feature on:
