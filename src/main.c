@@ -3,6 +3,7 @@
 #include "mandelbrot/fractal.h"
 #include "mandelbrot/image.h"
 #include "mandelbrot/ascii_graph.h"
+#include "mandelbrot/ztile.h"
 
 /**
  * It renders a Mandelbrot fractal image in PPM format.
@@ -41,11 +42,19 @@ int main(int argc, const char *argv[]) {
     // Max number of iterations for Mandelbrot formula
     int max_iterations = 100;
 
+    // The tile we want to draw with complex points coordinates
+    ztile tile;
+
     // Matrix[width][height] with number of Mandelbrot formula iterations needed for each pixel to diverge.
     // -1 for point/pixel inside Mandelbrot Set
     int *iterations_taken_matrix = malloc(resolution.width * resolution.height * sizeof *iterations_taken_matrix);
 
-    calculate_points(resolution, max_iterations, prec, iterations_taken_matrix);
+    ztile_init(&tile);
+    ztile_set_completed_mandelbrot_set(&tile, prec);
+
+    calculate_points(tile, resolution, max_iterations, prec, iterations_taken_matrix);
+
+    ztile_clean(&tile);
 
     render_ppm_image(resolution, iterations_taken_matrix);
 
