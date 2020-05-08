@@ -13,7 +13,7 @@
 void render_ppm_image(fractal_resolution resolution, int *iterations_taken_matrix) {
     char img_filename[50];
 
-    sprintf(img_filename, "mandelbrot-%dx%d.ppm", resolution.width, resolution.height);
+    sprintf(img_filename, "./output/mandelbrot-%dx%d.ppm", resolution.width, resolution.height);
 
     render_and_write_out_image(img_filename, resolution, iterations_taken_matrix);
 }
@@ -26,7 +26,7 @@ void render_ppm_image(fractal_resolution resolution, int *iterations_taken_matri
 void render_ascii_graph(fractal_resolution resolution, int *iterations_taken_matrix) {
     char txt_filename[50];
 
-    sprintf(txt_filename, "mandelbrot-%dx%d.txt", resolution.width, resolution.height);
+    sprintf(txt_filename, "./output/mandelbrot-%dx%d.txt", resolution.width, resolution.height);
 
     render_and_write_out_ascii_graph(txt_filename, resolution, iterations_taken_matrix);
 }

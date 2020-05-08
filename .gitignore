@@ -45,5 +45,5 @@ cmake-build-debug
 /mandelbrot-test
 
 # Output files
-mandelbrot-*.ppm
-mandelbrot-*.txt
+/output/*.ppm
+/output/*.txt
