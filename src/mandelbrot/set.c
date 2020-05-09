@@ -38,26 +38,47 @@ int mandelbrot_set_contains(zpoint point, int max_iterations, slong prec) {
     return num_iter;
 }
 
+/**
+ * Bailout formula:
+ * Zx²+Zy² < ER²
+ * https://en.wikibooks.org/wiki/Fractals/Iterations_in_the_complex_plane/Mandelbrot_set/mandelbrot#Bailout_test
+ * @param c
+ * @param prec
+ * @return
+ */
 int bailout(acb_t c, slong prec) {
 
     int ret = 0;
-    arb_t re_abs, im_abs, two;
+    arb_t re, im, re_sqr, im_sqr, total, escape_radius_square;
 
-    arb_init(re_abs);
-    arb_init(im_abs);
-    arb_init(two);
+    arb_init(re);
+    arb_init(im);
+    arb_init(re_sqr);
+    arb_init(im_sqr);
+    arb_init(total);
+    arb_init(escape_radius_square);
 
-    arb_set_str(two, "2", prec);
+    arb_set_str(escape_radius_square, "4", prec);
 
-    acb_abs_re_im(re_abs, im_abs, c);
+    // Get real and imaginary parts
+    acb_get_real(re, c);
+    acb_get_imag(im, c);
 
-    if (arb_gt(re_abs, two) || arb_gt(im_abs, two)) {
+    arb_sqr(re_sqr, re, prec); // zx * zx
+    arb_sqr(im_sqr, im, prec); // zy * zy
+
+    arb_add(total, re_sqr, im_sqr, prec);
+
+    if (arb_gt(total, escape_radius_square)) {
         ret = 1;
     }
 
-    arb_clear(re_abs);
-    arb_clear(im_abs);
-    arb_clear(two);
+    arb_clear(re);
+    arb_clear(im);
+    arb_clear(re_sqr);
+    arb_clear(im_sqr);
+    arb_clear(total);
+    arb_clear(escape_radius_square);
 
     return ret;
 }
