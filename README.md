@@ -116,31 +116,31 @@ Compile and run:
 Full mandelbrot from (-2,2) to (2,2).
 
 For 512px image:
-* Size: 512x512px
+* Size: 512x512px (262144)
 * Max iter: 100
 * Precision: 32
-* Time: 3,736s sg
-* Performance: 14251,708984375 ns/px
+* Time: 1,997s
+* Performance: 7617,950439453125‬ ns/px
 * Min complex increment: 0,0078125 (4/512)
 
 For 1024px image:
-* Size: 1024x1024px
+* Size: 1024x1024px (1048576‬)
 * Max iter: 100
 * Precision: 32
-* Time: 15,099 sg
-* Performance: 14399,52850341796875 ns/px
+* Time: 8,605s
+* Performance: 8206,36749267578125 ns/px
 * Min complex increment: 0,00390625 (4/1024)
 
 For 8192px image:
-* Size: 8192x8192px
+* Size: 8192x8192px (67108864‬)
 * Max iter: 200
 * Precision: 32
-* Time: 30m
-* Performance: 26822,09014892578125 ns/px
+* Time: 576,727s
+* Performance: 8593,90199184417724609375‬ ns/px
 * Min complex increment: 0,00048828125 (4/8192)
 
-For 16384 image:
-* Size: 16384x16384px
+For 16384 image (before any performance improvement):
+* Size: 16384x16384px (268435456‬)
 * Max iter: 100
 * Precision: 32
 * Time: 83m54s
