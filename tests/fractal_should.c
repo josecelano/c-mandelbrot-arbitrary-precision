@@ -18,14 +18,11 @@ TEST(fractal_should, calculate_complex_points_for_a_given_resolution_and_check_i
     slong prec = 32;
     fractal_resolution resolution = {10, 10};
     int max_iterations = 200;
-    char* image;
     int *iterations_taken_matrix;
-    FILE *fp;
     int x, y;
     char message[100];
     ztile tile;
 
-    image = malloc(resolution.width * resolution.height * 3);
     iterations_taken_matrix = malloc(resolution.width * resolution.height * sizeof *iterations_taken_matrix);
 
     ztile_init(&tile);
@@ -61,7 +58,6 @@ TEST(fractal_should, calculate_complex_points_for_a_given_resolution_and_check_i
         }
     }
 
-    free(image);
     free(iterations_taken_matrix);
 }
 
