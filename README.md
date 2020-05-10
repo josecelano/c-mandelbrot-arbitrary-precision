@@ -113,21 +113,39 @@ Compile and run:
 
 ## Performance
 
+Full mandelbrot from (-2,2) to (2,2).
+
+For 512px image:
+* Size: 512x512px
+* Max iter: 100
+* Precision: 32
+* Time: 3,736s sg
+* Performance: 14251,708984375 ns/px
+* Min complex increment: 0,0078125 (4/512)
+
+For 1024px image:
+* Size: 1024x1024px
+* Max iter: 100
+* Precision: 32
+* Time: 15,099 sg
+* Performance: 14399,52850341796875 ns/px
+* Min complex increment: 0,00390625 (4/1024)
+
 For 8192px image:
 * Size: 8192x8192px
-* Iter: 200
+* Max iter: 200
 * Precision: 32
 * Time: 30m
 * Performance: 26822,09014892578125 ns/px
-* Min number step: 0,00048828125 (4/8192)
+* Min complex increment: 0,00048828125 (4/8192)
 
 For 16384 image:
 * Size: 16384x16384px
-* Iter: 100
+* Max iter: 100
 * Precision: 32
 * Time: 83m54s
 * Performance: 18753,111362457275390625 ns/px
-* Min number step: 0,000244140625 (4/16384)
+* Min complex increment: 0,000244140625 (4/16384)
 
 Performance links:
 * [Post with different performance improvement](https://www.martin-ueding.de/posts/mandelbrot-performance/)
