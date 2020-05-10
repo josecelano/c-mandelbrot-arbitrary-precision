@@ -135,6 +135,18 @@ Performance links:
 * [Performance ranking](https://benchmarksgame-team.pages.debian.net/benchmarksgame/performance/mandelbrot.html)
 * [List of speed improvements](https://en.wikibooks.org/wiki/Fractals/Iterations_in_the_complex_plane/Mandelbrot_set/mandelbrot#Speed_improvements_-_optimisation)
 
+## Mandelbrot online explorers
+
+This is a list of sites where you can explore Mandelbrot Set:
+
+1. http://mandel.gart.nz/
+2. http://math.hws.edu/eck/js/mandelbrot/MB.html
+3. https://guciek.github.io/web_mandelbrot.html
+4. http://xaos-project.github.io/XaoSjs/
+5. https://sciencedemos.org.uk/mandelbrot.php
+
+Some of them let you easily get z real and imaginary values and maximum number of iterations so you can use them with this program to try to reproduce the same result.
+
 ## Enhancements
 
 * Do not use arbitrary precision when it's not needed.
