@@ -38,14 +38,6 @@ int mandelbrot_set_contains(zpoint point, int max_iterations, slong prec) {
     return num_iter;
 }
 
-/**
- * Bailout formula:
- * Zx²+Zy² < ER²
- * https://en.wikibooks.org/wiki/Fractals/Iterations_in_the_complex_plane/Mandelbrot_set/mandelbrot#Bailout_test
- * @param c
- * @param prec
- * @return
- */
 int bailout(acb_t c, slong prec) {
 
     int ret = 0;

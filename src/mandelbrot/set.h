@@ -18,7 +18,10 @@
 int mandelbrot_set_contains(zpoint point, int max_iterations, slong prec);
 
 /**
- * It returns 1 if we have reached the escape condition. The points diverges (does not belong to set)
+ * Bailout formula:
+ * Zx²+Zy² < ER²
+ * It returns 1 if we have reached the escape condition. The points diverges (does not belong to set).
+ * https://en.wikibooks.org/wiki/Fractals/Iterations_in_the_complex_plane/Mandelbrot_set/mandelbrot#Bailout_test
  */
 int bailout(acb_t c, slong prec);
 
