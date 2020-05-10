@@ -17,6 +17,7 @@ void ztile_set_from_str(
         const char *right_top_re, const char *right_top_im,
         slong prec
 ) {
+    // TODO: validate points
     zpoint_set_from_re_im_str(&tile->left_bottom_point, left_bottom_re, left_bottom_im, prec);
     zpoint_set_from_re_im_str(&tile->right_top_point, right_top_re, right_top_im, prec);
 }

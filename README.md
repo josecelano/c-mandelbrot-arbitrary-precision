@@ -158,3 +158,4 @@ Some of them let you easily get z real and imaginary values and maximum number o
 * Get `main` arguments from console (resolution and filenames).
 * Calculate dynamically needed precision.
 * Allow to set a fractal tile and zoom level.
+* Function `ztile_set_from_str` should validate tile points (left bottom and right top).
