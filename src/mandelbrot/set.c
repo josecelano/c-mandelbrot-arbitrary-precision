@@ -17,7 +17,7 @@ int mandelbrot_set_contains(zpoint point, int max_iterations, slong prec) {
 
     acb_set_from_re_im(c, point.re, point.im);
 
-    for (i = 0; i < max_iterations; ++i)
+    for (i = 1; i <= max_iterations; ++i)
     {
         mandelbrot_formula(f, z, c, prec);
 
