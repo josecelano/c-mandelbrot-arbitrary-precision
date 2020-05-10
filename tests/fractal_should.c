@@ -13,6 +13,27 @@ TEST_TEAR_DOWN(fractal_should)
 {
 }
 
+void test_assert_equal_iteration_matrix(
+        int *expected_iterations_taken_matrix,
+        int *iterations_taken_matrix,
+        fractal_resolution resolution
+        ) {
+    int x, y;
+    char message[100];
+
+    for (y = 0; y < resolution.height; y++) {
+        for (x = 0; x < resolution.width; x++) {
+            sprintf(message, "expected number of iterations %d does not match actual %d for pixel (x,y) = (%d, %d)",
+                    expected_iterations_taken_matrix[(y * resolution.width) + x],
+                    iterations_taken_matrix[(y * resolution.width) + x],
+                    x, y
+            );
+
+            TEST_ASSERT_EQUAL_MESSAGE(expected_iterations_taken_matrix[(y * resolution.width) + x], iterations_taken_matrix[(y * resolution.width) + x], message);
+        }
+    }
+}
+
 TEST(fractal_should, calculate_complex_points_for_a_given_resolution_and_check_if_the_belong_to_the_mandelbrot_set)
 {
     slong prec = 32;
@@ -46,17 +67,7 @@ TEST(fractal_should, calculate_complex_points_for_a_given_resolution_and_check_i
          1, 1, 2, 2, 2, 2, 2, 2, 2, 1  // 9
     };
 
-    for (y = 0; y < resolution.height; y++) {
-        for (x = 0; x < resolution.width; x++) {
-            sprintf(message, "expected number of iterations %d does not match actual %d for pixel (x,y) = (%d, %d)",
-                    expected_iterations_taken_matrix[(y * resolution.width) + x],
-                    iterations_taken_matrix[(y * resolution.width) + x],
-                    x, y
-                    );
-
-            TEST_ASSERT_EQUAL_MESSAGE(expected_iterations_taken_matrix[(y * resolution.width) + x], iterations_taken_matrix[(y * resolution.width) + x], message);
-        }
-    }
+    test_assert_equal_iteration_matrix(expected_iterations_taken_matrix, iterations_taken_matrix, resolution);
 
     free(iterations_taken_matrix);
 }
@@ -105,17 +116,7 @@ TEST(fractal_should, calculate_iterations_taken_matrix_for_a_non_symmetrical_ima
          8, 7, 7, 7, 8,10,11, 6, 5, 4  // 9
     };
 
-    for (y = 0; y < resolution.height; y++) {
-        for (x = 0; x < resolution.width; x++) {
-            sprintf(message, "expected number of iterations %d does not match actual %d for pixel (x,y) = (%d, %d)",
-                    expected_iterations_taken_matrix[(y * resolution.width) + x],
-                    iterations_taken_matrix[(y * resolution.width) + x],
-                    x, y
-            );
-
-            TEST_ASSERT_EQUAL_MESSAGE(expected_iterations_taken_matrix[(y * resolution.width) + x], iterations_taken_matrix[(y * resolution.width) + x], message);
-        }
-    }
+    test_assert_equal_iteration_matrix(expected_iterations_taken_matrix, iterations_taken_matrix, resolution);
 
     free(iterations_taken_matrix);
 }
