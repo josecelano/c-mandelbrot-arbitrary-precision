@@ -26,9 +26,10 @@ void print_ppm_image_pixels(FILE *fp,
                             int *iterations_taken_matrix) {
     int x, y, num_iter_for_pixel;
 
-    for (y = 0; y < height; y++) {
+    // We need to flip horizontally the data because the matrix point (0,0) is at the left bottom corner
+    // and the image uses graphic format with pixel(0,0) at the left top corner.
+    for (y = height - 1; y >= 0; y--) {
         for (x = 0; x < width; x++) {
-
             num_iter_for_pixel = iterations_taken_matrix[(y * width) + x];
 
             if (num_iter_for_pixel == MAX_ITERATIONS) {
