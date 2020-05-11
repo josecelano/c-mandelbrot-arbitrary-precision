@@ -47,3 +47,7 @@ cmake-build-debug
 # Output files
 /output/*.ppm
 /output/*.txt
+
+# Test output files
+/test/output/*.ppm
+/test/output/*.txt
