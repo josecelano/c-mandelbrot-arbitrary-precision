@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "image.h"
 #include "set.h"
 
@@ -20,26 +21,50 @@ void print_ppm_image_header(FILE *fp, int width, int height) {
     fprintf(fp, "%d %d %d\n", width, height, 255);
 }
 
-void print_ppm_image_pixels(FILE *fp,
-                            int width, int height,
-                            const char *inside_color, const char *outside_color,
-                            int *iterations_taken_matrix) {
+void print_ppm_image_pixels(
+        FILE *fp,
+        int width, int height,
+        const char *inside_color, const char *outside_color,
+        int *iterations_taken_matrix
+) {
     int x, y, num_iter_for_pixel;
 
-    // We need to flip horizontally the data because the matrix point (0,0) is at the left bottom corner
-    // and the image uses graphic format with pixel(0,0) at the left top corner.
-    for (y = height - 1; y >= 0; y--) {
-        for (x = 0; x < width; x++) {
-            num_iter_for_pixel = iterations_taken_matrix[(y * width) + x];
+    char *color = malloc(RBG_COLOR_SIZE);
+    int i, size = width * height;
 
-            if (num_iter_for_pixel == MAX_ITERATIONS) {
-                // Inside Mandelbrot Set
-                fwrite(inside_color, 1, sizeof(char) * 3, fp);
-            } else {
-                // Outside Mandelbrot Set
-                fwrite(outside_color, 1, sizeof(char) * 3, fp);
-            }
+    for (y = 0; y < height; y++) {
+        for (x = 0; x < width; x++) {
+            set_color_for_pixel(color, x, y, width, height, inside_color, outside_color, iterations_taken_matrix);
+            fwrite(color, 1, RBG_COLOR_SIZE, fp);
         }
+    }
+
+    free(color);
+}
+
+/**
+ * Iteration taken matrix is flipped horizontally, that's is to say y pixel coordinates increase from bottom to top.
+ * For standard graphics format (used in PPM format) (0,0) pixel coordinates is the left top corner of the image.
+ */
+int get_iterations_taken_for_pixel(int x, int y, int width, int height, int *iterations_taken_matrix) {
+    return iterations_taken_matrix[(height - 1 - y) * width + x];
+}
+
+void set_color_for_pixel(
+        rgb_color color,
+        int x, int y,
+        int width, int height,
+        const char *inside_color, const char *outside_color,
+        int *iterations_taken_matrix
+) {
+    int num_iter_for_pixel;
+
+    num_iter_for_pixel = get_iterations_taken_for_pixel(x, y, width, height, iterations_taken_matrix);
+
+    if (num_iter_for_pixel == MAX_ITERATIONS) {
+        strncpy(color, inside_color, RBG_COLOR_SIZE);
+    } else {
+        strncpy(color, outside_color, RBG_COLOR_SIZE);
     }
 }
 

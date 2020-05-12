@@ -1,0 +1,73 @@
+#include "../external/unity/unity.h"
+#include "../external/unity/unity_fixture.h"
+
+#include "../tests/helpers.h"
+#include "../tests/unity_extension.h"
+
+#include "../src/mandelbrot/image.h"
+
+TEST_GROUP(image_should);
+
+TEST_SETUP(image_should) {
+}
+
+TEST_TEAR_DOWN(image_should) {
+}
+
+void test_assert_color_equal(const char *expected, char *actual, int x, int y) {
+    char message[100];
+
+    sprintf(message, "Pixel color does not match expected white for pixel (x,y) = (%d, %d)", x, y);
+    TEST_ASSERT_EQUAL_MESSAGE(expected[0], actual[0], message); // R
+    TEST_ASSERT_EQUAL_MESSAGE(expected[1], actual[1], message); // G
+    TEST_ASSERT_EQUAL_MESSAGE(expected[2], actual[2], message); // B
+}
+
+TEST(image_should, calculate_the_color_for_a_given_pixel) {
+    const char black[3] = {0, 0, 0};
+    const char white[3] = {255, 255, 255};
+
+    int x, y;
+    int width = 3, height = 3;
+    int iterations_taken_matrix[9] = {
+    //   X  0, 1, 2     Y
+            1, 1, 1, // 0
+            1,-1, 1, // 1
+            1, 1, 1  // 2
+    };
+
+    int expected_colours[9] = {
+    //   X   0 , 1 , 2      Y
+            'w','w','w', // 0
+            'w','b','w', // 1
+            'w','w','w'  // 2
+    };
+
+    rgb_color color = malloc(RBG_COLOR_SIZE);
+
+    for(y = 0; y < 3; y++) {
+        for(x = 0; x < 3; x++) {
+
+            set_color_for_pixel(
+                    color,
+                    x, y,
+                    width, height,
+                    black, white,
+                    iterations_taken_matrix
+            );
+
+            if (expected_colours[(y * 3) + x] == 'w') {
+                test_assert_color_equal(white, color, x, y);
+            }
+            if (expected_colours[(y * 3) + x] == 'b') {
+                test_assert_color_equal(black, color, x, y);
+            }
+        }
+    }
+
+    free(color);
+}
+
+TEST_GROUP_RUNNER(image_should) {
+    RUN_TEST_CASE(image_should, calculate_the_color_for_a_given_pixel);
+}

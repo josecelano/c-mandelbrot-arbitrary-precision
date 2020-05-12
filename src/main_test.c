@@ -5,6 +5,7 @@ static void RunAllTests(void)
     // Unit tests
     RUN_TEST_GROUP(fractal_should);
     RUN_TEST_GROUP(formula_should);
+    RUN_TEST_GROUP(image_should);
     RUN_TEST_GROUP(set_should);
 
     // Integration tests
