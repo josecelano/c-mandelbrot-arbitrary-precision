@@ -2,10 +2,13 @@
 
 static void RunAllTests(void)
 {
-    RUN_TEST_GROUP(ascii_graph_should);
+    // Unit tests
     RUN_TEST_GROUP(fractal_should);
     RUN_TEST_GROUP(formula_should);
     RUN_TEST_GROUP(set_should);
+
+    // Integration tests
+    RUN_TEST_GROUP(ascii_graph_should);
 }
 
 int main(int argc, const char *argv[]) {
