@@ -4,8 +4,9 @@
 #include "../tests/helpers.h"
 #include "../tests/unity_extension.h"
 
-#include "../src/mandelbrot/color.h"
-#include "../src/mandelbrot/image.h"
+#include "../src/mandelbrot/domain/color.h"
+#include "../src/mandelbrot/domain/image.h"
+#include "../src/mandelbrot/infrastructure/ppm_image_file.h"
 
 TEST_GROUP(image_should);
 

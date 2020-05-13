@@ -3,7 +3,6 @@
 
 #include "acb.h"
 #include "ztile.h"
-#include "color.h"
 
 typedef struct {
     int width;

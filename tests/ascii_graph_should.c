@@ -4,7 +4,7 @@
 #include "../tests/helpers.h"
 #include "../tests/unity_extension.h"
 
-#include "../src/mandelbrot/ascii_graph.h"
+#include "../src/mandelbrot/infrastructure/ascii_graph_file.h"
 
 TEST_GROUP(ascii_graph_should);
 

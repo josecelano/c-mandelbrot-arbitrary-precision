@@ -2,7 +2,6 @@
 #include <stdio.h>
 
 #include "color.h"
-#include "image.h"
 #include "set.h"
 
 void color_pixel_with_black_and_white_color_map(

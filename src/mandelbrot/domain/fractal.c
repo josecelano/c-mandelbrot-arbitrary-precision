@@ -1,7 +1,6 @@
-#include "color.h"
-#include "image.h"
 #include <string.h>
 #include <stdio.h>
+
 #include "acb.h"
 #include "arb.h"
 #include "complex.h"

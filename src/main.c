@@ -1,10 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "mandelbrot/ascii_graph.h"
-#include "mandelbrot/fractal.h"
-#include "mandelbrot/image.h"
-#include "mandelbrot/ztile.h"
-#include "mandelbrot/set.h"
+
+#include "mandelbrot/infrastructure/ascii_graph_file.h"
+#include "mandelbrot/domain/fractal.h"
+#include "mandelbrot/domain/set.h"
+#include "mandelbrot/domain/ztile.h"
+#include "mandelbrot/infrastructure/ppm_image_file.h"
+
+// TODO:
+//  * Hexagonal architecture refactor in progress.
+//  * Move render_* functions to application/command and presentation/console-command folders.
 
 /**
  * It renders a Mandelbrot fractal image in PPM format.

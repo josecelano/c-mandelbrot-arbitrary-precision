@@ -1,6 +1,8 @@
 #include <stdio.h>
-#include "ascii_graph.h"
-#include "set.h"
+
+#include "../domain/set.h"
+#include "../presentation/ascii_graph.h"
+#include "ascii_graph_file.h"
 
 void render_and_write_out_ascii_graph(char *filename, fractal_resolution resolution, int *iterations_taken_matrix) {
     int x, y, num_iter_for_pixel;
@@ -27,24 +29,6 @@ void render_and_write_out_ascii_graph(char *filename, fractal_resolution resolut
     fclose(fp);
 }
 
-void set_point_character(
-        char *pixel_char,
-        int x, int y,
-        int width, int height, int *iterations_taken_matrix
-) {
-    int num_iter_for_pixel;
-
-    num_iter_for_pixel = get_iterations_taken_for_point(x, y, width, height, iterations_taken_matrix);
-
-    if (num_iter_for_pixel == MAX_ITERATIONS) {
-        // Inside Mandelbrot Set
-        *pixel_char = '@';
-    } else {
-        // Outside Mandelbrot Set
-        *pixel_char = ' ';
-    }
-}
-
 /**
  * @param filename
  * @param resolution
@@ -61,6 +45,7 @@ render_and_write_out_iterations_matrix(char *filename, fractal_resolution resolu
     for (y = 0; y < resolution.height; y++) {
         for (x = 0; x < resolution.width; x++) {
 
+            // TODO: replace by get_iterations_taken_for_point function
             num_iter_for_pixel = iterations_taken_matrix[(y * resolution.width) + x];
 
             // TODO: 3 literal (and 3 spaces) is the number of digits for MAX_ITERATIONS number.

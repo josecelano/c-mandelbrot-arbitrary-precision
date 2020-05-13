@@ -12,6 +12,12 @@ file(GLOB EXTERNAL_CODE
 file(GLOB PRODUCTION_CODE
         ${PROJECT_SOURCE_DIR}/src/mandelbrot/*.h
         ${PROJECT_SOURCE_DIR}/src/mandelbrot/*.c
+        ${PROJECT_SOURCE_DIR}/src/mandelbrot/domain/*.h
+        ${PROJECT_SOURCE_DIR}/src/mandelbrot/domain/*.c
+        ${PROJECT_SOURCE_DIR}/src/mandelbrot/infrastructure/*.h
+        ${PROJECT_SOURCE_DIR}/src/mandelbrot/infrastructure/*.c
+        ${PROJECT_SOURCE_DIR}/src/mandelbrot/presentation/*.h
+        ${PROJECT_SOURCE_DIR}/src/mandelbrot/presentation/*.c
         )
 
 file(GLOB TEST_CODE
