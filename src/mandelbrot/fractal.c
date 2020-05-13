@@ -1,3 +1,7 @@
+#include "color.h"
+#include "image.h"
+#include <string.h>
+#include <stdio.h>
 #include "acb.h"
 #include "arb.h"
 #include "complex.h"
@@ -182,4 +186,8 @@ void calculate_points(
 
     zpoint_clean(&zx_point_increment);
     zpoint_clean(&zy_point_increment);
+}
+
+int get_iterations_taken_for_point(int x, int y, int width, int height, int *iterations_taken_matrix) {
+    return iterations_taken_matrix[(height - 1 - y) * width + x];
 }

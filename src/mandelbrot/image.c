@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "color.h"
+#include "fractal.h"
 #include "image.h"
 #include "set.h"
-#include "color.h"
 
 void print_ppm_image_header(FILE *fp, int width, int height) {
     fprintf(fp, "P6\n");
@@ -42,10 +43,6 @@ void render_and_write_out_image(char *filename, fractal_resolution resolution, i
     print_ppm_image_pixels(fp, resolution.width, resolution.height, black, white, iterations_taken_matrix);
 
     fclose(fp);
-}
-
-int get_iterations_taken_for_point(int x, int y, int width, int height, int *iterations_taken_matrix) {
-    return iterations_taken_matrix[(height - 1 - y) * width + x];
 }
 
 void set_pixel_color(

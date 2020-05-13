@@ -11,7 +11,10 @@ void render_and_write_out_ascii_graph(char *filename, fractal_resolution resolut
     for (y = 0; y < resolution.height; y++) {
         for (x = 0; x < resolution.width; x++) {
 
-            num_iter_for_pixel = iterations_taken_matrix[(y * resolution.width) + x];
+            num_iter_for_pixel = get_iterations_taken_for_point(
+                    x, y,
+                    resolution.width, resolution.height, iterations_taken_matrix
+            );
 
             if (num_iter_for_pixel == MAX_ITERATIONS) {
                 // Inside Mandelbrot Set
