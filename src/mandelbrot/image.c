@@ -23,7 +23,7 @@ void print_ppm_image_pixels(
 
     for (y = 0; y < height; y++) {
         for (x = 0; x < width; x++) {
-            set_color_for_pixel(color, x, y, width, height, inside_color, outside_color, iterations_taken_matrix);
+            set_pixel_color(color, x, y, width, height, iterations_taken_matrix);
             fwrite(color, 1, RBG_COLOR_SIZE, fp);
         }
     }
@@ -42,4 +42,20 @@ void render_and_write_out_image(char *filename, fractal_resolution resolution, i
     print_ppm_image_pixels(fp, resolution.width, resolution.height, black, white, iterations_taken_matrix);
 
     fclose(fp);
+}
+
+int get_iterations_taken_for_point(int x, int y, int width, int height, int *iterations_taken_matrix) {
+    return iterations_taken_matrix[(height - 1 - y) * width + x];
+}
+
+void set_pixel_color(
+        rgb_color color,
+        int x, int y,
+        int width, int height, int *iterations_taken_matrix
+) {
+    int num_iter_for_pixel;
+
+    num_iter_for_pixel = get_iterations_taken_for_point(x, y, width, height, iterations_taken_matrix);
+
+    color_pixel_with_black_and_white_color_map(color, num_iter_for_pixel, iterations_taken_matrix);
 }

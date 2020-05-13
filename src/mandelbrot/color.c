@@ -5,28 +5,17 @@
 #include "image.h"
 #include "set.h"
 
-/**
- * Iteration taken matrix is flipped horizontally, that's is to say y pixel coordinates increase from bottom to top.
- * For standard graphics format (used in PPM format) (0,0) pixel coordinates is the left top corner of the image.
- */
-int get_iterations_taken_for_pixel(int x, int y, int width, int height, int *iterations_taken_matrix) {
-    return iterations_taken_matrix[(height - 1 - y) * width + x];
-}
-
-void set_color_for_pixel(
+void color_pixel_with_black_and_white_color_map(
         rgb_color color,
-        int x, int y,
-        int width, int height,
-        const char *inside_color, const char *outside_color,
+        int num_iter_for_pixel,
         int *iterations_taken_matrix
 ) {
-    int num_iter_for_pixel;
-
-    num_iter_for_pixel = get_iterations_taken_for_pixel(x, y, width, height, iterations_taken_matrix);
+    const char black[3] = {0, 0, 0};
+    const char white[3] = {255, 255, 255};
 
     if (num_iter_for_pixel == MAX_ITERATIONS) {
-        strncpy(color, inside_color, RBG_COLOR_SIZE);
+        strncpy(color, black, RBG_COLOR_SIZE);
     } else {
-        strncpy(color, outside_color, RBG_COLOR_SIZE);
+        strncpy(color, white, RBG_COLOR_SIZE);
     }
 }

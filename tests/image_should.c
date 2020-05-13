@@ -24,12 +24,19 @@ void test_assert_color_equal(const char *expected, char *actual, int x, int y) {
     TEST_ASSERT_EQUAL_MESSAGE(expected[2], actual[2], message); // B
 }
 
+/**
+ * TODO: Code Review. This test is testing 2 things at he same time:
+ *  1) White/Black color map is applied correctly depending of the number of iterations from iterations taken matrix.
+ *  2) They 'y' coordinates for a point/pixel is inverted. We could add a test for 'get_iterations_taken_for_point'
+ *     but then we have to re-think this test.
+ */
 TEST(image_should, calculate_the_color_for_a_given_pixel) {
     const char black[3] = {0, 0, 0};
     const char white[3] = {255, 255, 255};
 
     int x, y;
     int width = 3, height = 3;
+    int num_iter_for_pixel;
     int iterations_taken_matrix[9] = {
     //   X  0, 1, 2     Y
             1, 1, 1, // 0
@@ -49,12 +56,10 @@ TEST(image_should, calculate_the_color_for_a_given_pixel) {
     for(y = 0; y < 3; y++) {
         for(x = 0; x < 3; x++) {
 
-            set_color_for_pixel(
+            set_pixel_color(
                     color,
                     x, y,
-                    width, height,
-                    black, white,
-                    iterations_taken_matrix
+                    width, height, iterations_taken_matrix
             );
 
             if (expected_colours[(y * 3) + x] == 'w') {

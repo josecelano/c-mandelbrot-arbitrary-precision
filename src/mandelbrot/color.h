@@ -5,11 +5,9 @@
 
 typedef char *rgb_color;
 
-void set_color_for_pixel(
-        char *color,
-        int x, int y,
-        int width, int height,
-        const char *inside_color, const char *outside_color,
+void color_pixel_with_black_and_white_color_map(
+        rgb_color color,
+        int num_iter_for_pixel,
         int *iterations_taken_matrix
 );
 
