@@ -4,6 +4,7 @@
 #include "../tests/helpers.h"
 #include "../tests/unity_extension.h"
 
+#include "../src/mandelbrot/color.h"
 #include "../src/mandelbrot/image.h"
 
 TEST_GROUP(image_should);
@@ -43,7 +44,7 @@ TEST(image_should, calculate_the_color_for_a_given_pixel) {
             'w','w','w'  // 2
     };
 
-    rgb_color color = malloc(RBG_COLOR_SIZE);
+    char * color = malloc(RBG_COLOR_SIZE);
 
     for(y = 0; y < 3; y++) {
         for(x = 0; x < 3; x++) {
