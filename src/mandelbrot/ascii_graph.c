@@ -4,6 +4,7 @@
 
 void render_and_write_out_ascii_graph(char *filename, fractal_resolution resolution, int *iterations_taken_matrix) {
     int x, y, num_iter_for_pixel;
+    char point_char[1];
     FILE *fp;
 
     fp = fopen(filename, "w");
@@ -11,24 +12,37 @@ void render_and_write_out_ascii_graph(char *filename, fractal_resolution resolut
     for (y = 0; y < resolution.height; y++) {
         for (x = 0; x < resolution.width; x++) {
 
-            num_iter_for_pixel = get_iterations_taken_for_point(
+            set_point_character(
+                    point_char,
                     x, y,
                     resolution.width, resolution.height, iterations_taken_matrix
             );
 
-            if (num_iter_for_pixel == MAX_ITERATIONS) {
-                // Inside Mandelbrot Set
-                fwrite("@", 1, 1, fp);
-            } else {
-                // Outside Mandelbrot Set
-                fwrite(" ", 1, 1, fp);
-            }
+            fwrite(point_char, 1, 1, fp);
         }
 
         fwrite("\n", sizeof(char), 1, fp);
     }
 
     fclose(fp);
+}
+
+void set_point_character(
+        char *pixel_char,
+        int x, int y,
+        int width, int height, int *iterations_taken_matrix
+) {
+    int num_iter_for_pixel;
+
+    num_iter_for_pixel = get_iterations_taken_for_point(x, y, width, height, iterations_taken_matrix);
+
+    if (num_iter_for_pixel == MAX_ITERATIONS) {
+        // Inside Mandelbrot Set
+        *pixel_char = '@';
+    } else {
+        // Outside Mandelbrot Set
+        *pixel_char = ' ';
+    }
 }
 
 /**
