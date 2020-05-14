@@ -55,33 +55,38 @@ int main(int argc, const char *argv[]) {
     // Bits of precision for C complex and real math operations library: http://arblib.org/acb.html#precision-and-comparisons
     slong prec = 32;
 
+    // Max number of iterations for Mandelbrot formula
+    int max_iterations = 100;
+
     // Resolution for output image and ASCII graph
     fractal_resolution resolution = {256, 256};
 
-    // Max number of iterations for Mandelbrot formula
-    int max_iterations = 100;
+    // Matrix with number of Mandelbrot formula iterations needed for each pixel to diverge.
+    fractal_matrix iterations_taken_matrix_copy;
 
     // The tile we want to draw with complex points coordinates
     ztile tile;
 
-    // Matrix[width][height] with number of Mandelbrot formula iterations needed for each pixel to diverge.
-    // -1 for point/pixel inside Mandelbrot Set
+    // Matrix with number of Mandelbrot formula iterations needed for each pixel to diverge.
     int *iterations_taken_matrix = malloc(resolution.width * resolution.height * sizeof *iterations_taken_matrix);
+
+    fractal_matrix_init(&iterations_taken_matrix_copy, resolution);
 
     ztile_init(&tile);
     ztile_set_completed_mandelbrot_set(&tile, prec);
 
-    calculate_points(tile, resolution, max_iterations, prec, iterations_taken_matrix);
+    calculate_points(tile, resolution, max_iterations, prec, iterations_taken_matrix, &iterations_taken_matrix_copy);
 
     ztile_clean(&tile);
 
-    render_ppm_image(resolution, iterations_taken_matrix);
+    render_ppm_image(resolution, iterations_taken_matrix_copy.data);
 
-    render_ascii_graph(resolution, iterations_taken_matrix);
+    render_ascii_graph(resolution, iterations_taken_matrix_copy.data);
 
-    render_iterations_taken_matrix(resolution, iterations_taken_matrix);
+    render_iterations_taken_matrix(resolution, iterations_taken_matrix_copy.data);
 
     free(iterations_taken_matrix);
+    fractal_matrix_clean(&iterations_taken_matrix_copy);
 
     return 0;
 }

@@ -43,13 +43,16 @@ TEST(fractal_should, calculate_complex_points_for_a_given_resolution_and_check_i
     int x, y;
     char message[100];
     ztile tile;
+    fractal_matrix iterations_taken_matrix_copy;
+
+    fractal_matrix_init(&iterations_taken_matrix_copy, resolution);
 
     iterations_taken_matrix = malloc(resolution.width * resolution.height * sizeof *iterations_taken_matrix);
 
     ztile_init(&tile);
     ztile_set_completed_mandelbrot_set(&tile, prec);
 
-    calculate_points(tile, resolution, max_iterations, prec, iterations_taken_matrix);
+    calculate_points(tile, resolution, max_iterations, prec, iterations_taken_matrix, &iterations_taken_matrix_copy);
 
     ztile_clean(&tile);
 
@@ -69,6 +72,7 @@ TEST(fractal_should, calculate_complex_points_for_a_given_resolution_and_check_i
 
     test_assert_equal_iteration_matrix(expected_iterations_taken_matrix, iterations_taken_matrix, resolution);
 
+    fractal_matrix_clean(&iterations_taken_matrix_copy);
     free(iterations_taken_matrix);
 }
 
@@ -85,6 +89,9 @@ TEST(fractal_should, calculate_iterations_taken_matrix_for_a_non_symmetrical_ima
     int x, y;
     char message[100];
     ztile tile;
+    fractal_matrix iterations_taken_matrix_copy;
+
+    fractal_matrix_init(&iterations_taken_matrix_copy, resolution);
 
     iterations_taken_matrix = malloc(resolution.width * resolution.height * sizeof *iterations_taken_matrix);
 
@@ -98,7 +105,7 @@ TEST(fractal_should, calculate_iterations_taken_matrix_for_a_non_symmetrical_ima
             prec
     );
 
-    calculate_points(tile, resolution, max_iterations, prec, iterations_taken_matrix);
+    calculate_points(tile, resolution, max_iterations, prec, iterations_taken_matrix, &iterations_taken_matrix_copy);
 
     ztile_clean(&tile);
 
@@ -118,6 +125,7 @@ TEST(fractal_should, calculate_iterations_taken_matrix_for_a_non_symmetrical_ima
 
     test_assert_equal_iteration_matrix(expected_iterations_taken_matrix, iterations_taken_matrix, resolution);
 
+    fractal_matrix_clean(&iterations_taken_matrix_copy);
     free(iterations_taken_matrix);
 }
 

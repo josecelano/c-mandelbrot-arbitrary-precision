@@ -9,20 +9,38 @@
 #include "zpoint.h"
 #include "ztile.h"
 
+void fractal_matrix_init(fractal_matrix *iterations_taken_matrix, fractal_resolution resolution) {
+    int matrix_size;
+
+    iterations_taken_matrix->resolution.width = resolution.width;
+    iterations_taken_matrix->resolution.height = resolution.height;
+
+    matrix_size = resolution.width * resolution.height * sizeof(int);
+    iterations_taken_matrix->data = malloc(matrix_size);
+}
+
+void fractal_matrix_clean(fractal_matrix *iterations_taken_matrix) {
+    free(iterations_taken_matrix->data);
+}
+
 void calculate_matrix_point(
         zpoint z_current_point,
         int max_iterations,
         slong prec,
         int x, int y, int width,
-        int *iterations_taken_matrix
+        int *iterations_taken_matrix,
+        fractal_matrix *iterations_taken_matrix_copy
 ) {
     int iterations_taken;
 
     // Check if point belongs to Mandelbrot Set
     iterations_taken = mandelbrot_set_contains(z_current_point, max_iterations, prec);
 
-    // Update matrix with iterations counter for each point
+    // TODO: use functions to manipulate fractal_matrix struct (set and get)
+    // We can validate coordinates is setter.
+    // Update matrix with iterations counter for a given point
     iterations_taken_matrix[(y * width) + x] = iterations_taken;
+    iterations_taken_matrix_copy->data[(y * width) + x] = iterations_taken;
 }
 
 void calculate_matrix_row(
@@ -32,6 +50,7 @@ void calculate_matrix_row(
         int y, int width,
         // Output
         int *iterations_taken_matrix,
+        fractal_matrix *iterations_taken_matrix_copy,
         zpoint *z_current_point
 ) {
     int x;
@@ -42,7 +61,8 @@ void calculate_matrix_row(
                 max_iterations,
                 prec,
                 x, y, width,
-                iterations_taken_matrix
+                iterations_taken_matrix,
+                iterations_taken_matrix_copy
         );
 
         // Increase real part to move one pixel to the right
@@ -58,7 +78,8 @@ void calculate_iterations_taken_matrix(
         slong prec,
         fractal_resolution resolution,
         // Output
-        int *iterations_taken_matrix
+        int *iterations_taken_matrix,
+        fractal_matrix *iterations_taken_matrix_copy
 ) {
     int y;
     zpoint z_current_point; // Represents the pixel being calculated
@@ -76,6 +97,7 @@ void calculate_iterations_taken_matrix(
                 prec,
                 y, resolution.width,
                 iterations_taken_matrix,
+                iterations_taken_matrix_copy,
                 &z_current_point
         );
 
@@ -152,7 +174,8 @@ void calculate_points(
         ztile tile, fractal_resolution resolution,
         int max_iterations,
         slong prec,
-        int *iterations_taken_matrix
+        int *iterations_taken_matrix,
+        fractal_matrix *iterations_taken_matrix_copy
 ) {
     int x, y;
     int img_idx = 0;
@@ -180,7 +203,8 @@ void calculate_points(
             prec,
             resolution,
             // Output
-            iterations_taken_matrix
+            iterations_taken_matrix,
+            iterations_taken_matrix_copy
     );
 
     zpoint_clean(&zx_point_increment);
