@@ -103,14 +103,13 @@ int bailout(acb_t c, slong prec) {
 
 int inside_main_cardioid(acb_t c, slong prec) {
     int ret = 0;
-    arb_t
-            x, y,           // Real and imaginary parts
-            a, b,           // Left and right side of the comparison operation
-            q,              // Variable in the formula
-            temp,           // Temporal results and constants in the formula
-            _x_minus_0_25,  // x - 1/4
-            _0_25,          // 1/4
-            y_sqr;          // y²
+    arb_t x, y;           // Real and imaginary parts
+    arb_t a, b;           // Left and right side of the comparison operation
+    arb_t q;              // Variable in the formula
+    arb_t temp;           // Temporal results and constants in the formula
+    arb_t _x_minus_0_25;  // x - 1/4
+    arb_t _0_25;          // 1/4
+    arb_t y_sqr;          // y²
 
     arb_init(x);
     arb_init(y);
