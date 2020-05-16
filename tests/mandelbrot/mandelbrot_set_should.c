@@ -44,7 +44,7 @@ TEST(mandelbrot_set_should, contain_known_points_inside)
 
         sprintf(message, "complex number (%s,%s) in test case #%d should be in Mandelbrot Set", z_in[i].re, z_in[i].im, i);
 
-        TEST_ASSERT_EQUAL_MESSAGE(-1, ret, message);
+        TEST_ASSERT_EQUAL_MESSAGE(INSIDE, ret, message);
     }
 
     zpoint_clean(&point);
@@ -77,7 +77,7 @@ TEST(mandelbrot_set_should, not_contain_known_points_outside)
 
         sprintf(message, "complex number (%s,%s) in test case #%d should not be in Mandelbrot Set", z_out[i].re, z_out[i].im, i);
 
-        TEST_ASSERT_NOT_EQUAL_MESSAGE(-1, ret, message);
+        TEST_ASSERT_EQUAL_MESSAGE(OUTSIDE, ret, message);
     }
 
     zpoint_clean(&point);

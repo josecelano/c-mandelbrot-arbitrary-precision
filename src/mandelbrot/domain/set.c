@@ -6,6 +6,18 @@
 #include "zpoint.h"
 
 int mandelbrot_set_contains(zpoint point, int max_iterations, slong prec) {
+    int iterations_taken;
+
+    iterations_taken = mandelbrot_set_calculate_num_iterations_for(point, max_iterations, prec);
+
+    if (iterations_taken == MAX_ITERATIONS) {
+        return INSIDE;
+    }
+
+    return OUTSIDE;
+}
+
+int mandelbrot_set_calculate_num_iterations_for(zpoint point, int max_iterations, slong prec) {
 
     int inside = 0, i, num_iter = MAX_ITERATIONS;
     acb_t c, zero, z, f;

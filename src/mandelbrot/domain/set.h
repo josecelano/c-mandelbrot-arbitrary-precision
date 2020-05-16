@@ -5,17 +5,20 @@
 #include "zpoint.h"
 
 #define MAX_ITERATIONS  -1
+#define INSIDE  1
+#define OUTSIDE  0
+
+/**
+ * It returns INSIDE if the point belongs to mandelbrot Set and OUTSIDE if it does not.
+ */
+int mandelbrot_set_contains(zpoint point, int max_iterations, slong prec);
 
 /**
  * It returns the number of iterations recursively applied to the basic Mandelbrot formula z²+c until the value diverges.
  * If MAX_ITERATIONS is reached it returns MAX_ITERATIONS, which means the point is inside the Mandelbrot Set.
  * And an integer value
- * @param c
- * @param max_iterations
- * @param prec
- * @return
  */
-int mandelbrot_set_contains(zpoint point, int max_iterations, slong prec);
+int mandelbrot_set_calculate_num_iterations_for(zpoint point, int max_iterations, slong prec);
 
 /**
  * Bailout formula:

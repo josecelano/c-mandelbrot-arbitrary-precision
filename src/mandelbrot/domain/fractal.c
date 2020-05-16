@@ -55,7 +55,7 @@ void calculate_matrix_point(
     int iterations_taken;
 
     // Check if point belongs to Mandelbrot Set
-    iterations_taken = mandelbrot_set_contains(z_current_point, max_iterations, prec);
+    iterations_taken = mandelbrot_set_calculate_num_iterations_for(z_current_point, max_iterations, prec);
 
     fractal_matrix_set_num_iter_per_point(iterations_taken_matrix, x, y, iterations_taken);
 }
