@@ -182,7 +182,7 @@ void calculate_real_and_imaginary_increments_per_point(
     arb_clear(step_im);
 }
 
-void calculate_points(ztile tile, int max_iterations, slong prec, fractal_matrix *iterations_taken_matrix) {
+void fractal_matrix_calculate_points(ztile tile, int max_iterations, slong prec, fractal_matrix *iterations_taken_matrix) {
     int x, y;
     int img_idx = 0;
     int iterations_taken;

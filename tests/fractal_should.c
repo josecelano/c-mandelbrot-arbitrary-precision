@@ -56,7 +56,7 @@ TEST(fractal_should, calculate_complex_points_for_a_given_resolution_and_check_i
     ztile_init(&tile);
     ztile_set_completed_mandelbrot_set(&tile, prec);
 
-    calculate_points(tile, max_iterations, prec, &iterations_taken_matrix);
+    fractal_matrix_calculate_points(tile, max_iterations, prec, &iterations_taken_matrix);
 
     ztile_clean(&tile);
 
@@ -110,7 +110,7 @@ TEST(fractal_should, calculate_iterations_taken_matrix_for_a_non_symmetrical_ima
             prec
     );
 
-    calculate_points(tile, max_iterations, prec, &iterations_taken_matrix);
+    fractal_matrix_calculate_points(tile, max_iterations, prec, &iterations_taken_matrix);
 
     ztile_clean(&tile);
 

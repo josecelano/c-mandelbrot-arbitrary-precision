@@ -77,7 +77,7 @@ int main(int argc, const char *argv[]) {
 
     ztile_set_completed_mandelbrot_set(&tile, prec);
 
-    calculate_points(tile, max_iterations, prec, &iterations_taken_matrix);
+    fractal_matrix_calculate_points(tile, max_iterations, prec, &iterations_taken_matrix);
 
     ztile_clean(&tile);
 
