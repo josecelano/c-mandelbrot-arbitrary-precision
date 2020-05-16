@@ -6,17 +6,17 @@
 #include "../../src/mandelbrot/domain/set.h"
 #include "../../src/mandelbrot/domain/zpoint.h"
 
-TEST_GROUP(set_should);
+TEST_GROUP(mandelbrot_set_should);
 
-TEST_SETUP(set_should)
+TEST_SETUP(mandelbrot_set_should)
 {
 }
 
-TEST_TEAR_DOWN(set_should)
+TEST_TEAR_DOWN(mandelbrot_set_should)
 {
 }
 
-TEST(set_should, contain_known_points_inside)
+TEST(mandelbrot_set_should, contain_known_points_inside)
 {
     const int max_iterations = 200;
     int i, ret;
@@ -50,7 +50,7 @@ TEST(set_should, contain_known_points_inside)
     zpoint_clean(&point);
 }
 
-TEST(set_should, not_contain_known_points_outside)
+TEST(mandelbrot_set_should, not_contain_known_points_outside)
 {
     slong prec = 32;
     int i, ret, max_iterations = 200;
@@ -83,7 +83,7 @@ TEST(set_should, not_contain_known_points_outside)
     zpoint_clean(&point);
 }
 
-TEST(set_should, check_if_point_is_inside_main_cardioid_in_order_to_increase_performace)
+TEST(mandelbrot_set_should, check_if_point_is_inside_main_cardioid_in_order_to_increase_performace)
 {
     slong prec = 32;
     acb_t c;
@@ -137,9 +137,9 @@ TEST(set_should, check_if_point_is_inside_main_cardioid_in_order_to_increase_per
     acb_clear(c);
 }
 
-TEST_GROUP_RUNNER(set_should)
+TEST_GROUP_RUNNER(mandelbrot_set_should)
 {
-    RUN_TEST_CASE(set_should, contain_known_points_inside);
-    RUN_TEST_CASE(set_should, not_contain_known_points_outside);
-    RUN_TEST_CASE(set_should, check_if_point_is_inside_main_cardioid_in_order_to_increase_performace);
+    RUN_TEST_CASE(mandelbrot_set_should, contain_known_points_inside);
+    RUN_TEST_CASE(mandelbrot_set_should, not_contain_known_points_outside);
+    RUN_TEST_CASE(mandelbrot_set_should, check_if_point_is_inside_main_cardioid_in_order_to_increase_performace);
 }
