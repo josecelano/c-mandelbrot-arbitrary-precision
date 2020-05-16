@@ -58,12 +58,19 @@ int mandelbrot_set_calculate_num_iterations_for(zpoint point, int max_iterations
 
     acb_set_from_re_im(c, point.re, point.im);
 
-    if (!inside_main_cardioid(c, prec) && !inside_period_2_bulb(c, prec)) {
-        num_iter = execute_iterations(c, max_iterations, prec);
+    if (inside_main_cardioid(c, prec)) {
+        acb_clear(c);
+        return MAX_ITERATIONS;
     }
 
-    acb_clear(c);
+    if (inside_period_2_bulb(c, prec)) {
+        acb_clear(c);
+        return MAX_ITERATIONS;
+    }
 
+    num_iter = execute_iterations(c, max_iterations, prec);
+
+    acb_clear(c);
     return num_iter;
 }
 
