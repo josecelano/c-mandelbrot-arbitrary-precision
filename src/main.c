@@ -13,46 +13,50 @@
 
 /**
  * It renders a Mandelbrot fractal image in PPM format.
- * @param fractal_resolution resolution
- * @param iterations_taken_matrix
  */
-void render_ppm_image(fractal_resolution resolution, int *iterations_taken_matrix) {
+void render_ppm_image(fractal_matrix iterations_taken_matrix) {
     char img_filename[50];
 
-    sprintf(img_filename, "./output/mandelbrot-%dx%d.ppm", resolution.width, resolution.height);
+    sprintf(img_filename, "./output/mandelbrot-%dx%d.ppm",
+            iterations_taken_matrix.resolution.width,
+            iterations_taken_matrix.resolution.height
+    );
 
-    render_and_write_out_image(img_filename, resolution, iterations_taken_matrix);
+    render_and_write_out_image(img_filename, iterations_taken_matrix);
 }
 
 /**
  * It renders a txt file with a Mandelbrot ASCII graph.
- * @param fractal_resolution resolution
- * @param iterations_taken_matrix
  */
-void render_ascii_graph(fractal_resolution resolution, int *iterations_taken_matrix) {
+void render_ascii_graph(fractal_matrix iterations_taken_matrix) {
     char txt_filename[50];
 
-    sprintf(txt_filename, "./output/mandelbrot-%dx%d.txt", resolution.width, resolution.height);
+    sprintf(txt_filename, "./output/mandelbrot-%dx%d.txt",
+            iterations_taken_matrix.resolution.width,
+            iterations_taken_matrix.resolution.height
+    );
 
-    render_and_write_out_ascii_graph(txt_filename, resolution, iterations_taken_matrix);
+    render_and_write_out_ascii_graph(txt_filename, iterations_taken_matrix);
 }
 
 /**
  * It renders a txt file with a Mandelbrot iterations matrix.
- * @param fractal_resolution resolution
- * @param iterations_taken_matrix
  */
-void render_iterations_taken_matrix(fractal_resolution resolution, int *iterations_taken_matrix) {
+void render_iterations_taken_matrix(fractal_matrix iterations_taken_matrix) {
     char txt_filename[50];
 
-    sprintf(txt_filename, "./output/mandelbrot-iter-%dx%d.txt", resolution.width, resolution.height);
+    sprintf(txt_filename, "./output/mandelbrot-iter-%dx%d.txt",
+            iterations_taken_matrix.resolution.width,
+            iterations_taken_matrix.resolution.height
+    );
 
-    render_and_write_out_iterations_matrix(txt_filename, resolution, iterations_taken_matrix);
+    render_and_write_out_iterations_matrix(txt_filename, iterations_taken_matrix);
 }
 
 int main(int argc, const char *argv[]) {
 
-    // Bits of precision for C complex and real math operations library: http://arblib.org/acb.html#precision-and-comparisons
+    // Bits of precision for C complex and real math operations library
+    // http://arblib.org/acb.html#precision-and-comparisons
     slong prec = 32;
 
     // Max number of iterations for Mandelbrot formula
@@ -62,31 +66,27 @@ int main(int argc, const char *argv[]) {
     fractal_resolution resolution = {256, 256};
 
     // Matrix with number of Mandelbrot formula iterations needed for each pixel to diverge.
-    fractal_matrix iterations_taken_matrix_copy;
+    fractal_matrix iterations_taken_matrix;
 
     // The tile we want to draw with complex points coordinates
     ztile tile;
 
-    // Matrix with number of Mandelbrot formula iterations needed for each pixel to diverge.
-    int *iterations_taken_matrix = malloc(resolution.width * resolution.height * sizeof *iterations_taken_matrix);
-
-    fractal_matrix_init(&iterations_taken_matrix_copy, resolution);
+    fractal_matrix_init(&iterations_taken_matrix, resolution);
 
     ztile_init(&tile);
     ztile_set_completed_mandelbrot_set(&tile, prec);
 
-    calculate_points(tile, resolution, max_iterations, prec, iterations_taken_matrix, &iterations_taken_matrix_copy);
+    calculate_points(tile, resolution, max_iterations, prec, &iterations_taken_matrix);
 
     ztile_clean(&tile);
 
-    render_ppm_image(resolution, iterations_taken_matrix_copy.data);
+    render_ppm_image(iterations_taken_matrix);
 
-    render_ascii_graph(resolution, iterations_taken_matrix_copy.data);
+    render_ascii_graph(iterations_taken_matrix);
 
-    render_iterations_taken_matrix(resolution, iterations_taken_matrix_copy.data);
+    render_iterations_taken_matrix(iterations_taken_matrix);
 
-    free(iterations_taken_matrix);
-    fractal_matrix_clean(&iterations_taken_matrix_copy);
+    fractal_matrix_clean(&iterations_taken_matrix);
 
     return 0;
 }

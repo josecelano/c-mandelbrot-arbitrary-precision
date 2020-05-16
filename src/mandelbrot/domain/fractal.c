@@ -23,34 +23,49 @@ void fractal_matrix_clean(fractal_matrix *iterations_taken_matrix) {
     free(iterations_taken_matrix->data);
 }
 
+void fractal_matrix_set_num_iter_per_point(fractal_matrix *iterations_taken_matrix, int x, int y, int iterations_taken) {
+    iterations_taken_matrix->data[(y * iterations_taken_matrix->resolution.width) + x] = iterations_taken;
+}
+
+void fractal_matrix_initialize_data(fractal_matrix iterations_taken_matrix, int *iterations_taken) {
+    int i;
+    int size = iterations_taken_matrix.resolution.width * iterations_taken_matrix.resolution.height;
+
+    for(i = 0; i < size; i++) {
+        iterations_taken_matrix.data[i] = iterations_taken[i];
+    }
+}
+
+int fractal_matrix_get_num_iter_per_point(int x, int y, fractal_matrix iterations_taken_matrix) {
+    int width = iterations_taken_matrix.resolution.width;
+    int height = iterations_taken_matrix.resolution.height;
+
+    return iterations_taken_matrix.data[(height - 1 - y) * width + x];
+}
+
 void calculate_matrix_point(
         zpoint z_current_point,
         int max_iterations,
         slong prec,
         int x, int y, int width,
-        int *iterations_taken_matrix,
-        fractal_matrix *iterations_taken_matrix_copy
+        fractal_matrix *iterations_taken_matrix
 ) {
     int iterations_taken;
 
     // Check if point belongs to Mandelbrot Set
     iterations_taken = mandelbrot_set_contains(z_current_point, max_iterations, prec);
 
-    // TODO: use functions to manipulate fractal_matrix struct (set and get)
-    // We can validate coordinates is setter.
-    // Update matrix with iterations counter for a given point
-    iterations_taken_matrix[(y * width) + x] = iterations_taken;
-    iterations_taken_matrix_copy->data[(y * width) + x] = iterations_taken;
+    fractal_matrix_set_num_iter_per_point(iterations_taken_matrix, x, y, iterations_taken);
 }
 
+// TODO: remove width argument, use resolution in fractal_matrix
 void calculate_matrix_row(
         zpoint zx_point_increment,
         int max_iterations,
         slong prec,
         int y, int width,
         // Output
-        int *iterations_taken_matrix,
-        fractal_matrix *iterations_taken_matrix_copy,
+        fractal_matrix *iterations_taken_matrix,
         zpoint *z_current_point
 ) {
     int x;
@@ -61,8 +76,7 @@ void calculate_matrix_row(
                 max_iterations,
                 prec,
                 x, y, width,
-                iterations_taken_matrix,
-                iterations_taken_matrix_copy
+                iterations_taken_matrix
         );
 
         // Increase real part to move one pixel to the right
@@ -70,6 +84,7 @@ void calculate_matrix_row(
     }
 }
 
+// TODO: remove resolution argument, use resolution in fractal_matrix
 void calculate_iterations_taken_matrix(
         zpoint left_bottom_point,
         zpoint zx_point_increment,
@@ -78,8 +93,7 @@ void calculate_iterations_taken_matrix(
         slong prec,
         fractal_resolution resolution,
         // Output
-        int *iterations_taken_matrix,
-        fractal_matrix *iterations_taken_matrix_copy
+        fractal_matrix *iterations_taken_matrix
 ) {
     int y;
     zpoint z_current_point; // Represents the pixel being calculated
@@ -97,7 +111,6 @@ void calculate_iterations_taken_matrix(
                 prec,
                 y, resolution.width,
                 iterations_taken_matrix,
-                iterations_taken_matrix_copy,
                 &z_current_point
         );
 
@@ -170,12 +183,12 @@ void calculate_real_and_imaginary_increments_per_point(
     arb_clear(step_im);
 }
 
+// TODO: remove resolution argument, use resolution in fractal_matrix
 void calculate_points(
         ztile tile, fractal_resolution resolution,
         int max_iterations,
         slong prec,
-        int *iterations_taken_matrix,
-        fractal_matrix *iterations_taken_matrix_copy
+        fractal_matrix *iterations_taken_matrix
 ) {
     int x, y;
     int img_idx = 0;
@@ -203,14 +216,9 @@ void calculate_points(
             prec,
             resolution,
             // Output
-            iterations_taken_matrix,
-            iterations_taken_matrix_copy
+            iterations_taken_matrix
     );
 
     zpoint_clean(&zx_point_increment);
     zpoint_clean(&zy_point_increment);
-}
-
-int get_iterations_taken_for_point(int x, int y, int width, int height, int *iterations_taken_matrix) {
-    return iterations_taken_matrix[(height - 1 - y) * width + x];
 }

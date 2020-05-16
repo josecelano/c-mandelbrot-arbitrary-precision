@@ -38,12 +38,18 @@ TEST(image_should, calculate_the_color_for_a_given_pixel) {
     int x, y;
     int width = 3, height = 3;
     int num_iter_for_pixel;
-    int iterations_taken_matrix[9] = {
+
+    fractal_resolution resolution = {3, 3};
+    fractal_matrix iterations_taken_matrix;
+    fractal_matrix_init(&iterations_taken_matrix, resolution);
+
+    int iterations_taken_matrix_data[9] = {
     //   X  0, 1, 2     Y
             1, 1, 1, // 0
             1,-1, 1, // 1
             1, 1, 1  // 2
     };
+    fractal_matrix_initialize_data(iterations_taken_matrix, iterations_taken_matrix_data);
 
     int expected_colours[9] = {
     //   X   0 , 1 , 2      Y
@@ -60,7 +66,7 @@ TEST(image_should, calculate_the_color_for_a_given_pixel) {
             set_pixel_color(
                     color,
                     x, y,
-                    width, height, iterations_taken_matrix
+                    iterations_taken_matrix
             );
 
             if (expected_colours[(y * 3) + x] == 'w') {
@@ -72,6 +78,7 @@ TEST(image_should, calculate_the_color_for_a_given_pixel) {
         }
     }
 
+    fractal_matrix_clean(&iterations_taken_matrix);
     free(color);
 }
 

@@ -14,22 +14,26 @@ TEST_TEAR_DOWN(fractal_should)
 }
 
 void test_assert_equal_iteration_matrix(
-        int *expected_iterations_taken_matrix,
-        int *iterations_taken_matrix,
-        fractal_resolution resolution
+        fractal_matrix expected_iterations_taken_matrix,
+        fractal_matrix iterations_taken_matrix
         ) {
-    int x, y;
+    int x, y, expected_num_iter, num_iter;
     char message[100];
+    fractal_resolution resolution = iterations_taken_matrix.resolution;
 
     for (y = 0; y < resolution.height; y++) {
         for (x = 0; x < resolution.width; x++) {
+
+            expected_num_iter = fractal_matrix_get_num_iter_per_point(x, y, expected_iterations_taken_matrix);
+            num_iter = fractal_matrix_get_num_iter_per_point(x, y, iterations_taken_matrix);
+
             sprintf(message, "expected number of iterations %d does not match actual %d for pixel (x,y) = (%d, %d)",
-                    expected_iterations_taken_matrix[(y * resolution.width) + x],
-                    iterations_taken_matrix[(y * resolution.width) + x],
+                    expected_num_iter,
+                    num_iter,
                     x, y
             );
 
-            TEST_ASSERT_EQUAL_MESSAGE(expected_iterations_taken_matrix[(y * resolution.width) + x], iterations_taken_matrix[(y * resolution.width) + x], message);
+            TEST_ASSERT_EQUAL_MESSAGE(expected_num_iter, num_iter, message);
         }
     }
 }
@@ -37,26 +41,26 @@ void test_assert_equal_iteration_matrix(
 TEST(fractal_should, calculate_complex_points_for_a_given_resolution_and_check_if_the_belong_to_the_mandelbrot_set)
 {
     slong prec = 32;
-    fractal_resolution resolution = {10, 10};
     int max_iterations = 200;
-    int *iterations_taken_matrix;
     int x, y;
     char message[100];
+
     ztile tile;
-    fractal_matrix iterations_taken_matrix_copy;
+    fractal_resolution resolution = {10, 10};
+    fractal_matrix expected_iterations_taken_matrix;
+    fractal_matrix iterations_taken_matrix;
 
-    fractal_matrix_init(&iterations_taken_matrix_copy, resolution);
-
-    iterations_taken_matrix = malloc(resolution.width * resolution.height * sizeof *iterations_taken_matrix);
+    fractal_matrix_init(&expected_iterations_taken_matrix, resolution);
+    fractal_matrix_init(&iterations_taken_matrix, resolution);
 
     ztile_init(&tile);
     ztile_set_completed_mandelbrot_set(&tile, prec);
 
-    calculate_points(tile, resolution, max_iterations, prec, iterations_taken_matrix, &iterations_taken_matrix_copy);
+    calculate_points(tile, resolution, max_iterations, prec, &iterations_taken_matrix);
 
     ztile_clean(&tile);
 
-    int expected_iterations_taken_matrix[100] = {
+    int expected_iterations_taken_matrix_data[100] = {
     // x 0, 1, 2, 3, 4, 5, 6, 7, 8, 9  // y
          1, 1, 1, 1, 1, 2, 1, 1, 1, 1, // 0
          1, 1, 2, 2, 2, 2, 2, 2, 2, 1, // 1
@@ -69,11 +73,12 @@ TEST(fractal_should, calculate_complex_points_for_a_given_resolution_and_check_i
          1, 2, 2, 3, 3, 3, 2, 2, 2, 2, // 8
          1, 1, 2, 2, 2, 2, 2, 2, 2, 1  // 9
     };
+    fractal_matrix_initialize_data(expected_iterations_taken_matrix, expected_iterations_taken_matrix_data);
 
-    test_assert_equal_iteration_matrix(expected_iterations_taken_matrix, iterations_taken_matrix, resolution);
+    test_assert_equal_iteration_matrix(expected_iterations_taken_matrix, iterations_taken_matrix);
 
-    fractal_matrix_clean(&iterations_taken_matrix_copy);
-    free(iterations_taken_matrix);
+    fractal_matrix_clean(&expected_iterations_taken_matrix);
+    fractal_matrix_clean(&iterations_taken_matrix);
 }
 
 /**
@@ -83,17 +88,17 @@ TEST(fractal_should, calculate_complex_points_for_a_given_resolution_and_check_i
 TEST(fractal_should, calculate_iterations_taken_matrix_for_a_non_symmetrical_image)
 {
     slong prec = 32;
-    fractal_resolution resolution = {10, 10};
     int max_iterations = 200;
-    int *iterations_taken_matrix;
     int x, y;
     char message[100];
+
     ztile tile;
-    fractal_matrix iterations_taken_matrix_copy;
+    fractal_resolution resolution = {10, 10};
+    fractal_matrix expected_iterations_taken_matrix;
+    fractal_matrix iterations_taken_matrix;
 
-    fractal_matrix_init(&iterations_taken_matrix_copy, resolution);
-
-    iterations_taken_matrix = malloc(resolution.width * resolution.height * sizeof *iterations_taken_matrix);
+    fractal_matrix_init(&expected_iterations_taken_matrix, resolution);
+    fractal_matrix_init(&iterations_taken_matrix, resolution);
 
     ztile_init(&tile);
 
@@ -105,11 +110,11 @@ TEST(fractal_should, calculate_iterations_taken_matrix_for_a_non_symmetrical_ima
             prec
     );
 
-    calculate_points(tile, resolution, max_iterations, prec, iterations_taken_matrix, &iterations_taken_matrix_copy);
+    calculate_points(tile, resolution, max_iterations, prec, &iterations_taken_matrix);
 
     ztile_clean(&tile);
 
-    int expected_iterations_taken_matrix[100] = {
+    int expected_iterations_taken_matrix_data[100] = {
     // x 0, 1, 2, 3, 4, 5, 6, 7, 8, 9  // y
         -1,-1,-1,-1,-1,17,11, 9,10, 7, // 0
         -1,-1,-1,-1,23,29, 9, 8, 7, 6, // 1
@@ -122,11 +127,12 @@ TEST(fractal_should, calculate_iterations_taken_matrix_for_a_non_symmetrical_ima
          9, 8, 8, 9, 9,25, 9, 7, 5, 4, // 8
          8, 7, 7, 7, 8,10,11, 6, 5, 4  // 9
     };
+    fractal_matrix_initialize_data(expected_iterations_taken_matrix, expected_iterations_taken_matrix_data);
 
-    test_assert_equal_iteration_matrix(expected_iterations_taken_matrix, iterations_taken_matrix, resolution);
+    test_assert_equal_iteration_matrix(expected_iterations_taken_matrix, iterations_taken_matrix);
 
-    fractal_matrix_clean(&iterations_taken_matrix_copy);
-    free(iterations_taken_matrix);
+    fractal_matrix_clean(&expected_iterations_taken_matrix);
+    fractal_matrix_clean(&iterations_taken_matrix);
 }
 
 TEST_GROUP_RUNNER(fractal_should)
