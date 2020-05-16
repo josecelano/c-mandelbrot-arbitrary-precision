@@ -1,9 +1,9 @@
 #include <stdio.h>
-#include "../external/unity/unity.h"
-#include "../external/unity/unity_fixture.h"
-#include "../src/mandelbrot/domain/complex.h"
-#include "../src/mandelbrot/domain/set.h"
-#include "../src/mandelbrot/domain/zpoint.h"
+#include "../../external/unity/unity.h"
+#include "../../external/unity/unity_fixture.h"
+#include "../../src/mandelbrot/domain/complex.h"
+#include "../../src/mandelbrot/domain/set.h"
+#include "../../src/mandelbrot/domain/zpoint.h"
 
 TEST_GROUP(set_should);
 

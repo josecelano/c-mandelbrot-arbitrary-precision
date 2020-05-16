@@ -21,13 +21,15 @@ file(GLOB PRODUCTION_CODE
         )
 
 file(GLOB TEST_CODE
-        ${PROJECT_SOURCE_DIR}/tests/*.h
-        ${PROJECT_SOURCE_DIR}/tests/*.c
+        ${PROJECT_SOURCE_DIR}/tests/lib/*.h
+        ${PROJECT_SOURCE_DIR}/tests/lib/*.c
+        ${PROJECT_SOURCE_DIR}/tests/mandelbrot/*.h
+        ${PROJECT_SOURCE_DIR}/tests/mandelbrot/*.c
         )
 
 add_executable(
         mandelbrot-test
-        src/main_test.c
+        tests/main_test.c
         ${EXTERNAL_CODE}
         ${PRODUCTION_CODE}
         ${TEST_CODE}

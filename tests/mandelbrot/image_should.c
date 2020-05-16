@@ -1,12 +1,12 @@
-#include "../external/unity/unity.h"
-#include "../external/unity/unity_fixture.h"
+#include "../../external/unity/unity.h"
+#include "../../external/unity/unity_fixture.h"
 
-#include "../tests/helpers.h"
-#include "../tests/unity_extension.h"
+#include "../lib/helpers.h"
+#include "../lib/unity_extension.h"
 
-#include "../src/mandelbrot/domain/color.h"
-#include "../src/mandelbrot/domain/image.h"
-#include "../src/mandelbrot/infrastructure/ppm_image_file.h"
+#include "../../src/mandelbrot/domain/color.h"
+#include "../../src/mandelbrot/domain/image.h"
+#include "../../src/mandelbrot/infrastructure/ppm_image_file.h"
 
 TEST_GROUP(image_should);
 

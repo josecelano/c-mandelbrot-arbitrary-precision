@@ -1,8 +1,8 @@
-#include "../external/unity/unity.h"
-#include "../external/unity/unity_fixture.h"
-#include "../tests/unity_extension.h"
-#include "../src/mandelbrot/domain/formula.h"
-#include "../src/mandelbrot/domain/complex.h"
+#include "../../external/unity/unity.h"
+#include "../../external/unity/unity_fixture.h"
+#include "../lib/unity_extension.h"
+#include "../../src/mandelbrot/domain/formula.h"
+#include "../../src/mandelbrot/domain/complex.h"
 
 TEST_GROUP(formula_should);
 

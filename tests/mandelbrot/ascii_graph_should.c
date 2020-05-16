@@ -1,10 +1,10 @@
-#include "../external/unity/unity.h"
-#include "../external/unity/unity_fixture.h"
+#include "../../external/unity/unity.h"
+#include "../../external/unity/unity_fixture.h"
 
-#include "../tests/helpers.h"
-#include "../tests/unity_extension.h"
+#include "../lib/helpers.h"
+#include "../lib/unity_extension.h"
 
-#include "../src/mandelbrot/infrastructure/ascii_graph_file.h"
+#include "../../src/mandelbrot/infrastructure/ascii_graph_file.h"
 
 TEST_GROUP(ascii_graph_should);
 
