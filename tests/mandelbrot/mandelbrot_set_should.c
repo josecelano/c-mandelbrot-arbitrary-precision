@@ -103,7 +103,7 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_main_cardioid_in_order_to_i
 
     for (i = 0; i < 5; ++i)
     {
-        complex_set_from_re_im_str(c, z_in[i].re, z_in[i].im, prec);
+        complex_set_from_complex_dto(c, z_in[i], prec);
 
         ret = inside_main_cardioid(c, prec);
 
@@ -123,7 +123,7 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_main_cardioid_in_order_to_i
 
     for (i = 0; i < 5; ++i)
     {
-        complex_set_from_re_im_str(c, z_out[i].re, z_out[i].im, prec);
+        complex_set_from_complex_dto(c, z_out[i], prec);
 
         ret = inside_main_cardioid(c, prec);
 

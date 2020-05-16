@@ -17,6 +17,10 @@ void complex_set_from_re_im_str(acb_t z, const char * re_str, const char * im_st
     arb_clear(im);
 }
 
+void complex_set_from_complex_dto(acb_t z, complex_dto dto, slong prec) {
+    complex_set_from_re_im_str(z, dto.re, dto.im, prec);
+}
+
 void acb_set_from_re_im(acb_t z, const arb_t re, const arb_t im) {
     acb_set_arb_arb(z, re, im);
 }
