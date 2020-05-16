@@ -115,37 +115,36 @@ Compile and run:
 
 Full mandelbrot from (-2,2) to (2,2).
 
-For 512px image:
+For 256x256px image:
+* Size: 256x256px (65536)
+* Max iter: 100
+* Precision: 32
+* Time for matrix generation: 0.452419s = 452419000.000000ns
+* Performance: 6.903366e+03‬ ns/px
+* Minimum complex x increment: 1.562500e-02 (4/256)
+* Minimum complex y increment: 1.562500e-02 (4/256)
+
+For 512x512px image:
 * Size: 512x512px (262144)
 * Max iter: 100
 * Precision: 32
-* Time: 1,997s
-* Performance: 7617,950439453125‬ ns/px
-* Min complex increment: 0,0078125 (4/512)
+* Time for matrix generation: 1.841765s = 1841765000.000000ns
+* Performance: 7.025776e+03‬ ns/px
+* Minimum complex x increment: 7.812500e-03 (4/512)
+* Minimum complex y increment: 7.812500e-03 (4/512)
 
-For 1024px image:
-* Size: 1024x1024px (1048576‬)
+For 1024x1024px image:
+* Size: 1024x1024px (1048576)
 * Max iter: 100
 * Precision: 32
-* Time: 8,605s
-* Performance: 8206,36749267578125 ns/px
-* Min complex increment: 0,00390625 (4/1024)
+* Time for matrix generation: 8.076328s = 8076328000.000000ns
+* Performance: 7.702187e+03‬ ns/px
+* Minimum complex x increment: 3.906250e-03 (4/1024)
+* Minimum complex y increment: 3.906250e-03 (4/1024)
 
-For 8192px image:
-* Size: 8192x8192px (67108864‬)
-* Max iter: 200
-* Precision: 32
-* Time: 576,727s
-* Performance: 8593,90199184417724609375‬ ns/px
-* Min complex increment: 0,00048828125 (4/8192)
-
-For 16384 image (before any performance improvement):
-* Size: 16384x16384px (268435456‬)
-* Max iter: 100
-* Precision: 32
-* Time: 83m54s
-* Performance: 18753,111362457275390625 ns/px
-* Min complex increment: 0,000244140625 (4/16384)
+Other sizes (before any performance improvement):
+* 8192x8192px: 576,727s
+* 16384x16384px: 83m54s 
 
 Performance links:
 * [Post with different performance improvement](https://www.martin-ueding.de/posts/mandelbrot-performance/)

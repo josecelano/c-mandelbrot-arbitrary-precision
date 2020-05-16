@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "mandelbrot/infrastructure/ascii_graph_file.h"
 #include "mandelbrot/domain/fractal.h"
@@ -52,6 +53,27 @@ void render_iterations_taken_matrix(fractal_matrix iterations_taken_matrix) {
     render_and_write_out_iterations_matrix(txt_filename, iterations_taken_matrix);
 }
 
+void print_performance_data(
+        clock_t time,
+        fractal_resolution resolution,
+        int max_iterations,
+        slong prec
+) {
+    int number_of_pixels = resolution.width * resolution.height;
+    double time_taken_in_seconds = ((double) time) / CLOCKS_PER_SEC;
+    long double time_taken_in_nanoseconds = time_taken_in_seconds * 1000000000;
+
+    printf("For %dx%dpx image:\n", resolution.width, resolution.height);
+    printf("* Size: %dx%dpx (%d)\n", resolution.width, resolution.height, number_of_pixels);
+    printf("* Max iter: %d\n", max_iterations);
+    printf("* Precision: %ld\n", prec);
+    printf("* Time for matrix generation: %fs = %Lfns\n", time_taken_in_seconds, time_taken_in_nanoseconds);
+    printf("* Performance: %Le‬ ns/px\n",
+           ((long double) time_taken_in_seconds / number_of_pixels) * 1000000000); // In nanoseconds
+    printf("* Minimum complex x increment: %Le (4/%d)\n", (long double) 4 / resolution.width, resolution.width);
+    printf("* Minimum complex y increment: %Le (4/%d)\n", (long double) 4 / resolution.height, resolution.height);
+}
+
 int main(int argc, const char *argv[]) {
 
     // Bits of precision for C complex and real math operations library
@@ -70,6 +92,8 @@ int main(int argc, const char *argv[]) {
     // The tile we want to draw with complex points coordinates
     ztile tile;
 
+    // Calculate the time taken for fractal matrix generation
+    clock_t time;
 
     fractal_matrix_init(&iterations_taken_matrix, resolution);
 
@@ -77,9 +101,13 @@ int main(int argc, const char *argv[]) {
 
     ztile_set_completed_mandelbrot_set(&tile, prec);
 
+    time = clock();
     fractal_matrix_calculate_points(tile, max_iterations, prec, &iterations_taken_matrix);
+    time = clock() - time;
 
     ztile_clean(&tile);
+
+    print_performance_data(time, resolution, max_iterations, prec);
 
     render_ppm_image(iterations_taken_matrix);
 
