@@ -32,6 +32,33 @@ int execute_iterations(acb_t c, int max_iterations, slong prec) {
     acb_init(f);
     acb_init(z);
 
+    int check = 3;
+    int check_counter = 0;
+
+    int update = 10;
+    int update_counter = 0;
+
+    arb_t z_re, z_im;
+    arb_t old_re, old_im;
+    arb_t re_diff, im_diff;
+    arb_t period_tolerance;
+
+    arb_init(z_re);
+    arb_init(z_im);
+    arb_init(old_re);
+    arb_init(old_im);
+    arb_init(re_diff);
+    arb_init(im_diff);
+    arb_init(period_tolerance);
+
+    arb_set_str(old_re, "0.0", prec);
+    arb_set_str(old_im, "0.0", prec);
+    // TODO: Period checking disabled with period tolerance equals 0
+    // * We need to know how to calculate the period tolerance
+    // * And only apply period checking after a minimum number of iterations
+    // See: https://github.com/HyveInnovate/gnofract4d/blob/master/examples/cpp/custom_mandelbrot_formula.c#L356-L389
+    arb_set_str(period_tolerance, "0.0", prec);
+
     for (i = 1; i <= max_iterations; ++i) {
         mandelbrot_formula(f, z, c, prec);
 
@@ -41,7 +68,56 @@ int execute_iterations(acb_t c, int max_iterations, slong prec) {
         }
 
         acb_set(z, f);
+
+        // Periodicity check
+
+        // Get real and imaginary parts
+        acb_get_real(z_re, z);
+        acb_get_imag(z_im, z);
+
+        // Check for period
+        // re_diff = abs(re - h_re)
+        arb_sub(re_diff, z_re, old_re, prec);
+        arb_abs(re_diff, re_diff);
+
+        // im_diff = abs(im - h_im)
+        arb_sub(im_diff, z_im, old_im, prec);
+        arb_abs(im_diff, im_diff);
+
+        if (arb_lt(re_diff, period_tolerance) && arb_lt(im_diff, period_tolerance)) {
+            num_iter = i;
+            break;
+        }
+
+        // Update history
+        if (check == check_counter)
+        {
+            check_counter = 0;
+
+            // Double the value of check
+            if (update == update_counter)
+            {
+                update_counter = 0;
+                check *= 2;
+            }
+            update_counter++;
+
+            arb_set(old_re, z_re);
+            arb_set(old_im, z_im);
+        }
+        // End of update history
+        check_counter++;
+
+        // End periodicity check
     }
+
+    arb_clear(z_re);
+    arb_clear(z_im);
+    arb_clear(old_re);
+    arb_clear(old_im);
+    arb_clear(re_diff);
+    arb_clear(im_diff);
+    arb_clear(period_tolerance);
 
     acb_clear(f);
     acb_clear(z);
