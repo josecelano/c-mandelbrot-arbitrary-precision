@@ -24,36 +24,3 @@ void complex_set_from_complex_dto(acb_t z, complex_dto dto, slong prec) {
 void acb_set_from_re_im(acb_t z, const arb_t re, const arb_t im) {
     acb_set_arb_arb(z, re, im);
 }
-
-void acb_abs_re_im(arb_t re_abs, arb_t im_abs, acb_t c) {
-    acb_abs_re(re_abs, c);
-    acb_abs_im(im_abs, c);
-}
-
-void acb_abs_re(arb_t re_abs, acb_t c) {
-    arb_t re;
-
-    arb_init(re);
-
-    // Get real part
-    acb_get_real(re, c);
-
-    // Get absolute value of real parts
-    arb_abs(re_abs, re);
-
-    arb_clear(re);
-}
-
-void acb_abs_im(arb_t im_abs, acb_t c) {
-    arb_t im;
-
-    arb_init(im);
-
-    // Get imaginary part
-    acb_get_imag(im, c);
-
-    // Get absolute value of imaginary part
-    arb_abs(im_abs, im);
-
-    arb_clear(im);
-}
