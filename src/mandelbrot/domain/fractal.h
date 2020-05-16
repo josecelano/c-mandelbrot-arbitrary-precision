@@ -31,6 +31,11 @@ void fractal_matrix_initialize_data(fractal_matrix iterations_taken_matrix, int 
 int fractal_matrix_get_num_iter_per_point(int x, int y, fractal_matrix iterations_taken_matrix);
 
 /**
+ * It returns INSIDE if the point in the matrix belongs to Mandelbrot Set.
+ */
+int fractal_matrix_point_belongs_to_mandelbrot_set(int x, int y, fractal_matrix iterations_taken_matrix);
+
+/**
  * For points inside Mandelbrot Set it returns MAX_ITERATIONS
  * For points outside it returns number of iterations needed to diverge.
  */

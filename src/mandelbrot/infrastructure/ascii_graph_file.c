@@ -31,7 +31,7 @@ void render_and_write_out_ascii_graph(char *filename, fractal_matrix iterations_
 }
 
 void render_and_write_out_iterations_matrix(char *filename, fractal_matrix iterations_taken_matrix) {
-    int x, y, num_iter_for_pixel;
+    int x, y, num_iter_for_pixel, ret;
     char num_iter_str[50];
     FILE *fp;
     fractal_resolution resolution = iterations_taken_matrix.resolution;
@@ -42,11 +42,14 @@ void render_and_write_out_iterations_matrix(char *filename, fractal_matrix itera
         for (x = 0; x < resolution.width; x++) {
 
             num_iter_for_pixel = fractal_matrix_get_num_iter_per_point(x, y, iterations_taken_matrix);
+            ret = fractal_matrix_point_belongs_to_mandelbrot_set(x, y, iterations_taken_matrix);
 
-            // TODO: 3 literal (and 3 spaces) is the number of digits for MAX_ITERATIONS number.
-            // Add function for fractal_matrix that returns max number of interactions in the matrix data,
-            // calculate the number of digits of that value.
-            if (num_iter_for_pixel == MAX_ITERATIONS) {
+            // TODO: 3 literal (and 3 spaces) is the number of digits for the greatest number of iterations during
+            // matrix calculations which is a constant in main.c right now but it has to be calculated dynamically.
+            // We should add function for fractal_matrix that returns max number of interactions in the matrix data,
+            // and calculate the number of digits of that value. The function can store the maximum while is calculating
+            // the points.
+            if (ret == INSIDE) {
                 // Inside Mandelbrot Set
                 fwrite("   ", 1, 3, fp);
             } else {

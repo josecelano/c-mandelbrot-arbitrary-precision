@@ -44,6 +44,11 @@ int fractal_matrix_get_num_iter_per_point(int x, int y, fractal_matrix iteration
     return iterations_taken_matrix.data[(height - 1 - y) * width + x];
 }
 
+int fractal_matrix_point_belongs_to_mandelbrot_set(int x, int y, fractal_matrix iterations_taken_matrix) {
+    int num_iter_for_pixel = fractal_matrix_get_num_iter_per_point(x, y, iterations_taken_matrix);
+    return is_value_a_inside_point(num_iter_for_pixel);
+}
+
 void calculate_matrix_point(
         zpoint z_current_point,
         int max_iterations,

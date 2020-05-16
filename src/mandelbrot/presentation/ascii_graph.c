@@ -4,16 +4,16 @@
 #include "../domain/set.h"
 #include "ascii_graph.h"
 
-void set_point_character(char *pixel_char, int x, int y, fractal_matrix iterations_taken_matrix) {
-    int num_iter_for_pixel;
+void set_point_character(char *point_char, int x, int y, fractal_matrix iterations_taken_matrix) {
 
-    num_iter_for_pixel = fractal_matrix_get_num_iter_per_point(x, y, iterations_taken_matrix);
+    int ret = fractal_matrix_point_belongs_to_mandelbrot_set(x, y, iterations_taken_matrix);
 
-    if (num_iter_for_pixel == MAX_ITERATIONS) {
+    if (ret == INSIDE) {
         // Inside Mandelbrot Set
-        *pixel_char = '@';
-    } else {
-        // Outside Mandelbrot Set
-        *pixel_char = ' ';
+        *point_char = '@';
+        return;
     }
+
+    // Outside Mandelbrot Set
+    *point_char = ' ';
 }

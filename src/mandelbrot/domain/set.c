@@ -17,6 +17,14 @@ int mandelbrot_set_contains(zpoint point, int max_iterations, slong prec) {
     return OUTSIDE;
 }
 
+int is_value_a_inside_point(int num_iter_for_pixel) {
+    if (num_iter_for_pixel == MAX_ITERATIONS) {
+        return INSIDE;
+    }
+
+    return OUTSIDE;
+}
+
 int mandelbrot_set_calculate_num_iterations_for(zpoint point, int max_iterations, slong prec) {
 
     int inside = 0, i, num_iter = MAX_ITERATIONS;
