@@ -7,8 +7,7 @@
 #include "mandelbrot/domain/ztile.h"
 #include "mandelbrot/infrastructure/ppm_image_file.h"
 
-// TODO:
-//  * Hexagonal architecture refactor in progress.
+// TODO: Hexagonal architecture refactor in progress.
 //  * Move render_* functions to application/command and presentation/console-command folders.
 
 /**
@@ -71,12 +70,14 @@ int main(int argc, const char *argv[]) {
     // The tile we want to draw with complex points coordinates
     ztile tile;
 
+
     fractal_matrix_init(&iterations_taken_matrix, resolution);
 
     ztile_init(&tile);
+
     ztile_set_completed_mandelbrot_set(&tile, prec);
 
-    calculate_points(tile, resolution, max_iterations, prec, &iterations_taken_matrix);
+    calculate_points(tile, max_iterations, prec, &iterations_taken_matrix);
 
     ztile_clean(&tile);
 

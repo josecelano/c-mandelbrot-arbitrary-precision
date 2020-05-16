@@ -23,7 +23,7 @@ void calculate_completed_mandelbrot(fractal_resolution resolution, fractal_matri
 
     ztile_set_completed_mandelbrot_set(&tile, prec);
 
-    calculate_points(tile, resolution, max_iterations, prec, iterations_taken_matrix);
+    calculate_points(tile, max_iterations, prec, iterations_taken_matrix);
 
     ztile_clean(&tile);
 }

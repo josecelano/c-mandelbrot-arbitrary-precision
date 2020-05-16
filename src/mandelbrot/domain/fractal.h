@@ -33,16 +33,7 @@ int fractal_matrix_get_num_iter_per_point(int x, int y, fractal_matrix iteration
 /**
  * For points inside Mandelbrot Set it returns MAX_ITERATIONS
  * For points outside it returns number of iterations needed to diverge.
- * @param fractal_resolution resolution
- * @param max_iterations
- * @param prec
- * @param iterations_taken_matrix
  */
-void calculate_points(
-        ztile tile, fractal_resolution resolution,
-        int max_iterations,
-        slong prec,
-        fractal_matrix *iterations_taken_matrix
-);
+void calculate_points(ztile tile, int max_iterations, slong prec, fractal_matrix *iterations_taken_matrix);
 
 #endif //C_MANDELBROT_ARBITRARY_PRECISION_FRACTAL_H
