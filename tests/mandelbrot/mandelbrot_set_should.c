@@ -135,9 +135,62 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_main_cardioid_in_order_to_i
     acb_clear(c);
 }
 
+TEST(mandelbrot_set_should, check_if_point_is_inside_period_2_bulb_in_order_to_increase_performace)
+{
+    slong prec = 32;
+    acb_t c;
+    int i, ret;
+    char message[100];
+
+    acb_init(c);
+
+    // Some complex number inside the period-2 bulb (big circle on the left of the main cardioid)
+    complex_dto z_in[5] = {
+            { "-1", "0" },
+            { "-1.1", "0.1" },
+            { "-0.9", "0.1" },
+            { "-1.1", "-0.1" },
+            { "-0.9", "-0.1" }
+    };
+
+    for (i = 0; i < 5; ++i)
+    {
+        complex_set_from_complex_dto(c, z_in[i], prec);
+
+        ret = inside_period_2_bulb(c, prec);
+
+        sprintf(message, "complex number (%s,%s) in test case #%d is not inside the period-2 bulb", z_in[i].re, z_in[i].im, i);
+
+        TEST_ASSERT_TRUE_MESSAGE(ret, message);
+    }
+
+    // Some complex number outside the period-2 bulb
+    complex_dto z_out[5] = {
+            { "0.3", "0" },
+            { "-2", "0" },
+            { "0", "0.7" },
+            { "0", "-0.7" },
+            { "2", "2" }
+    };
+
+    for (i = 0; i < 5; ++i)
+    {
+        complex_set_from_complex_dto(c, z_out[i], prec);
+
+        ret = inside_period_2_bulb(c, prec);
+
+        sprintf(message, "complex number (%s,%s) in test case #%d is not outside the period-2 bulb", z_out[i].re, z_out[i].im, i);
+
+        TEST_ASSERT_FALSE_MESSAGE(ret, message);
+    }
+
+    acb_clear(c);
+}
+
 TEST_GROUP_RUNNER(mandelbrot_set_should)
 {
     RUN_TEST_CASE(mandelbrot_set_should, contain_known_points_inside);
     RUN_TEST_CASE(mandelbrot_set_should, not_contain_known_points_outside);
     RUN_TEST_CASE(mandelbrot_set_should, check_if_point_is_inside_main_cardioid_in_order_to_increase_performace);
+    RUN_TEST_CASE(mandelbrot_set_should, check_if_point_is_inside_period_2_bulb_in_order_to_increase_performace);
 }
