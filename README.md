@@ -142,8 +142,16 @@ For 1024x1024px image:
 * Minimum complex x increment: 3.906250e-03 (4/1024)
 * Minimum complex y increment: 3.906250e-03 (4/1024)
 
+For 8192x8192px image:
+* Size: 8192x8192px (67108864)
+* Max iter: 100
+* Precision: 32
+* Time for matrix generation: 444.213337s = 444213337000.000000ns
+* Performance: 6.619295e+03‬ ns/px
+* Minimum complex x increment: 4.882812e-04 (4/8192)
+* Minimum complex y increment: 4.882812e-04 (4/8192)
+
 Other sizes (before any performance improvement):
-* 8192x8192px: 576,727s
 * 16384x16384px: 83m54s 
 
 Performance links:
