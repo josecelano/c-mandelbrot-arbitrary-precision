@@ -25,38 +25,41 @@ int is_value_a_inside_point(int num_iter_for_pixel) {
     return OUTSIDE;
 }
 
+int execute_iterations(acb_t c, int max_iterations, slong prec) {
+    int i, num_iter = MAX_ITERATIONS;
+    acb_t f, z;
+
+    acb_init(f);
+    acb_init(z);
+
+    for (i = 1; i <= max_iterations; ++i) {
+        mandelbrot_formula(f, z, c, prec);
+
+        if (bailout(f, prec)) {
+            num_iter = i;
+            break;
+        }
+
+        acb_set(z, f);
+    }
+
+    acb_clear(f);
+    acb_clear(z);
+
+    return num_iter;
+}
+
 int mandelbrot_set_calculate_num_iterations_for(zpoint point, int max_iterations, slong prec) {
 
     int inside = 0, i, num_iter = MAX_ITERATIONS;
-    acb_t c, zero, z, f;
+    acb_t c;
 
     acb_init(c);
 
     acb_set_from_re_im(c, point.re, point.im);
 
     if (!inside_main_cardioid(c, prec) && !inside_period_2_bulb(c, prec)) {
-
-        // Execute iterations
-
-        acb_init(zero);
-        acb_init(z);
-        acb_init(f);
-
-        for (i = 1; i <= max_iterations; ++i) {
-            mandelbrot_formula(f, z, c, prec);
-
-            if (bailout(f, prec)) {
-                num_iter = i;
-                break;
-                return i;
-            }
-
-            acb_set(z, f);
-        }
-
-        acb_clear(zero);
-        acb_clear(z);
-        acb_clear(f);
+        num_iter = execute_iterations(c, max_iterations, prec);
     }
 
     acb_clear(c);
