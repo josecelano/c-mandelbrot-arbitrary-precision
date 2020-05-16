@@ -1,6 +1,7 @@
 #include <stdio.h>
-#include "../../external/unity/unity.h"
-#include "../../external/unity/unity_fixture.h"
+#include "../lib/unity/unity.h"
+#include "../lib/unity/unity_fixture.h"
+
 #include "../../src/mandelbrot/domain/complex.h"
 #include "../../src/mandelbrot/domain/set.h"
 #include "../../src/mandelbrot/domain/zpoint.h"

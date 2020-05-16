@@ -5,8 +5,8 @@ set(CMAKE_C_STANDARD 99)
 set(CMAKE_INSTALL_RPATH "/usr/local/lib")
 
 file(GLOB EXTERNAL_CODE
-        ${PROJECT_SOURCE_DIR}/external/unity/*.h
-        ${PROJECT_SOURCE_DIR}/external/unity/*.c
+        tests/lib/unity/*.h
+        tests/lib/unity/*.c
         )
 
 file(GLOB PRODUCTION_CODE

@@ -1,6 +1,7 @@
-#include "../../external/unity/unity.h"
-#include "../../external/unity/unity_fixture.h"
+#include "../lib/unity/unity.h"
+#include "../lib/unity/unity_fixture.h"
 #include "../lib/unity_extension.h"
+
 #include "../../src/mandelbrot/domain/formula.h"
 #include "../../src/mandelbrot/domain/complex.h"
 

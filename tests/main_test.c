@@ -1,4 +1,4 @@
-#include "../external/unity/unity_fixture.h"
+#include "./lib/unity/unity_fixture.h"
 
 static void RunAllTests(void)
 {
