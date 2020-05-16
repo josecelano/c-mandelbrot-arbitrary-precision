@@ -3,10 +3,10 @@
 
 #include "acb.h"
 
-struct complex_dto {
+typedef struct {
     const char *re;
     const char *im;
-};
+} complex_dto;
 
 void complex_set_from_re_im_str(acb_t z, const char *re_str, const char *im_str, slong prec);
 

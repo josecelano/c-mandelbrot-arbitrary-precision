@@ -28,7 +28,7 @@ TEST(formula_should, calculate_the_mandelbrot_function)
 
     // Some formula values to test
     // z,c,expected_result
-    struct complex_dto zf[9][3] = {
+    complex_dto zf[9][3] = {
             // With z=0 -> return c
             // z=0 c=0 -> z² + c = 0
             {{ "0", "0" }, { "0", "0" }, { "0", "0" }},

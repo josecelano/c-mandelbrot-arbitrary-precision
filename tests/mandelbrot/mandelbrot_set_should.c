@@ -27,7 +27,7 @@ TEST(mandelbrot_set_should, contain_known_points_inside)
     zpoint_init(&point);
 
     // Some complex number inside the Mandelbrot Set
-    struct complex_dto z_in[6] = {
+    complex_dto z_in[6] = {
             { "0", "0" },
             { "-1", "0" },
             { "-0.5", "0" },
@@ -38,7 +38,7 @@ TEST(mandelbrot_set_should, contain_known_points_inside)
 
     for (i = 0; i < 6; ++i)
     {
-        zpoint_set_from_re_im_str(&point, z_in[i].re, z_in[i].im, prec);
+        zpoint_set_from_complex_dto(&point, z_in[i], prec);
 
         ret = mandelbrot_set_contains(point, max_iterations, prec);
 
@@ -60,7 +60,7 @@ TEST(mandelbrot_set_should, not_contain_known_points_outside)
     zpoint_init(&point);
 
     // Some complex number inside the Mandelbrot Set
-    struct complex_dto z_out[6] = {
+    complex_dto z_out[6] = {
             { "-2", "2" },
             { "0", "2" },
             { "2", "2" },
@@ -71,7 +71,7 @@ TEST(mandelbrot_set_should, not_contain_known_points_outside)
 
     for (i = 0; i < 6; ++i)
     {
-        zpoint_set_from_re_im_str(&point, z_out[i].re, z_out[i].im, prec);
+        zpoint_set_from_complex_dto(&point, z_out[i], prec);
 
         ret = mandelbrot_set_contains(point, max_iterations, prec);
 
@@ -93,8 +93,7 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_main_cardioid_in_order_to_i
     acb_init(c);
 
     // Some complex number inside the main cardioid
-
-    struct complex_dto z_in[5] = {
+    complex_dto z_in[5] = {
             { "0", "0" },
             { "-0.6", "0" },
             { "0.2", "0" },
@@ -114,8 +113,7 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_main_cardioid_in_order_to_i
     }
 
     // Some complex number outside the main cardioid
-
-    struct complex_dto z_out[5] = {
+    complex_dto z_out[5] = {
             { "0.3", "0" },
             { "-2", "0" },
             { "0", "0.7" },
