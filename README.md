@@ -151,8 +151,14 @@ For 8192x8192px image:
 * Minimum complex x increment: 4.882812e-04 (4/8192)
 * Minimum complex y increment: 4.882812e-04 (4/8192)
 
-Other sizes (before any performance improvement):
-* 16384x16384px: 83m54s 
+For 16384x16384px image:
+* Size: 16384x16384px (268435456)
+* Max iter: 100
+* Precision: 32
+* Time for matrix generation: 2281.666958s = 2281666958000.000000ns
+* Performance: 8.499872e+03‬ ns/px
+* Minimum complex x increment: 2.441406e-04 (4/16384)
+* Minimum complex y increment: 2.441406e-04 (4/16384)
 
 Performance links:
 * [Post with different performance improvement](https://www.martin-ueding.de/posts/mandelbrot-performance/)
