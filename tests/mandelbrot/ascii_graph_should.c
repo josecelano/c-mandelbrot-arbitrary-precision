@@ -17,13 +17,14 @@ TEST_TEAR_DOWN(ascii_graph_should) {
 void calculate_completed_mandelbrot(fractal_resolution resolution, fractal_matrix *iterations_taken_matrix) {
     slong prec = 32;
     int max_iterations = 100;
+    int print_progress = 0;
     ztile tile;
 
     ztile_init(&tile);
 
     ztile_set_completed_mandelbrot_set(&tile, prec);
 
-    fractal_matrix_calculate_points(tile, max_iterations, prec, iterations_taken_matrix);
+    fractal_matrix_calculate_points(tile, max_iterations, prec, print_progress, iterations_taken_matrix);
 
     ztile_clean(&tile);
 }

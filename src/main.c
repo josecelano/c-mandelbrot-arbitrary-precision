@@ -63,7 +63,7 @@ void print_performance_data(
     double time_taken_in_seconds = ((double) time) / CLOCKS_PER_SEC;
     long double time_taken_in_nanoseconds = time_taken_in_seconds * 1000000000;
 
-    printf("For %dx%dpx image:\n", resolution.width, resolution.height);
+    printf("\nFor %dx%dpx image:\n", resolution.width, resolution.height);
     printf("* Size: %dx%dpx (%d)\n", resolution.width, resolution.height, number_of_pixels);
     printf("* Max iter: %d\n", max_iterations);
     printf("* Precision: %ld\n", prec);
@@ -95,6 +95,9 @@ int main(int argc, const char *argv[]) {
     // Calculate the time taken for fractal matrix generation
     clock_t time;
 
+    // Print progress
+    int print_progress = 1;
+
     fractal_matrix_init(&iterations_taken_matrix, resolution);
 
     ztile_init(&tile);
@@ -102,7 +105,7 @@ int main(int argc, const char *argv[]) {
     ztile_set_completed_mandelbrot_set(&tile, prec);
 
     time = clock();
-    fractal_matrix_calculate_points(tile, max_iterations, prec, &iterations_taken_matrix);
+    fractal_matrix_calculate_points(tile, max_iterations, prec, print_progress, &iterations_taken_matrix);
     time = clock() - time;
 
     ztile_clean(&tile);

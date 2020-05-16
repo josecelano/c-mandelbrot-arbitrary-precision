@@ -90,12 +90,24 @@ void calculate_matrix_row(
     }
 }
 
+void console_print_progress(int y, int height) {
+    // Delete current line
+    printf("%c[2K\r", 27);
+
+    // Print progress
+    printf("Progress: %f%%", (double) y / height * 100);
+
+    // Flush stdout to refresh console
+    fflush(stdout);
+}
+
 void calculate_iterations_taken_matrix(
         zpoint left_bottom_point,
         zpoint zx_point_increment,
         zpoint zy_point_increment,
         int max_iterations,
         slong prec,
+        int print_progress,
         fractal_matrix *iterations_taken_matrix
 ) {
     int y;
@@ -117,6 +129,10 @@ void calculate_iterations_taken_matrix(
                 iterations_taken_matrix,
                 &z_current_point
         );
+
+        if (print_progress == 1) {
+            console_print_progress(y, resolution.height);
+        }
 
         // Return back to first image column (pixel)
         zpoint_set_re(&z_current_point, left_bottom_point.re);
@@ -187,7 +203,13 @@ void calculate_real_and_imaginary_increments_per_point(
     arb_clear(step_im);
 }
 
-void fractal_matrix_calculate_points(ztile tile, int max_iterations, slong prec, fractal_matrix *iterations_taken_matrix) {
+void fractal_matrix_calculate_points(
+        ztile tile,
+        int max_iterations,
+        slong prec,
+        int print_progress,
+        fractal_matrix *iterations_taken_matrix
+) {
     int x, y;
     int img_idx = 0;
     int iterations_taken;
@@ -212,6 +234,7 @@ void fractal_matrix_calculate_points(ztile tile, int max_iterations, slong prec,
             zy_point_increment,
             max_iterations,
             prec,
+            print_progress,
             // Output
             iterations_taken_matrix
     );
