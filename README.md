@@ -195,5 +195,6 @@ Some of them let you easily get z real and imaginary values and maximum number o
 
 How to print arbitrary precision numbers:
 ```
-flint_printf("z  = "); acb_printn(z, 10, 0); flint_printf("\n");
+void console_print_complex(char *prefix, acb_t c);
+void console_print_real(char *prefix, arb_t c);
 ```
