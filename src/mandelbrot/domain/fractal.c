@@ -9,6 +9,8 @@
 #include "zpoint.h"
 #include "ztile.h"
 
+#include "../presentation/output.h"
+
 void fractal_matrix_init(fractal_matrix *iterations_taken_matrix, fractal_resolution resolution) {
     int matrix_size;
 
@@ -53,6 +55,7 @@ void calculate_matrix_point(
         zpoint z_current_point,
         int max_iterations,
         slong prec,
+        int print_periods,
         int x,
         int y,
         fractal_matrix *iterations_taken_matrix
@@ -60,7 +63,7 @@ void calculate_matrix_point(
     int iterations_taken;
 
     // Check if point belongs to Mandelbrot Set
-    iterations_taken = mandelbrot_set_calculate_num_iterations_for(z_current_point, max_iterations, prec);
+    iterations_taken = mandelbrot_set_calculate_num_iterations_for(z_current_point, max_iterations, prec, print_periods);
 
     fractal_matrix_set_num_iter_per_point(iterations_taken_matrix, x, y, iterations_taken);
 }
@@ -69,6 +72,7 @@ void calculate_matrix_row(
         zpoint zx_point_increment,
         int max_iterations,
         slong prec,
+        int print_periods,
         int y,
         fractal_matrix *iterations_taken_matrix,
         zpoint *z_current_point
@@ -81,6 +85,7 @@ void calculate_matrix_row(
                 *z_current_point,
                 max_iterations,
                 prec,
+                print_periods,
                 x, y,
                 iterations_taken_matrix
         );
@@ -90,17 +95,6 @@ void calculate_matrix_row(
     }
 }
 
-void console_print_progress(int y, int height) {
-    // Delete current line
-    printf("%c[2K\r", 27);
-
-    // Print progress
-    printf("Progress: %f%%", (double) y / height * 100);
-
-    // Flush stdout to refresh console
-    fflush(stdout);
-}
-
 void calculate_iterations_taken_matrix(
         zpoint left_bottom_point,
         zpoint zx_point_increment,
@@ -108,6 +102,7 @@ void calculate_iterations_taken_matrix(
         int max_iterations,
         slong prec,
         int print_progress,
+        int print_periods,
         fractal_matrix *iterations_taken_matrix
 ) {
     int y;
@@ -125,13 +120,14 @@ void calculate_iterations_taken_matrix(
                 zx_point_increment,
                 max_iterations,
                 prec,
+                print_periods,
                 y,
                 iterations_taken_matrix,
                 &z_current_point
         );
 
         if (print_progress == 1) {
-            console_print_progress(y, resolution.height);
+            print_render_progress(y, resolution.height);
         }
 
         // Return back to first image column (pixel)
@@ -208,6 +204,7 @@ void fractal_matrix_calculate_points(
         int max_iterations,
         slong prec,
         int print_progress,
+        int print_periods,
         fractal_matrix *iterations_taken_matrix
 ) {
     int x, y;
@@ -235,6 +232,7 @@ void fractal_matrix_calculate_points(
             max_iterations,
             prec,
             print_progress,
+            print_periods,
             // Output
             iterations_taken_matrix
     );

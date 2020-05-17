@@ -44,6 +44,7 @@ void fractal_matrix_calculate_points(
         int max_iterations,
         slong prec,
         int print_progress,
+        int print_periods,
         fractal_matrix *iterations_taken_matrix
 );
 

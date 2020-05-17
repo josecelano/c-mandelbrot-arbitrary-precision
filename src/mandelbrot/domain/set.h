@@ -11,7 +11,7 @@
 /**
  * It returns INSIDE if the point belongs to mandelbrot Set and OUTSIDE if it does not.
  */
-int mandelbrot_set_contains(zpoint point, int max_iterations, slong prec);
+int mandelbrot_set_contains(zpoint point, int max_iterations, slong prec, int print_periods);
 
 /**
  * Check is the value in the matrix represents a point inside the Mandelbrot Set.
@@ -22,7 +22,7 @@ int is_value_a_inside_point(int num_iter_for_pixel);
  * It returns the number of iterations recursively applied to the basic Mandelbrot formula z²+c until the value diverges.
  * If MAX_ITERATIONS is reached it returns MAX_ITERATIONS, which means the point is inside the Mandelbrot Set.
  */
-int mandelbrot_set_calculate_num_iterations_for(zpoint point, int max_iterations, slong prec);
+int mandelbrot_set_calculate_num_iterations_for(zpoint point, int max_iterations, slong prec, int print_periods);
 
 /**
  * Bailout formula:

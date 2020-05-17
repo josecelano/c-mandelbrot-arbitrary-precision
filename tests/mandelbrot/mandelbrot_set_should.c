@@ -21,6 +21,7 @@ TEST(mandelbrot_set_should, contain_known_points_inside)
     const int max_iterations = 200;
     int i, ret;
     slong prec = 32;
+    int print_periods = 0;
     zpoint point;
     char message[100];
 
@@ -40,7 +41,7 @@ TEST(mandelbrot_set_should, contain_known_points_inside)
     {
         zpoint_set_from_complex_dto(&point, z_in[i], prec);
 
-        ret = mandelbrot_set_contains(point, max_iterations, prec);
+        ret = mandelbrot_set_contains(point, max_iterations, prec, print_periods);
 
         sprintf(message, "complex number (%s,%s) in test case #%d should be in Mandelbrot Set", z_in[i].re, z_in[i].im, i);
 
@@ -52,8 +53,10 @@ TEST(mandelbrot_set_should, contain_known_points_inside)
 
 TEST(mandelbrot_set_should, not_contain_known_points_outside)
 {
+    const int max_iterations = 200;
+    int i, ret;
     slong prec = 32;
-    int i, ret, max_iterations = 200;
+    int print_periods = 0;
     zpoint point;
     char message[100];
 
@@ -73,7 +76,7 @@ TEST(mandelbrot_set_should, not_contain_known_points_outside)
     {
         zpoint_set_from_complex_dto(&point, z_out[i], prec);
 
-        ret = mandelbrot_set_contains(point, max_iterations, prec);
+        ret = mandelbrot_set_contains(point, max_iterations, prec, print_periods);
 
         sprintf(message, "complex number (%s,%s) in test case #%d should not be in Mandelbrot Set", z_out[i].re, z_out[i].im, i);
 
