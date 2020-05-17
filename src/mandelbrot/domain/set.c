@@ -142,7 +142,7 @@ int mandelbrot_set_calculate_num_iterations_for(zpoint point, int max_iterations
 
     acb_init(c);
 
-    acb_set_from_re_im(c, point.re, point.im);
+    acb_set_from_zpoint(c, point);
 
     if (inside_main_cardioid(c, prec)) {
         acb_clear(c);

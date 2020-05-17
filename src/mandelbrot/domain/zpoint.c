@@ -1,4 +1,3 @@
-#include "acb.h"
 #include "zpoint.h"
 
 void zpoint_init(zpoint *c) {
@@ -19,10 +18,6 @@ void zpoint_set(zpoint *y, zpoint *x) {
 void zpoint_set_from_re_im_str(zpoint *c, const char *re, const char *im, slong prec) {
     arb_set_str(c->re, re, prec);
     arb_set_str(c->im, im, prec);
-}
-
-void zpoint_set_from_complex_dto(zpoint *c, complex_dto dto, slong prec) {
-    zpoint_set_from_re_im_str(c, dto.re, dto.im, prec);
 }
 
 void zpoint_set_from_re_im(zpoint *c, const arb_t re, const arb_t im) {
