@@ -190,3 +190,10 @@ Some of them let you easily get z real and imaginary values and maximum number o
 * Calculate dynamically needed precision.
 * Allow to set a fractal tile and zoom level.
 * Function `ztile_set_from_str` should validate tile points (left bottom and right top).
+
+## Debug
+
+How to print arbitrary precision numbers:
+```
+flint_printf("z  = "); acb_printn(z, 10, 0); flint_printf("\n");
+```

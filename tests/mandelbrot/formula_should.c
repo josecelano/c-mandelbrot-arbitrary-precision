@@ -62,13 +62,6 @@ TEST(formula_should, calculate_the_mandelbrot_function)
 
         mandelbrot_formula(result, z, c, prec);
 
-//        // DEBUG
-//        flint_printf("Test case: %i\n", i);
-//        flint_printf("z  = "); acb_printn(z, 10, 0); flint_printf("\n");
-//        flint_printf("c  = "); acb_printn(c, 10, 0); flint_printf("\n");
-//        flint_printf("ef = "); acb_printn(expected_result, 10, 0); flint_printf("\n");
-//        flint_printf("f  = "); acb_printn(result, 10, 0); flint_printf("\n");
-
         TEST_ASSERT_COMPLEX_EQUALS(expected_result, result);
     }
 
