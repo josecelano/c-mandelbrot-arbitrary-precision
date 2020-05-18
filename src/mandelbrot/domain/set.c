@@ -28,6 +28,47 @@ int is_value_a_inside_point(int num_iter_for_pixel) {
     return OUTSIDE;
 }
 
+/**
+ * It return 1 if period is found
+ */
+int check_for_period(
+        int iter,
+        acb_t c,
+        arb_t z_re, arb_t z_im,
+        arb_t old_re, arb_t old_im,
+        arb_t period_tolerance,
+        slong prec,
+        int print_periods
+) {
+    int ret = 0;
+
+    arb_t re_diff, im_diff;
+
+    arb_init(re_diff);
+    arb_init(im_diff);
+
+    // re_diff = abs(re - h_re)
+    arb_sub(re_diff, z_re, old_re, prec);
+    arb_abs(re_diff, re_diff);
+
+    // im_diff = abs(im - h_im)
+    arb_sub(im_diff, z_im, old_im, prec);
+    arb_abs(im_diff, im_diff);
+
+    if (arb_lt(re_diff, period_tolerance) && arb_lt(im_diff, period_tolerance)) {
+        // Period found
+        if (print_periods) {
+            print_period(iter, c, z_re, z_im, old_re, old_im, re_diff, im_diff);
+        }
+        ret = 1;
+    }
+
+    arb_clear(re_diff);
+    arb_clear(im_diff);
+
+    return ret;
+}
+
 int execute_iterations(acb_t c, int max_iterations, slong prec, int print_periods) {
     int i, num_iter = MAX_ITERATIONS;
     acb_t f, z;
@@ -42,28 +83,30 @@ int execute_iterations(acb_t c, int max_iterations, slong prec, int print_period
     int update_counter = 0;
 
     arb_t z_re, z_im;
+
+    // Period checking
     arb_t old_re, old_im;
-    arb_t re_diff, im_diff;
     arb_t period_tolerance;
 
     arb_init(z_re);
     arb_init(z_im);
+
+    // Period checking
     arb_init(old_re);
     arb_init(old_im);
-    arb_init(re_diff);
-    arb_init(im_diff);
     arb_init(period_tolerance);
 
+    // Period checking
     arb_set_str(old_re, "0.0", prec);
     arb_set_str(old_im, "0.0", prec);
-    // TODO: Period checking disabled with period tolerance equals 0
+
+    // TODO:
     // * We need to know how to calculate the period tolerance
     // * And only apply period checking after a minimum number of iterations
     // See other examples:
     // * https://github.com/HyveInnovate/gnofract4d/blob/master/examples/cpp/custom_mandelbrot_formula.c#L356-L389
     // * https://github.com/josch/mandelbrot/blob/master/mandel_mpfr.c#L109-L133
-    arb_set_str(period_tolerance, "1e-17", prec); // Enabled
-    arb_set_str(period_tolerance, "0", prec); // Disabled
+    arb_set_str(period_tolerance, "1e-17", prec);
 
     for (i = 1; i <= max_iterations; ++i) {
 
@@ -83,21 +126,13 @@ int execute_iterations(acb_t c, int max_iterations, slong prec, int print_period
         acb_get_imag(z_im, z);
 
         // Check for period
-        // re_diff = abs(re - h_re)
-        arb_sub(re_diff, z_re, old_re, prec);
-        arb_abs(re_diff, re_diff);
+        int period_found = check_for_period(i, c, z_re, z_im, old_re, old_im, period_tolerance, prec, print_periods);
 
-        // im_diff = abs(im - h_im)
-        arb_sub(im_diff, z_im, old_im, prec);
-        arb_abs(im_diff, im_diff);
-
-        if (arb_lt(re_diff, period_tolerance) && arb_lt(im_diff, period_tolerance)) {
-            num_iter = i;
-            if (print_periods) {
-                print_period(i, c, z_re, z_im, old_re, old_im, re_diff, im_diff);
-            }
+        if (period_found == 1) {
+            num_iter = MAX_ITERATIONS;
             break;
         }
+        // End check for period
 
         // Update history
         if (check == check_counter) {
@@ -125,8 +160,7 @@ int execute_iterations(acb_t c, int max_iterations, slong prec, int print_period
     arb_clear(z_im);
     arb_clear(old_re);
     arb_clear(old_im);
-    arb_clear(re_diff);
-    arb_clear(im_diff);
+
     arb_clear(period_tolerance);
 
     acb_clear(f);
