@@ -5,22 +5,33 @@
 #include "../domain/fractal.h"
 #include "../infrastructure/console.h"
 
-void print_period(
+void print_loop_iteration(
         int i,
-        acb_t c,
+        int check, int check_counter, int update, int update_counter,
+        acb_t f, acb_t z, acb_t c,
         arb_t z_re, arb_t z_im,
         arb_t old_re, arb_t old_im,
-        arb_t re_diff, arb_t im_diff
+        arb_t period_tolerance
 ) {
-    console_printf("\nPeriod found:\n");
-    console_printf("iter    = %d\n", i);
+    console_printf("\niter %d\n", i);
+    console_printf("check %d check_counter %d update %d update_counter %d\n", check, check_counter, update, update_counter);
+    console_print_complex("f       = ", f);
+    console_print_complex("z       = ", z);
     console_print_complex("c       = ", c);
     console_print_real("z_re    = ", z_re);
     console_print_real("z_im    = ", z_im);
     console_print_real("old_re  = ", old_re);
     console_print_real("old_im  = ", old_im);
-    console_print_real("re_diff = ", re_diff);
-    console_print_real("im_diff = ", im_diff);
+    console_print_real("tolerance = ", period_tolerance);
+}
+
+void print_period_checking(arb_t re_diff, arb_t im_diff) {
+    console_print_real("re_diff   = ", re_diff);
+    console_print_real("im_diff   = ", im_diff);
+}
+
+void print_period_found(int period, int i) {
+    console_printf("Period %d found in iter %d!\n", period, i);
 }
 
 void print_render_progress(int y, int height) {

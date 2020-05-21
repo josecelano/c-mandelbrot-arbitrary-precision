@@ -190,10 +190,70 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_period_2_bulb_in_order_to_i
     acb_clear(c);
 }
 
+TEST(mandelbrot_set_should, do_period_checking)
+{
+    slong prec = 32;
+    int max_iterations = 1000;
+    int print_periods = 0;
+    int print_iterations = 0;
+    acb_t c;
+    char message[100];
+    int ret, period;
+
+    acb_init(c);
+
+    // TODO: remove duplicate code
+
+    // Pre-selected points with known period
+    complex_dto point_with_period_0 = {"0", "0" };
+    complex_dto point_with_period_1 = {"-0.1", "0.1" };
+    complex_dto point_with_period_2 = {"0", "1" };
+    complex_dto point_with_period_3 = {"-0.1", "0.7" };
+    complex_dto point_with_period_4 = {"-1.3", "0" };
+
+    // Period 0
+    complex_set_from_complex_dto(c, point_with_period_0, prec);
+    ret = execute_iterations(c, max_iterations, prec, print_periods, print_iterations, &period);
+    sprintf(message, "Expected point (%s,%s) should have period 0, actual %d", point_with_period_0.re, point_with_period_0.im, period);
+    TEST_ASSERT_EQUAL_MESSAGE(MAX_ITERATIONS, ret, message);
+    TEST_ASSERT_EQUAL_MESSAGE(0, period, message);
+
+    // Period 1
+    complex_set_from_complex_dto(c, point_with_period_1, prec);
+    ret = execute_iterations(c, max_iterations, prec, print_periods, print_iterations, &period);
+    sprintf(message, "Expected point (%s,%s) should have period 1, actual %d", point_with_period_1.re, point_with_period_1.im, period);
+    TEST_ASSERT_EQUAL_MESSAGE(MAX_ITERATIONS, ret, message);
+    TEST_ASSERT_EQUAL_MESSAGE(1, period, message);
+
+    // Period 2
+    complex_set_from_complex_dto(c, point_with_period_2, prec);
+    ret = execute_iterations(c, max_iterations, prec, print_periods, print_iterations, &period);
+    sprintf(message, "Expected point (%s,%s) should have period 2, actual %d", point_with_period_2.re, point_with_period_2.im, period);
+    TEST_ASSERT_EQUAL_MESSAGE(MAX_ITERATIONS, ret, message);
+    TEST_ASSERT_EQUAL_MESSAGE(2, period, message);
+
+    // Period 3
+    complex_set_from_complex_dto(c, point_with_period_3, prec);
+    ret = execute_iterations(c, max_iterations, prec, print_periods, print_iterations, &period);
+    sprintf(message, "Expected point (%s,%s) should have period 3, actual %d", point_with_period_3.re, point_with_period_3.im, period);
+    TEST_ASSERT_EQUAL_MESSAGE(MAX_ITERATIONS, ret, message);
+    TEST_ASSERT_EQUAL_MESSAGE(3, period, message);
+
+    // Period 4
+    complex_set_from_complex_dto(c, point_with_period_4, prec);
+    ret = execute_iterations(c, max_iterations, prec, print_periods, print_iterations, &period);
+    sprintf(message, "Expected point (%s,%s) should have period 4, actual %d", point_with_period_4.re, point_with_period_4.im, period);
+    TEST_ASSERT_EQUAL_MESSAGE(MAX_ITERATIONS, ret, message);
+    TEST_ASSERT_EQUAL_MESSAGE(4, period, message);
+
+    acb_clear(c);
+}
+
 TEST_GROUP_RUNNER(mandelbrot_set_should)
 {
     RUN_TEST_CASE(mandelbrot_set_should, contain_known_points_inside);
     RUN_TEST_CASE(mandelbrot_set_should, not_contain_known_points_outside);
     RUN_TEST_CASE(mandelbrot_set_should, check_if_point_is_inside_main_cardioid_in_order_to_increase_performace);
     RUN_TEST_CASE(mandelbrot_set_should, check_if_point_is_inside_period_2_bulb_in_order_to_increase_performace);
+    RUN_TEST_CASE(mandelbrot_set_should, do_period_checking);
 }

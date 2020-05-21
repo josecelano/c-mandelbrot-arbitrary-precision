@@ -7,6 +7,7 @@
 #include "zpoint.h"
 
 #include "../presentation/output.h"
+#include "../infrastructure/console.h"
 
 int mandelbrot_set_contains(zpoint point, int max_iterations, slong prec, int print_periods) {
     int iterations_taken;
@@ -37,8 +38,10 @@ int check_for_period(
         arb_t z_re, arb_t z_im,
         arb_t old_re, arb_t old_im,
         arb_t period_tolerance,
+        int check_counter,
         slong prec,
-        int print_periods
+        int print_periods,
+        int print_iterations
 ) {
     int ret = 0;
 
@@ -55,10 +58,14 @@ int check_for_period(
     arb_sub(im_diff, z_im, old_im, prec);
     arb_abs(im_diff, im_diff);
 
+    if (print_periods) {
+        print_period_checking(re_diff, im_diff);
+    }
+
     if (arb_lt(re_diff, period_tolerance) && arb_lt(im_diff, period_tolerance)) {
         // Period found
         if (print_periods) {
-            print_period(iter, c, z_re, z_im, old_re, old_im, re_diff, im_diff);
+            print_period_found(check_counter, iter);
         }
         ret = 1;
     }
@@ -69,14 +76,14 @@ int check_for_period(
     return ret;
 }
 
-int execute_iterations(acb_t c, int max_iterations, slong prec, int print_periods) {
+int execute_iterations(acb_t c, int max_iterations, slong prec, int print_periods, int print_iterations, int *period) {
     int i, num_iter = MAX_ITERATIONS;
     acb_t f, z;
 
     acb_init(f);
     acb_init(z);
 
-    int check = 3;
+    int check = 1;
     int check_counter = 0;
 
     int update = 10;
@@ -106,11 +113,35 @@ int execute_iterations(acb_t c, int max_iterations, slong prec, int print_period
     // See other examples:
     // * https://github.com/HyveInnovate/gnofract4d/blob/master/examples/cpp/custom_mandelbrot_formula.c#L356-L389
     // * https://github.com/josch/mandelbrot/blob/master/mandel_mpfr.c#L109-L133
-    arb_set_str(period_tolerance, "1e-17", prec);
+    //
+    // I think this is the algorithm used but we need need the position of the first cycle:
+    // https://en.wikipedia.org/wiki/Cycle_detection#Brent's_algorithm
+    //
+    // Testing different tolerances ...
+    arb_set_str(period_tolerance, "0", prec);           // Period checking disabled
+    arb_set_str(period_tolerance, "1e-9", prec);        // Initial value for Gnofract4D
+    arb_set_str(period_tolerance, "1e-17", prec);       // Some samples use this value
+    arb_set_str(period_tolerance, "0.000000001", prec); // With this value we reach max iter
+    arb_set_str(period_tolerance, "0.00000001", prec);  // Iter 35.
+    arb_set_str(period_tolerance, "0.0015625", prec);   // Iter 14.   4/256/10 = 0,015625
+
+    *period = 0;
 
     for (i = 1; i <= max_iterations; ++i) {
 
         mandelbrot_formula(f, z, c, prec);
+
+        if (print_iterations) {
+            // Print iteration
+            print_loop_iteration(
+                    i,
+                    check, check_counter, update, update_counter,
+                    f, z, c,
+                    z_re, z_im,
+                    old_re, old_im,
+                    period_tolerance
+            );
+        }
 
         if (bailout(f, prec)) {
             num_iter = i;
@@ -126,10 +157,12 @@ int execute_iterations(acb_t c, int max_iterations, slong prec, int print_period
         acb_get_imag(z_im, z);
 
         // Check for period
-        int period_found = check_for_period(i, c, z_re, z_im, old_re, old_im, period_tolerance, prec, print_periods);
+        int period_found = check_for_period(i, c, z_re, z_im, old_re, old_im, period_tolerance, check_counter, prec,
+                                            print_periods, print_iterations);
 
-        if (period_found == 1) {
+        if (period_found) {
             num_iter = MAX_ITERATIONS;
+            *period = check_counter;
             break;
         }
         // End check for period
@@ -141,11 +174,13 @@ int execute_iterations(acb_t c, int max_iterations, slong prec, int print_period
             // Double the value of check
             if (update == update_counter) {
                 update_counter = 0;
-                // (check * 2) + 1;
-                check <<= 1;
-                check++;
+                check <<= 1; // check * 2
             }
             update_counter++;
+
+            if (print_periods) {
+                console_printf("->update old\n");
+            }
 
             arb_set(old_re, z_re);
             arb_set(old_im, z_im);
@@ -188,7 +223,10 @@ int mandelbrot_set_calculate_num_iterations_for(zpoint point, int max_iterations
         return MAX_ITERATIONS;
     }
 
-    num_iter = execute_iterations(c, max_iterations, prec, print_periods);
+    int print_iterations = 0;
+    int period;
+
+    num_iter = execute_iterations(c, max_iterations, prec, print_periods, print_iterations, &period);
 
     acb_clear(c);
     return num_iter;

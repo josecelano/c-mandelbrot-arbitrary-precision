@@ -52,4 +52,11 @@ int inside_main_cardioid(acb_t c, slong prec);
  */
 int inside_period_2_bulb(acb_t c, slong prec);
 
+/**
+ * For:
+ * Complex inside the Mandelbrot Set  -> returns the maximum number of iterations.
+ * Complex outside the Mandelbrot Set -> return the number of iterations to reach the escape condition.
+ */
+int execute_iterations(acb_t c, int max_iterations, slong prec, int print_periods, int print_iterations, int *period);
+
 #endif //C_MANDELBROT_ARBITRARY_PRECISION_SET_H

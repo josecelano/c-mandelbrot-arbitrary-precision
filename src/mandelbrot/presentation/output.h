@@ -5,13 +5,18 @@
 
 #include "../domain/fractal.h"
 
-void print_period(
+void print_loop_iteration(
         int i,
-        acb_t c,
+        int check, int check_counter, int update, int update_counter,
+        acb_t f, acb_t z, acb_t c,
         arb_t z_re, arb_t z_im,
         arb_t old_re, arb_t old_im,
-        arb_t re_diff, arb_t im_diff
+        arb_t period_tolerance
 );
+
+void print_period_checking(arb_t re_diff, arb_t im_diff);
+
+void print_period_found(int period, int i);
 
 void print_render_progress(int y, int height);
 
