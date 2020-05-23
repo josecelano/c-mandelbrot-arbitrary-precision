@@ -21,7 +21,6 @@ TEST(mandelbrot_set_should, contain_known_points_inside)
     const int max_iterations = 200;
     int i, ret;
     slong prec = 32;
-    int print_periods = 0;
     zpoint point;
     char message[100];
 

@@ -17,9 +17,6 @@ TEST_TEAR_DOWN(ascii_graph_should) {
 void calculate_completed_mandelbrot(fractal_resolution resolution, fractal_matrix *iterations_taken_matrix) {
     slong prec = 32;
     int max_iterations = 100;
-    // Verbose options
-    int print_progress = 0;
-    int print_periods = 0;
     ztile tile;
 
     app_config config;

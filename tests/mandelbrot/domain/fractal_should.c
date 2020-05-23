@@ -43,9 +43,6 @@ TEST(fractal_should, calculate_complex_points_for_a_given_resolution_and_check_i
 {
     slong prec = 32;
     int max_iterations = 200;
-    // Verbose options
-    int print_progress = 0;
-    int print_periods = 0;
     int x, y;
     char message[100];
 
@@ -96,9 +93,6 @@ TEST(fractal_should, calculate_iterations_taken_matrix_for_a_non_symmetrical_ima
 {
     slong prec = 32;
     int max_iterations = 200;
-    // Verbose options
-    int print_progress = 0;
-    int print_periods = 0;
     int x, y;
     char message[100];
 
