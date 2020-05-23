@@ -175,11 +175,13 @@ void mandelbrot_set_calculate_point(
     acb_set_from_zpoint(c, point);
 
     if (inside_main_cardioid(c, config)) {
+        *period = 1;
         acb_clear(c);
         return;
     }
 
     if (inside_period_2_bulb(c, config)) {
+        *period = 2;
         acb_clear(c);
         return;
     }
