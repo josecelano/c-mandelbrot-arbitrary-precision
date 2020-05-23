@@ -14,7 +14,7 @@
 /**
  * It returns INSIDE if the point belongs to mandelbrot Set and OUTSIDE if it does not.
  */
-int mandelbrot_set_contains(zpoint point, int max_iterations, app_config config);
+int mandelbrot_set_contains(zpoint point, app_config config);
 
 /**
  * Check is the value in the matrix represents a point inside the Mandelbrot Set.
@@ -33,8 +33,7 @@ int bailout(acb_t c, slong prec);
  * Same output values as execute_iterations_with_period_checking
  */
 void
-mandelbrot_set_calculate_point(zpoint point, int max_iterations, app_config config, int *inside, int *iterations_taken,
-                               int *period);
+mandelbrot_set_calculate_point(zpoint point, app_config config, int *inside, int *iterations_taken, int *period);
 
 /**
  * For:
@@ -47,7 +46,7 @@ mandelbrot_set_calculate_point(zpoint point, int max_iterations, app_config conf
  *      * num_iter = the maximum number of iterations.
  *      * period = 0
  */
-void execute_iterations_with_period_checking(acb_t c, int max_iterations, app_config config, int *inside,
-                                             int *iterations_taken, int *period);
+void
+execute_iterations_with_period_checking(acb_t c, app_config config, int *inside, int *iterations_taken, int *period);
 
 #endif //C_MANDELBROT_ARBITRARY_PRECISION_SET_H

@@ -15,7 +15,6 @@ TEST_TEAR_DOWN(ascii_graph_should) {
 }
 
 void calculate_completed_mandelbrot(fractal_resolution resolution, fractal_matrix *iterations_taken_matrix) {
-    int max_iterations = 100;
     ztile tile;
 
     app_config config;
@@ -25,7 +24,7 @@ void calculate_completed_mandelbrot(fractal_resolution resolution, fractal_matri
 
     ztile_set_completed_mandelbrot_set(&tile, config);
 
-    fractal_matrix_calculate_points(tile, max_iterations, config, iterations_taken_matrix);
+    fractal_matrix_calculate_points(tile, config, iterations_taken_matrix);
 
     ztile_clean(&tile);
 }

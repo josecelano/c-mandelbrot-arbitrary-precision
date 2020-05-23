@@ -56,9 +56,6 @@ void render_iterations_taken_matrix(fractal_matrix iterations_taken_matrix) {
 
 int main(int argc, const char *argv[]) {
 
-    // Max number of iterations for Mandelbrot formula
-    int max_iterations = 100;
-
     // Resolution for output image and ASCII graph
     fractal_resolution resolution = {256, 256};
 
@@ -71,7 +68,6 @@ int main(int argc, const char *argv[]) {
     // Calculate the time taken for fractal matrix generation
     clock_t time;
 
-    // App config
     app_config config;
 
     app_config_init(&config);
@@ -83,12 +79,12 @@ int main(int argc, const char *argv[]) {
     ztile_set_completed_mandelbrot_set(&tile, config);
 
     time = clock();
-    fractal_matrix_calculate_points(tile, max_iterations, config, &iterations_taken_matrix);
+    fractal_matrix_calculate_points(tile, config, &iterations_taken_matrix);
     time = clock() - time;
 
     ztile_clean(&tile);
 
-    print_performance_data(time, resolution, max_iterations, config);
+    print_performance_data(time, resolution, config);
 
     render_ppm_image(iterations_taken_matrix);
 

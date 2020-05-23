@@ -18,7 +18,6 @@ TEST_TEAR_DOWN(mandelbrot_set_should) {
 }
 
 TEST(mandelbrot_set_should, contain_known_points_inside) {
-    const int max_iterations = 200;
     int i, ret;
     zpoint point;
     char message[100];
@@ -41,7 +40,7 @@ TEST(mandelbrot_set_should, contain_known_points_inside) {
     for (i = 0; i < 6; ++i) {
         zpoint_set_from_complex_dto(&point, z_in[i], config.precision);
 
-        ret = mandelbrot_set_contains(point, max_iterations, config);
+        ret = mandelbrot_set_contains(point, config);
 
         sprintf(message, "Complex number (%s,%s) in test case #%d should be in Mandelbrot Set", z_in[i].re, z_in[i].im,
                 i);
@@ -53,7 +52,6 @@ TEST(mandelbrot_set_should, contain_known_points_inside) {
 }
 
 TEST(mandelbrot_set_should, not_contain_known_points_outside) {
-    const int max_iterations = 200;
     int i, ret;
     int print_periods = 0;
     zpoint point;
@@ -77,7 +75,7 @@ TEST(mandelbrot_set_should, not_contain_known_points_outside) {
     for (i = 0; i < 6; ++i) {
         zpoint_set_from_complex_dto(&point, z_out[i], config.precision);
 
-        ret = mandelbrot_set_contains(point, max_iterations, config);
+        ret = mandelbrot_set_contains(point, config);
 
         sprintf(message, "Complex number (%s,%s) in test case #%d should not be in Mandelbrot Set", z_out[i].re,
                 z_out[i].im, i);
@@ -195,7 +193,6 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_period_2_bulb_in_order_to_i
 }
 
 TEST(mandelbrot_set_should, do_period_checking) {
-    int max_iterations = 1000;
     acb_t c;
     char message[100];
     int inside, iterations_taken, period, expected_period;
@@ -218,7 +215,7 @@ TEST(mandelbrot_set_should, do_period_checking) {
         complex_set_from_dto(c, points[expected_period], config.precision);
 
         execute_iterations_with_period_checking(
-                c, max_iterations, config,
+                c, config,
                 &inside, &iterations_taken, &period
         );
 

@@ -15,6 +15,7 @@ typedef enum {
 
 typedef struct {
     slong precision;        // Bits of precision for C complex and real math operations library
+    int max_iterations;     // Max number of iterations for Mandelbrot formula
     int verbose_options;
 } app_config;
 

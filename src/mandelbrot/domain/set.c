@@ -11,11 +11,11 @@
 #include "./set.h"
 #include "./zpoint.h"
 
-int mandelbrot_set_contains(zpoint point, int max_iterations, app_config config) {
+int mandelbrot_set_contains(zpoint point, app_config config) {
     int inside, iterations_taken, period;
 
     mandelbrot_set_calculate_point(
-            point, max_iterations, config,
+            point, config,
             &inside, &iterations_taken, &period
     );
 
@@ -30,9 +30,8 @@ int is_value_a_inside_point(int num_iter_for_pixel) {
     return OUTSIDE;
 }
 
-void execute_iterations_with_period_checking(
-        acb_t c, int max_iterations, app_config config,
-        int *inside, int *iterations_taken, int *period) {
+void
+execute_iterations_with_period_checking(acb_t c, app_config config, int *inside, int *iterations_taken, int *period) {
     int i;
     acb_t f, z;
 
@@ -85,7 +84,7 @@ void execute_iterations_with_period_checking(
     arb_set_str(period_tolerance, "0.00000001", config.precision);  // Iter 35.
     arb_set_str(period_tolerance, "0.0015625", config.precision);   // Iter 14.   4/256/10 = 0,015625
 
-    for (i = 1; i <= max_iterations; ++i) {
+    for (i = 1; i <= config.max_iterations; ++i) {
 
         *iterations_taken = i;
 
@@ -160,10 +159,7 @@ void execute_iterations_with_period_checking(
     acb_clear(z);
 }
 
-void mandelbrot_set_calculate_point(
-        zpoint point, int max_iterations, app_config config,
-        int *inside, int *iterations_taken, int *period
-) {
+void mandelbrot_set_calculate_point(zpoint point, app_config config, int *inside, int *iterations_taken, int *period) {
     acb_t c;
 
     *inside = INSIDE;
@@ -186,7 +182,7 @@ void mandelbrot_set_calculate_point(
         return;
     }
 
-    execute_iterations_with_period_checking(c, max_iterations, config, inside, iterations_taken, period);
+    execute_iterations_with_period_checking(c, config, inside, iterations_taken, period);
 
     acb_clear(c);
 }

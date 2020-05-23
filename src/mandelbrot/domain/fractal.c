@@ -54,15 +54,8 @@ int fractal_matrix_point_belongs_to_mandelbrot_set(int x, int y, fractal_matrix 
     return is_value_a_inside_point(num_iter_for_pixel);
 }
 
-void calculate_matrix_point(
-        zpoint z_current_point,
-        int max_iterations,
-        slong prec,
-        app_config config,
-        int x,
-        int y,
-        fractal_matrix *iterations_taken_matrix
-) {
+void calculate_matrix_point(zpoint z_current_point, app_config config, int x, int y,
+                            fractal_matrix *iterations_taken_matrix) {
     int inside, iterations_taken,period;
     acb_t c;
 
@@ -83,7 +76,7 @@ void calculate_matrix_point(
     }
 
     execute_iterations_with_period_checking(
-            c, max_iterations, config,
+            c, config,
             &inside, &iterations_taken, &period
     );
 
@@ -102,42 +95,26 @@ void calculate_matrix_point(
     acb_clear(c);
 }
 
-void calculate_matrix_row(
-        zpoint zx_point_increment,
-        int max_iterations,
-        slong prec,
-        app_config config,
-        int y,
-        fractal_matrix *iterations_taken_matrix,
-        zpoint *z_current_point
-) {
+void calculate_matrix_row(zpoint zx_point_increment, app_config config, int y, fractal_matrix *iterations_taken_matrix,
+                          zpoint *z_current_point) {
     int x;
     int width = iterations_taken_matrix->resolution.width;
 
     for (x = 0; x < width; x++) {
         calculate_matrix_point(
                 *z_current_point,
-                max_iterations,
-                prec,
                 config,
                 x, y,
                 iterations_taken_matrix
         );
 
         // Increase real part to move one pixel to the right
-        zpoint_add(z_current_point, *z_current_point, zx_point_increment, prec);
+        zpoint_add(z_current_point, *z_current_point, zx_point_increment, config.precision);
     }
 }
 
-void calculate_iterations_taken_matrix(
-        zpoint left_bottom_point,
-        zpoint zx_point_increment,
-        zpoint zy_point_increment,
-        int max_iterations,
-        slong prec,
-        app_config config,
-        fractal_matrix *iterations_taken_matrix
-) {
+void calculate_iterations_taken_matrix(zpoint left_bottom_point, zpoint zx_point_increment, zpoint zy_point_increment,
+                                       app_config config, fractal_matrix *iterations_taken_matrix) {
     int y;
     zpoint z_current_point; // Represents the pixel being calculated
     fractal_resolution resolution = iterations_taken_matrix->resolution;
@@ -151,8 +128,6 @@ void calculate_iterations_taken_matrix(
 
         calculate_matrix_row(
                 zx_point_increment,
-                max_iterations,
-                prec,
                 config,
                 y,
                 iterations_taken_matrix,
@@ -167,7 +142,7 @@ void calculate_iterations_taken_matrix(
         zpoint_set_re(&z_current_point, left_bottom_point.re);
 
         // Increase imaginary part to move one pixel to the top
-        zpoint_add(&z_current_point, z_current_point, zy_point_increment, prec);
+        zpoint_add(&z_current_point, z_current_point, zy_point_increment, config.precision);
     }
 
     zpoint_clean(&z_current_point);
@@ -232,8 +207,7 @@ void calculate_real_and_imaginary_increments_per_point(
     arb_clear(step_im);
 }
 
-void fractal_matrix_calculate_points(ztile tile, int max_iterations, app_config config,
-                                     fractal_matrix *iterations_taken_matrix) {
+void fractal_matrix_calculate_points(ztile tile, app_config config, fractal_matrix *iterations_taken_matrix) {
     int x, y;
     int img_idx = 0;
     int iterations_taken;
@@ -256,8 +230,6 @@ void fractal_matrix_calculate_points(ztile tile, int max_iterations, app_config 
             tile.left_bottom_point,
             zx_point_increment,
             zy_point_increment,
-            max_iterations,
-            config.precision,
             config,
             // Output
             iterations_taken_matrix

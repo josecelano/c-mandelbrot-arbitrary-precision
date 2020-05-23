@@ -44,19 +44,14 @@ void print_render_progress(int y, int height) {
     console_flush();
 }
 
-void print_performance_data(
-        clock_t time,
-        fractal_resolution resolution,
-        int max_iterations,
-        app_config config
-) {
+void print_performance_data(clock_t time, fractal_resolution resolution, app_config config) {
     int number_of_pixels = resolution.width * resolution.height;
     double time_taken_in_seconds = ((double) time) / CLOCKS_PER_SEC;
     long double time_taken_in_nanoseconds = time_taken_in_seconds * 1000000000;
 
     console_printf("\nFor %dx%dpx image:\n", resolution.width, resolution.height);
     console_printf("* Size: %dx%dpx (%d)\n", resolution.width, resolution.height, number_of_pixels);
-    console_printf("* Max iter: %d\n", max_iterations);
+    console_printf("* Max iter: %d\n", config.max_iterations);
     console_printf("* Precision: %ld\n", config.precision);
     console_printf("* Time for matrix generation: %fs = %Lfns\n", time_taken_in_seconds, time_taken_in_nanoseconds);
     console_printf("* Performance: %Le‬ ns/px\n",
