@@ -108,7 +108,7 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_main_cardioid_in_order_to_i
     };
 
     for (i = 0; i < 5; ++i) {
-        complex_set_from_complex_dto(c, z_in[i], config.precision);
+        complex_set_from_dto(c, z_in[i], config.precision);
 
         ret = inside_main_cardioid(c, config);
 
@@ -128,7 +128,7 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_main_cardioid_in_order_to_i
     };
 
     for (i = 0; i < 5; ++i) {
-        complex_set_from_complex_dto(c, z_out[i], config.precision);
+        complex_set_from_dto(c, z_out[i], config.precision);
 
         ret = inside_main_cardioid(c, config);
 
@@ -161,7 +161,7 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_period_2_bulb_in_order_to_i
     };
 
     for (i = 0; i < 5; ++i) {
-        complex_set_from_complex_dto(c, z_in[i], config.precision);
+        complex_set_from_dto(c, z_in[i], config.precision);
 
         ret = inside_period_2_bulb(c, config);
 
@@ -181,7 +181,7 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_period_2_bulb_in_order_to_i
     };
 
     for (i = 0; i < 5; ++i) {
-        complex_set_from_complex_dto(c, z_out[i], config.precision);
+        complex_set_from_dto(c, z_out[i], config.precision);
 
         ret = inside_period_2_bulb(c, config);
 
@@ -198,72 +198,34 @@ TEST(mandelbrot_set_should, do_period_checking) {
     int max_iterations = 1000;
     acb_t c;
     char message[100];
-    int inside, iterations_taken, period;
+    int inside, iterations_taken, period, expected_period;
 
     app_config config;
     app_config_init_test(&config);
 
     acb_init(c);
 
-    // TODO: remove duplicate code
+    // Pre-selected points with known period from period 0 to 4
+    complex_dto points[5] = {
+            {"0",    "0"},
+            {"-0.1", "0.1"},
+            {"0",    "1"},
+            {"-0.1", "0.7"},
+            {"-1.3", "0"},
+    };
 
-    // Pre-selected points with known period
-    complex_dto point_with_period_0 = {"0", "0"};
-    complex_dto point_with_period_1 = {"-0.1", "0.1"};
-    complex_dto point_with_period_2 = {"0", "1"};
-    complex_dto point_with_period_3 = {"-0.1", "0.7"};
-    complex_dto point_with_period_4 = {"-1.3", "0"};
+    for (expected_period = 0; expected_period < 5; expected_period++) {
+        complex_set_from_dto(c, points[expected_period], config.precision);
 
-    // Period 0
-    complex_set_from_complex_dto(c, point_with_period_0, config.precision);
-    execute_iterations_with_period_checking(
-            c, max_iterations, config,
-            &inside, &iterations_taken, &period
-    );
+        execute_iterations_with_period_checking(
+                c, max_iterations, config,
+                &inside, &iterations_taken, &period
+        );
 
-    sprintf(message, "Point (%s,%s) should have period 0, actual %d",
-            point_with_period_0.re, point_with_period_0.im, period);
-    TEST_ASSERT_EQUAL_MESSAGE(0, period, message);
-
-    // Period 1
-    complex_set_from_complex_dto(c, point_with_period_1, config.precision);
-    execute_iterations_with_period_checking(
-            c, max_iterations, config,
-            &inside, &iterations_taken, &period
-    );
-    sprintf(message, "Point (%s,%s) should have period 1, actual %d",
-            point_with_period_1.re, point_with_period_1.im, period);
-    TEST_ASSERT_EQUAL_MESSAGE(1, period, message);
-
-    // Period 2
-    complex_set_from_complex_dto(c, point_with_period_2, config.precision);
-    execute_iterations_with_period_checking(
-            c, max_iterations, config,
-            &inside, &iterations_taken, &period
-    );
-    sprintf(message, "Point (%s,%s) should have period 2, actual %d",
-            point_with_period_2.re, point_with_period_2.im, period);
-    TEST_ASSERT_EQUAL_MESSAGE(2, period, message);
-
-    // Period 3
-    complex_set_from_complex_dto(c, point_with_period_3, config.precision);
-    execute_iterations_with_period_checking(
-            c, max_iterations, config,
-            &inside, &iterations_taken, &period
-    );
-    sprintf(message, "Point (%s,%s) should have period 3, actual %d",
-            point_with_period_3.re, point_with_period_3.im, period);
-    TEST_ASSERT_EQUAL_MESSAGE(3, period, message);
-
-    // Period 4
-    complex_set_from_complex_dto(c, point_with_period_4, config.precision);
-    execute_iterations_with_period_checking(
-            c, max_iterations, config,
-            &inside, &iterations_taken, &period
-    );
-    sprintf(message, "Point (%s,%s) should have period 4, actual %d",
-            point_with_period_4.re, point_with_period_4.im, period);
-    TEST_ASSERT_EQUAL_MESSAGE(4, period, message);
+        sprintf(message, "Point (%s,%s) should have period %d, actual %d",
+                points[expected_period].re, points[expected_period].im, expected_period, period);
+        TEST_ASSERT_EQUAL_MESSAGE(expected_period, period, message);
+    }
 
     acb_clear(c);
 }
