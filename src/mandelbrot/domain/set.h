@@ -36,16 +36,6 @@ int mandelbrot_set_calculate_num_iterations_for(zpoint point, int max_iterations
 int bailout(acb_t c, slong prec);
 
 /**
- * It returns 1 if the complex c is inside the period-2 bulb of Mandelbrot Set (big circle on the left of main body).
- * Formula:
- * https://github.com/josecelano/c-mandelbrot-arbitrary-precision/blob/master/doc/img/cardioid-and-period-2-checking.png
- * More info:
- * https://en.wikipedia.org/wiki/Mandelbrot_set#Main_cardioid_and_period_bulbs
- * https://en.wikibooks.org/wiki/Fractals/Iterations_in_the_complex_plane/Mandelbrot_set/mandelbrot#Cardioid_and_period-2_checking
- */
-int inside_period_2_bulb(acb_t c, slong prec, app_config config);
-
-/**
  * For:
  * Complex inside the Mandelbrot Set  -> returns the maximum number of iterations.
  * Complex outside the Mandelbrot Set -> return the number of iterations to reach the escape condition.
