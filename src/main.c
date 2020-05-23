@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "mandelbrot/application/config.h"
 #include "mandelbrot/domain/fractal.h"
 #include "mandelbrot/domain/set.h"
 #include "mandelbrot/domain/ztile.h"
@@ -74,9 +75,13 @@ int main(int argc, const char *argv[]) {
     // Calculate the time taken for fractal matrix generation
     clock_t time;
 
+    // App config
+    app_config config;
     // Verbose options
     int print_progress = 1;
     int print_periods = 0;
+
+    app_config_init(&config);
 
     fractal_matrix_init(&iterations_taken_matrix, resolution);
 
@@ -99,6 +104,8 @@ int main(int argc, const char *argv[]) {
     render_iterations_taken_matrix(iterations_taken_matrix);
 
     fractal_matrix_clean(&iterations_taken_matrix);
+
+    app_config_clear(&config);
 
     return 0;
 }

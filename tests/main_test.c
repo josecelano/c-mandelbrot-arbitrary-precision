@@ -7,6 +7,7 @@ static void RunAllTests(void)
     RUN_TEST_GROUP(formula_should);
     RUN_TEST_GROUP(image_should);
     RUN_TEST_GROUP(mandelbrot_set_should);
+    RUN_TEST_GROUP(app_config_should);
 
     // Integration tests
     RUN_TEST_GROUP(ascii_graph_should);
