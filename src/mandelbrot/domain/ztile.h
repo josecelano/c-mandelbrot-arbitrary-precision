@@ -1,7 +1,8 @@
 #ifndef C_MANDELBROT_ARBITRARY_PRECISION_ZTILE_H
 #define C_MANDELBROT_ARBITRARY_PRECISION_ZTILE_H
 
-#include "zpoint.h"
+#include "../application/config.h"
+#include "./zpoint.h"
 
 /**
  * It represents the portion of the Mandelbrot Set you want to draw with complex points coordinates
@@ -24,9 +25,7 @@ void ztile_set_from_str(
 
 /**
  * Initialize tile with the completed Mandelbrot from point (-2,-2) to (2,2)
- * @param tile
- * @param prec
  */
-void ztile_set_completed_mandelbrot_set(ztile *tile, slong prec);
+void ztile_set_completed_mandelbrot_set(ztile *tile, app_config config);
 
 #endif //C_MANDELBROT_ARBITRARY_PRECISION_ZTILE_H

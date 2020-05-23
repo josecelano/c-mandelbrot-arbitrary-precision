@@ -1,6 +1,6 @@
 #include "period2_detection.h"
 
-int inside_period_2_bulb(acb_t c, slong prec, app_config config) {
+int inside_period_2_bulb(acb_t c, app_config config) {
     int ret = 0;
     arb_t x, y;           // Real and imaginary parts
     arb_t temp;           // Temporal results and constants in the formula
@@ -16,8 +16,8 @@ int inside_period_2_bulb(acb_t c, slong prec, app_config config) {
     arb_init(y_sqr);
 
     // Set formula constants
-    arb_set_str(_0_0625, "0.0625", prec);
-    arb_set_str(_1, "1", prec);
+    arb_set_str(_0_0625, "0.0625", config.precision);
+    arb_set_str(_1, "1", config.precision);
 
     // Get real and imaginary parts
     acb_get_real(x, c);
@@ -26,13 +26,13 @@ int inside_period_2_bulb(acb_t c, slong prec, app_config config) {
     /**  Calculate left side of comparison **/
 
     // temp = x + 1
-    arb_add(temp, x, _1, prec);
+    arb_add(temp, x, _1, config.precision);
     // temp = (x + 1)²
-    arb_sqr(temp, temp, prec);
+    arb_sqr(temp, temp, config.precision);
     // y²
-    arb_sqr(y_sqr, y, prec);
+    arb_sqr(y_sqr, y, config.precision);
     // temp = (x + 1)² + y²
-    arb_add(temp, temp, y_sqr, prec);
+    arb_add(temp, temp, y_sqr, config.precision);
 
     // temp < 1/16
     if (arb_lt(temp, _0_0625)) {

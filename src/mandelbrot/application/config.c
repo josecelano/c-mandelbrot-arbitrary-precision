@@ -1,11 +1,13 @@
 #include "config.h"
 
 void app_set_default_production_config(app_config *config) {
+    config->precision = 32;
     config->verbose_options = 0;
     config->verbose_options = config->verbose_options | PRINT_PROGRESS;
 }
 
 void app_set_default_test_config(app_config *config) {
+    config->precision = 32;
     config->verbose_options = 0;
 }
 

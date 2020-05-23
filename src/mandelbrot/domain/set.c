@@ -11,11 +11,11 @@
 #include "./set.h"
 #include "./zpoint.h"
 
-int mandelbrot_set_contains(zpoint point, int max_iterations, slong prec, app_config config) {
+int mandelbrot_set_contains(zpoint point, int max_iterations, app_config config) {
     int inside, iterations_taken, period;
 
     mandelbrot_set_calculate_point(
-            point, max_iterations, prec, config,
+            point, max_iterations, config,
             &inside, &iterations_taken, &period
     );
 
@@ -31,10 +31,8 @@ int is_value_a_inside_point(int num_iter_for_pixel) {
 }
 
 void execute_iterations_with_period_checking(
-        acb_t c, int max_iterations, slong prec, app_config config,
-        // Output
-        int *inside, int *iterations_taken, int *period
-) {
+        acb_t c, int max_iterations, app_config config,
+        int *inside, int *iterations_taken, int *period) {
     int i;
     acb_t f, z;
 
@@ -66,8 +64,8 @@ void execute_iterations_with_period_checking(
     arb_init(period_tolerance);
 
     // Period checking
-    arb_set_str(old_re, "0.0", prec);
-    arb_set_str(old_im, "0.0", prec);
+    arb_set_str(old_re, "0.0", config.precision);
+    arb_set_str(old_im, "0.0", config.precision);
 
     // TODO:
     // * We need to know how to calculate the period tolerance
@@ -80,18 +78,18 @@ void execute_iterations_with_period_checking(
     // https://en.wikipedia.org/wiki/Cycle_detection#Brent's_algorithm
     //
     // Testing different tolerances ...
-    arb_set_str(period_tolerance, "0", prec);           // Period checking disabled
-    arb_set_str(period_tolerance, "1e-9", prec);        // Initial value for Gnofract4D
-    arb_set_str(period_tolerance, "1e-17", prec);       // Some samples use this value
-    arb_set_str(period_tolerance, "0.000000001", prec); // With this value we reach max iter
-    arb_set_str(period_tolerance, "0.00000001", prec);  // Iter 35.
-    arb_set_str(period_tolerance, "0.0015625", prec);   // Iter 14.   4/256/10 = 0,015625
+    arb_set_str(period_tolerance, "0", config.precision);           // Period checking disabled
+    arb_set_str(period_tolerance, "1e-9", config.precision);        // Initial value for Gnofract4D
+    arb_set_str(period_tolerance, "1e-17", config.precision);       // Some samples use this value
+    arb_set_str(period_tolerance, "0.000000001", config.precision); // With this value we reach max iter
+    arb_set_str(period_tolerance, "0.00000001", config.precision);  // Iter 35.
+    arb_set_str(period_tolerance, "0.0015625", config.precision);   // Iter 14.   4/256/10 = 0,015625
 
     for (i = 1; i <= max_iterations; ++i) {
 
         *iterations_taken = i;
 
-        mandelbrot_formula(f, z, c, prec);
+        mandelbrot_formula(f, z, c, config.precision);
 
         if (app_config_verbose_option_enabled(config, PRINT_ITERATIONS)) {
             // Print iteration
@@ -105,7 +103,7 @@ void execute_iterations_with_period_checking(
             );
         }
 
-        if (bailout(f, prec)) {
+        if (bailout(f, config.precision)) {
             *inside = OUTSIDE;
             break;
         }
@@ -119,8 +117,7 @@ void execute_iterations_with_period_checking(
         acb_get_imag(z_im, z);
 
         // Check for period
-        int period_found = check_for_period(i, c, z_re, z_im, old_re, old_im, period_tolerance, check_counter, prec,
-                                            config);
+        int period_found = check_for_period(i, c, z_re, z_im, old_re, old_im, period_tolerance, check_counter, config);
 
         if (period_found) {
             *period = check_counter;
@@ -164,8 +161,7 @@ void execute_iterations_with_period_checking(
 }
 
 void mandelbrot_set_calculate_point(
-        zpoint point, int max_iterations, slong prec, app_config config,
-        // Output
+        zpoint point, int max_iterations, app_config config,
         int *inside, int *iterations_taken, int *period
 ) {
     acb_t c;
@@ -178,21 +174,19 @@ void mandelbrot_set_calculate_point(
 
     acb_set_from_zpoint(c, point);
 
-    if (inside_main_cardioid(c, prec, config)) {
+    if (inside_main_cardioid(c, config)) {
         acb_clear(c);
         return;
     }
 
-    if (inside_period_2_bulb(c, prec, config)) {
+    if (inside_period_2_bulb(c, config)) {
         acb_clear(c);
         return;
     }
 
-    execute_iterations_with_period_checking(c, max_iterations, prec, config, inside, iterations_taken, period);
+    execute_iterations_with_period_checking(c, max_iterations, config, inside, iterations_taken, period);
 
     acb_clear(c);
-
-    return iterations_taken;
 }
 
 int bailout(acb_t c, slong prec) {

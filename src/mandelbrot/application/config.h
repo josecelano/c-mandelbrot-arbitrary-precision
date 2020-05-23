@@ -1,6 +1,8 @@
 #ifndef C_MANDELBROT_ARBITRARY_PRECISION_CONFIG_H
 #define C_MANDELBROT_ARBITRARY_PRECISION_CONFIG_H
 
+#include "acb.h"
+
 #define ENABLED 1
 #define DISABLED 0
 
@@ -12,6 +14,7 @@ typedef enum {
 } verbose_option;
 
 typedef struct {
+    slong precision;        // Bits of precision for C complex and real math operations library
     int verbose_options;
 } app_config;
 

@@ -24,7 +24,7 @@ void print_performance_data(
         clock_t time,
         fractal_resolution resolution,
         int max_iterations,
-        slong prec
+        app_config config
 );
 
 #endif //C_MANDELBROT_ARBITRARY_PRECISION_OUTPUT_H

@@ -70,22 +70,22 @@ void calculate_matrix_point(
 
     acb_set_from_zpoint(c, z_current_point);
 
-    if (inside_main_cardioid(c, prec, config)) {
+    if (inside_main_cardioid(c, config)) {
         fractal_matrix_set_num_iter_per_point(iterations_taken_matrix, x, y, MAX_ITERATIONS);
         acb_clear(c);
         return;
     }
 
-    if (inside_period_2_bulb(c, prec, config)) {
+    if (inside_period_2_bulb(c, config)) {
         fractal_matrix_set_num_iter_per_point(iterations_taken_matrix, x, y, MAX_ITERATIONS);
         acb_clear(c);
         return;
     }
 
     execute_iterations_with_period_checking(
-            c, max_iterations, prec, config,
+            c, max_iterations, config,
             &inside, &iterations_taken, &period
-            );
+    );
 
     /*
      * TODO: fractal_matrix stores -1 for points inside Mandelbrot Set.
@@ -232,13 +232,8 @@ void calculate_real_and_imaginary_increments_per_point(
     arb_clear(step_im);
 }
 
-void fractal_matrix_calculate_points(
-        ztile tile,
-        int max_iterations,
-        slong prec,
-        app_config config,
-        fractal_matrix *iterations_taken_matrix
-) {
+void fractal_matrix_calculate_points(ztile tile, int max_iterations, app_config config,
+                                     fractal_matrix *iterations_taken_matrix) {
     int x, y;
     int img_idx = 0;
     int iterations_taken;
@@ -251,7 +246,7 @@ void fractal_matrix_calculate_points(
     calculate_real_and_imaginary_increments_per_point(
             tile,
             iterations_taken_matrix->resolution,
-            prec,
+            config.precision,
             // Output
             &zx_point_increment,
             &zy_point_increment
@@ -262,7 +257,7 @@ void fractal_matrix_calculate_points(
             zx_point_increment,
             zy_point_increment,
             max_iterations,
-            prec,
+            config.precision,
             config,
             // Output
             iterations_taken_matrix

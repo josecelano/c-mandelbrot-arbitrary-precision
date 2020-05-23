@@ -13,6 +13,6 @@
  * https://en.wikipedia.org/wiki/Mandelbrot_set#Main_cardioid_and_period_bulbs
  * https://en.wikibooks.org/wiki/Fractals/Iterations_in_the_complex_plane/Mandelbrot_set/mandelbrot#Cardioid_and_period-2_checking
  */
-int inside_period_2_bulb(acb_t c, slong prec, app_config config);
+int inside_period_2_bulb(acb_t c, app_config config);
 
 #endif //C_MANDELBROT_ARBITRARY_PRECISION_PERIOD2_DETECTION_H

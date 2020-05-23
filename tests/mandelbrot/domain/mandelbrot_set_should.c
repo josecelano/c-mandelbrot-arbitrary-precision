@@ -20,7 +20,6 @@ TEST_TEAR_DOWN(mandelbrot_set_should) {
 TEST(mandelbrot_set_should, contain_known_points_inside) {
     const int max_iterations = 200;
     int i, ret;
-    slong prec = 32;
     zpoint point;
     char message[100];
 
@@ -40,9 +39,9 @@ TEST(mandelbrot_set_should, contain_known_points_inside) {
     };
 
     for (i = 0; i < 6; ++i) {
-        zpoint_set_from_complex_dto(&point, z_in[i], prec);
+        zpoint_set_from_complex_dto(&point, z_in[i], config.precision);
 
-        ret = mandelbrot_set_contains(point, max_iterations, prec, config);
+        ret = mandelbrot_set_contains(point, max_iterations, config);
 
         sprintf(message, "Complex number (%s,%s) in test case #%d should be in Mandelbrot Set", z_in[i].re, z_in[i].im,
                 i);
@@ -56,7 +55,6 @@ TEST(mandelbrot_set_should, contain_known_points_inside) {
 TEST(mandelbrot_set_should, not_contain_known_points_outside) {
     const int max_iterations = 200;
     int i, ret;
-    slong prec = 32;
     int print_periods = 0;
     zpoint point;
     char message[100];
@@ -77,9 +75,9 @@ TEST(mandelbrot_set_should, not_contain_known_points_outside) {
     };
 
     for (i = 0; i < 6; ++i) {
-        zpoint_set_from_complex_dto(&point, z_out[i], prec);
+        zpoint_set_from_complex_dto(&point, z_out[i], config.precision);
 
-        ret = mandelbrot_set_contains(point, max_iterations, prec, config);
+        ret = mandelbrot_set_contains(point, max_iterations, config);
 
         sprintf(message, "Complex number (%s,%s) in test case #%d should not be in Mandelbrot Set", z_out[i].re,
                 z_out[i].im, i);
@@ -91,7 +89,6 @@ TEST(mandelbrot_set_should, not_contain_known_points_outside) {
 }
 
 TEST(mandelbrot_set_should, check_if_point_is_inside_main_cardioid_in_order_to_increase_performace) {
-    slong prec = 32;
     acb_t c;
     int i, ret;
     char message[100];
@@ -111,9 +108,9 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_main_cardioid_in_order_to_i
     };
 
     for (i = 0; i < 5; ++i) {
-        complex_set_from_complex_dto(c, z_in[i], prec);
+        complex_set_from_complex_dto(c, z_in[i], config.precision);
 
-        ret = inside_main_cardioid(c, prec, config);
+        ret = inside_main_cardioid(c, config);
 
         sprintf(message, "complex number (%s,%s) in test case #%d is not inside the main cardioid", z_in[i].re,
                 z_in[i].im, i);
@@ -131,9 +128,9 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_main_cardioid_in_order_to_i
     };
 
     for (i = 0; i < 5; ++i) {
-        complex_set_from_complex_dto(c, z_out[i], prec);
+        complex_set_from_complex_dto(c, z_out[i], config.precision);
 
-        ret = inside_main_cardioid(c, prec, config);
+        ret = inside_main_cardioid(c, config);
 
         sprintf(message, "complex number (%s,%s) in test case #%d is not outside the main cardioid", z_out[i].re,
                 z_out[i].im, i);
@@ -145,7 +142,6 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_main_cardioid_in_order_to_i
 }
 
 TEST(mandelbrot_set_should, check_if_point_is_inside_period_2_bulb_in_order_to_increase_performace) {
-    slong prec = 32;
     acb_t c;
     int i, ret;
     char message[100];
@@ -165,9 +161,9 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_period_2_bulb_in_order_to_i
     };
 
     for (i = 0; i < 5; ++i) {
-        complex_set_from_complex_dto(c, z_in[i], prec);
+        complex_set_from_complex_dto(c, z_in[i], config.precision);
 
-        ret = inside_period_2_bulb(c, prec, config);
+        ret = inside_period_2_bulb(c, config);
 
         sprintf(message, "complex number (%s,%s) in test case #%d is not inside the period-2 bulb", z_in[i].re,
                 z_in[i].im, i);
@@ -185,9 +181,9 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_period_2_bulb_in_order_to_i
     };
 
     for (i = 0; i < 5; ++i) {
-        complex_set_from_complex_dto(c, z_out[i], prec);
+        complex_set_from_complex_dto(c, z_out[i], config.precision);
 
-        ret = inside_period_2_bulb(c, prec, config);
+        ret = inside_period_2_bulb(c, config);
 
         sprintf(message, "complex number (%s,%s) in test case #%d is not outside the period-2 bulb", z_out[i].re,
                 z_out[i].im, i);
@@ -199,7 +195,6 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_period_2_bulb_in_order_to_i
 }
 
 TEST(mandelbrot_set_should, do_period_checking) {
-    slong prec = 32;
     int max_iterations = 1000;
     acb_t c;
     char message[100];
@@ -220,9 +215,9 @@ TEST(mandelbrot_set_should, do_period_checking) {
     complex_dto point_with_period_4 = {"-1.3", "0"};
 
     // Period 0
-    complex_set_from_complex_dto(c, point_with_period_0, prec);
+    complex_set_from_complex_dto(c, point_with_period_0, config.precision);
     execute_iterations_with_period_checking(
-            c, max_iterations, prec, config,
+            c, max_iterations, config,
             &inside, &iterations_taken, &period
     );
 
@@ -231,9 +226,9 @@ TEST(mandelbrot_set_should, do_period_checking) {
     TEST_ASSERT_EQUAL_MESSAGE(0, period, message);
 
     // Period 1
-    complex_set_from_complex_dto(c, point_with_period_1, prec);
+    complex_set_from_complex_dto(c, point_with_period_1, config.precision);
     execute_iterations_with_period_checking(
-            c, max_iterations, prec, config,
+            c, max_iterations, config,
             &inside, &iterations_taken, &period
     );
     sprintf(message, "Point (%s,%s) should have period 1, actual %d",
@@ -241,9 +236,9 @@ TEST(mandelbrot_set_should, do_period_checking) {
     TEST_ASSERT_EQUAL_MESSAGE(1, period, message);
 
     // Period 2
-    complex_set_from_complex_dto(c, point_with_period_2, prec);
+    complex_set_from_complex_dto(c, point_with_period_2, config.precision);
     execute_iterations_with_period_checking(
-            c, max_iterations, prec, config,
+            c, max_iterations, config,
             &inside, &iterations_taken, &period
     );
     sprintf(message, "Point (%s,%s) should have period 2, actual %d",
@@ -251,9 +246,9 @@ TEST(mandelbrot_set_should, do_period_checking) {
     TEST_ASSERT_EQUAL_MESSAGE(2, period, message);
 
     // Period 3
-    complex_set_from_complex_dto(c, point_with_period_3, prec);
+    complex_set_from_complex_dto(c, point_with_period_3, config.precision);
     execute_iterations_with_period_checking(
-            c, max_iterations, prec, config,
+            c, max_iterations, config,
             &inside, &iterations_taken, &period
     );
     sprintf(message, "Point (%s,%s) should have period 3, actual %d",
@@ -261,9 +256,9 @@ TEST(mandelbrot_set_should, do_period_checking) {
     TEST_ASSERT_EQUAL_MESSAGE(3, period, message);
 
     // Period 4
-    complex_set_from_complex_dto(c, point_with_period_4, prec);
+    complex_set_from_complex_dto(c, point_with_period_4, config.precision);
     execute_iterations_with_period_checking(
-            c, max_iterations, prec, config,
+            c, max_iterations, config,
             &inside, &iterations_taken, &period
     );
     sprintf(message, "Point (%s,%s) should have period 4, actual %d",

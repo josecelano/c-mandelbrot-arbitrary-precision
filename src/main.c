@@ -56,10 +56,6 @@ void render_iterations_taken_matrix(fractal_matrix iterations_taken_matrix) {
 
 int main(int argc, const char *argv[]) {
 
-    // Bits of precision for C complex and real math operations library
-    // http://arblib.org/acb.html#precision-and-comparisons
-    slong prec = 32;
-
     // Max number of iterations for Mandelbrot formula
     int max_iterations = 100;
 
@@ -84,15 +80,15 @@ int main(int argc, const char *argv[]) {
 
     ztile_init(&tile);
 
-    ztile_set_completed_mandelbrot_set(&tile, prec);
+    ztile_set_completed_mandelbrot_set(&tile, config);
 
     time = clock();
-    fractal_matrix_calculate_points(tile, max_iterations, prec, config, &iterations_taken_matrix);
+    fractal_matrix_calculate_points(tile, max_iterations, config, &iterations_taken_matrix);
     time = clock() - time;
 
     ztile_clean(&tile);
 
-    print_performance_data(time, resolution, max_iterations, prec);
+    print_performance_data(time, resolution, max_iterations, config);
 
     render_ppm_image(iterations_taken_matrix);
 
