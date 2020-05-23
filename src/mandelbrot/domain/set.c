@@ -12,15 +12,14 @@
 #include "./zpoint.h"
 
 int mandelbrot_set_contains(zpoint point, int max_iterations, slong prec, app_config config) {
-    int iterations_taken;
+    int inside, iterations_taken, period;
 
-    iterations_taken = mandelbrot_set_calculate_num_iterations_for(point, max_iterations, prec, config);
+    mandelbrot_set_calculate_point(
+            point, max_iterations, prec, config,
+            &inside, &iterations_taken, &period
+    );
 
-    if (iterations_taken == MAX_ITERATIONS) {
-        return INSIDE;
-    }
-
-    return OUTSIDE;
+    return inside;
 }
 
 int is_value_a_inside_point(int num_iter_for_pixel) {
@@ -31,9 +30,17 @@ int is_value_a_inside_point(int num_iter_for_pixel) {
     return OUTSIDE;
 }
 
-int execute_iterations(acb_t c, int max_iterations, slong prec, app_config config, int *period) {
-    int i, num_iter = MAX_ITERATIONS;
+void execute_iterations_with_period_checking(
+        acb_t c, int max_iterations, slong prec, app_config config,
+        // Output
+        int *inside, int *iterations_taken, int *period
+) {
+    int i;
     acb_t f, z;
+
+    *inside = INSIDE;
+    *iterations_taken = 0;
+    *period = 0;
 
     acb_init(f);
     acb_init(z);
@@ -80,9 +87,9 @@ int execute_iterations(acb_t c, int max_iterations, slong prec, app_config confi
     arb_set_str(period_tolerance, "0.00000001", prec);  // Iter 35.
     arb_set_str(period_tolerance, "0.0015625", prec);   // Iter 14.   4/256/10 = 0,015625
 
-    *period = 0;
-
     for (i = 1; i <= max_iterations; ++i) {
+
+        *iterations_taken = i;
 
         mandelbrot_formula(f, z, c, prec);
 
@@ -99,7 +106,7 @@ int execute_iterations(acb_t c, int max_iterations, slong prec, app_config confi
         }
 
         if (bailout(f, prec)) {
-            num_iter = i;
+            *inside = OUTSIDE;
             break;
         }
 
@@ -112,10 +119,10 @@ int execute_iterations(acb_t c, int max_iterations, slong prec, app_config confi
         acb_get_imag(z_im, z);
 
         // Check for period
-        int period_found = check_for_period(i, c, z_re, z_im, old_re, old_im, period_tolerance, check_counter, prec, config);
+        int period_found = check_for_period(i, c, z_re, z_im, old_re, old_im, period_tolerance, check_counter, prec,
+                                            config);
 
         if (period_found) {
-            num_iter = MAX_ITERATIONS;
             *period = check_counter;
             break;
         }
@@ -154,14 +161,18 @@ int execute_iterations(acb_t c, int max_iterations, slong prec, app_config confi
 
     acb_clear(f);
     acb_clear(z);
-
-    return num_iter;
 }
 
-int mandelbrot_set_calculate_num_iterations_for(zpoint point, int max_iterations, slong prec, app_config config) {
-
-    int inside = 0, i, num_iter = MAX_ITERATIONS;
+void mandelbrot_set_calculate_point(
+        zpoint point, int max_iterations, slong prec, app_config config,
+        // Output
+        int *inside, int *iterations_taken, int *period
+) {
     acb_t c;
+
+    *inside = INSIDE;
+    *iterations_taken = 0;
+    *period = 0;
 
     acb_init(c);
 
@@ -169,20 +180,19 @@ int mandelbrot_set_calculate_num_iterations_for(zpoint point, int max_iterations
 
     if (inside_main_cardioid(c, prec, config)) {
         acb_clear(c);
-        return MAX_ITERATIONS;
+        return;
     }
 
     if (inside_period_2_bulb(c, prec, config)) {
         acb_clear(c);
-        return MAX_ITERATIONS;
+        return;
     }
 
-    int period;
-
-    num_iter = execute_iterations(c, max_iterations, prec, config, &period);
+    execute_iterations_with_period_checking(c, max_iterations, prec, config, inside, iterations_taken, period);
 
     acb_clear(c);
-    return num_iter;
+
+    return iterations_taken;
 }
 
 int bailout(acb_t c, slong prec) {

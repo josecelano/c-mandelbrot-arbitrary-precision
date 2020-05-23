@@ -3,13 +3,16 @@
 
 #include "acb.h"
 #include "arb.h"
-#include "complex.h"
-#include "fractal.h"
-#include "set.h"
-#include "zpoint.h"
-#include "ztile.h"
 
 #include "../presentation/output.h"
+#include "./complex.h"
+#include "./fractal.h"
+#include "./optimisation/main_cardioid_detection.h"
+#include "./optimisation/period2_detection.h"
+#include "./optimisation/periodicity_checking.h"
+#include "./set.h"
+#include "./zpoint.h"
+#include "./ztile.h"
 
 void fractal_matrix_init(fractal_matrix *iterations_taken_matrix, fractal_resolution resolution) {
     int matrix_size;
@@ -60,12 +63,43 @@ void calculate_matrix_point(
         int y,
         fractal_matrix *iterations_taken_matrix
 ) {
-    int iterations_taken;
+    int inside, iterations_taken,period;
+    acb_t c;
 
-    // Check if point belongs to Mandelbrot Set
-    iterations_taken = mandelbrot_set_calculate_num_iterations_for(z_current_point, max_iterations, prec, config);
+    acb_init(c);
+
+    acb_set_from_zpoint(c, z_current_point);
+
+    if (inside_main_cardioid(c, prec, config)) {
+        fractal_matrix_set_num_iter_per_point(iterations_taken_matrix, x, y, MAX_ITERATIONS);
+        acb_clear(c);
+        return;
+    }
+
+    if (inside_period_2_bulb(c, prec, config)) {
+        fractal_matrix_set_num_iter_per_point(iterations_taken_matrix, x, y, MAX_ITERATIONS);
+        acb_clear(c);
+        return;
+    }
+
+    execute_iterations_with_period_checking(
+            c, max_iterations, prec, config,
+            &inside, &iterations_taken, &period
+            );
+
+    /*
+     * TODO: fractal_matrix stores -1 for points inside Mandelbrot Set.
+     * -1 means max number of iterations in the loop.
+     * We are in a WIP to return the ral number of iterations and an additional value that indicates whether the point
+     * is INSIDE or not.
+     */
+    if (inside == INSIDE) {
+        iterations_taken = MAX_ITERATIONS;
+    }
 
     fractal_matrix_set_num_iter_per_point(iterations_taken_matrix, x, y, iterations_taken);
+
+    acb_clear(c);
 }
 
 void calculate_matrix_row(
