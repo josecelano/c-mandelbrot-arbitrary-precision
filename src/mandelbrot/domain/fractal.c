@@ -29,8 +29,8 @@ void fractal_matrix_clean(fractal_matrix *iterations_taken_matrix) {
 }
 
 void
-fractal_matrix_set_num_iter_per_point(fractal_matrix *iterations_taken_matrix, int x, int y, int iterations_taken) {
-    iterations_taken_matrix->data[(y * iterations_taken_matrix->resolution.width) + x] = iterations_taken;
+fractal_matrix_set_num_iter_per_point(fractal_matrix *iterations_taken_matrix, point p, int iterations_taken) {
+    iterations_taken_matrix->data[(p.y * iterations_taken_matrix->resolution.width) + p.x] = iterations_taken;
 }
 
 void fractal_matrix_initialize_data(fractal_matrix iterations_taken_matrix, int *iterations_taken) {
@@ -42,21 +42,21 @@ void fractal_matrix_initialize_data(fractal_matrix iterations_taken_matrix, int 
     }
 }
 
-int fractal_matrix_get_num_iter_per_point(int x, int y, fractal_matrix iterations_taken_matrix) {
+int fractal_matrix_get_num_iter_per_point(point p, fractal_matrix iterations_taken_matrix) {
     int width = iterations_taken_matrix.resolution.width;
     int height = iterations_taken_matrix.resolution.height;
 
-    return iterations_taken_matrix.data[(height - 1 - y) * width + x];
+    return iterations_taken_matrix.data[(height - 1 - p.y) * width + p.x];
 }
 
-int fractal_matrix_point_belongs_to_mandelbrot_set(int x, int y, fractal_matrix iterations_taken_matrix) {
-    int num_iter_for_pixel = fractal_matrix_get_num_iter_per_point(x, y, iterations_taken_matrix);
+int fractal_matrix_point_belongs_to_mandelbrot_set(point p, fractal_matrix iterations_taken_matrix) {
+    int num_iter_for_pixel = fractal_matrix_get_num_iter_per_point(p, iterations_taken_matrix);
     return is_value_a_inside_point(num_iter_for_pixel);
 }
 
-void calculate_matrix_point(zpoint z_current_point, app_config config, int x, int y,
-                            fractal_matrix *iterations_taken_matrix) {
-    int inside, iterations_taken,period;
+void
+calculate_matrix_point(zpoint z_current_point, point p, app_config config, fractal_matrix *iterations_taken_matrix) {
+    int inside, iterations_taken, period;
     acb_t c;
 
     acb_init(c);
@@ -64,13 +64,13 @@ void calculate_matrix_point(zpoint z_current_point, app_config config, int x, in
     acb_set_from_zpoint(c, z_current_point);
 
     if (inside_main_cardioid(c, config)) {
-        fractal_matrix_set_num_iter_per_point(iterations_taken_matrix, x, y, MAX_ITERATIONS);
+        fractal_matrix_set_num_iter_per_point(iterations_taken_matrix, p, MAX_ITERATIONS);
         acb_clear(c);
         return;
     }
 
     if (inside_period_2_bulb(c, config)) {
-        fractal_matrix_set_num_iter_per_point(iterations_taken_matrix, x, y, MAX_ITERATIONS);
+        fractal_matrix_set_num_iter_per_point(iterations_taken_matrix, p, MAX_ITERATIONS);
         acb_clear(c);
         return;
     }
@@ -90,26 +90,31 @@ void calculate_matrix_point(zpoint z_current_point, app_config config, int x, in
         iterations_taken = MAX_ITERATIONS;
     }
 
-    fractal_matrix_set_num_iter_per_point(iterations_taken_matrix, x, y, iterations_taken);
+    fractal_matrix_set_num_iter_per_point(iterations_taken_matrix, p, iterations_taken);
 
     acb_clear(c);
+}
+
+void calculate_next_point_to_the_right(zpoint *z, zpoint z_current_point, zpoint zx_point_increment, slong prec) {
+    // Increase real part to move one pixel to the right
+    zpoint_add(z, z_current_point, zx_point_increment, prec);
 }
 
 void calculate_matrix_row(zpoint zx_point_increment, app_config config, int y, fractal_matrix *iterations_taken_matrix,
                           zpoint *z_current_point) {
     int x;
     int width = iterations_taken_matrix->resolution.width;
+    point current_point;
 
     for (x = 0; x < width; x++) {
-        calculate_matrix_point(
-                *z_current_point,
-                config,
-                x, y,
-                iterations_taken_matrix
-        );
+        point_set(&current_point, x, y);
 
-        // Increase real part to move one pixel to the right
-        zpoint_add(z_current_point, *z_current_point, zx_point_increment, config.precision);
+        calculate_matrix_point(
+                *z_current_point, current_point,
+                config,
+                iterations_taken_matrix);
+
+        calculate_next_point_to_the_right(z_current_point, *z_current_point, zx_point_increment, config.precision);
     }
 }
 

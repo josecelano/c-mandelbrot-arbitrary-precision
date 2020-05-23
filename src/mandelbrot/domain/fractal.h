@@ -5,6 +5,7 @@
 #include "ztile.h"
 
 #include "../application/config.h"
+#include "point.h"
 
 typedef struct {
     int width;
@@ -30,12 +31,12 @@ void fractal_matrix_initialize_data(fractal_matrix iterations_taken_matrix, int 
  * Iteration taken matrix is flipped horizontally, that's is to say y pixel coordinates increase from bottom to top.
  * For standard graphics format (used in PPM format) (0,0) pixel coordinates is the left top corner of the image.
  */
-int fractal_matrix_get_num_iter_per_point(int x, int y, fractal_matrix iterations_taken_matrix);
+int fractal_matrix_get_num_iter_per_point(point p, fractal_matrix iterations_taken_matrix);
 
 /**
  * It returns INSIDE if the point in the matrix belongs to Mandelbrot Set.
  */
-int fractal_matrix_point_belongs_to_mandelbrot_set(int x, int y, fractal_matrix iterations_taken_matrix);
+int fractal_matrix_point_belongs_to_mandelbrot_set(point p, fractal_matrix iterations_taken_matrix);
 
 /**
  * For points inside Mandelbrot Set it returns MAX_ITERATIONS

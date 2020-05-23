@@ -21,12 +21,16 @@ void test_assert_equal_iteration_matrix(
     int x, y, expected_num_iter, num_iter;
     char message[100];
     fractal_resolution resolution = iterations_taken_matrix.resolution;
+    point p;
 
     for (y = 0; y < resolution.height; y++) {
         for (x = 0; x < resolution.width; x++) {
 
-            expected_num_iter = fractal_matrix_get_num_iter_per_point(x, y, expected_iterations_taken_matrix);
-            num_iter = fractal_matrix_get_num_iter_per_point(x, y, iterations_taken_matrix);
+            point_set(&p, x, y);
+
+            expected_num_iter = fractal_matrix_get_num_iter_per_point(p, expected_iterations_taken_matrix);
+
+            num_iter = fractal_matrix_get_num_iter_per_point(p, iterations_taken_matrix);
 
             sprintf(message, "expected number of iterations %d does not match actual %d for pixel (x,y) = (%d, %d)",
                     expected_num_iter,

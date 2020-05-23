@@ -15,11 +15,11 @@ void render_and_write_out_ascii_graph(char *filename, fractal_matrix iterations_
     for (y = 0; y < resolution.height; y++) {
         for (x = 0; x < resolution.width; x++) {
 
+            point p = {x, y};
+
             set_point_character(
-                    point_char,
-                    x, y,
-                    iterations_taken_matrix
-            );
+                    point_char, p,
+                    iterations_taken_matrix);
 
             fwrite(point_char, 1, 1, fp);
         }
@@ -35,14 +35,18 @@ void render_and_write_out_iterations_matrix(char *filename, fractal_matrix itera
     char num_iter_str[50];
     FILE *fp;
     fractal_resolution resolution = iterations_taken_matrix.resolution;
+    point p;
 
     fp = fopen(filename, "w");
 
     for (y = 0; y < resolution.height; y++) {
         for (x = 0; x < resolution.width; x++) {
 
-            num_iter_for_pixel = fractal_matrix_get_num_iter_per_point(x, y, iterations_taken_matrix);
-            ret = fractal_matrix_point_belongs_to_mandelbrot_set(x, y, iterations_taken_matrix);
+            point_set(&p, x, y);
+
+            num_iter_for_pixel = fractal_matrix_get_num_iter_per_point(p, iterations_taken_matrix);
+
+            ret = fractal_matrix_point_belongs_to_mandelbrot_set(p, iterations_taken_matrix);
 
             // TODO: 3 literal (and 3 spaces) is the number of digits for the greatest number of iterations during
             // matrix calculations which is a constant in main.c right now but it has to be calculated dynamically.

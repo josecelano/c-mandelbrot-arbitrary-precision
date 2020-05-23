@@ -14,10 +14,10 @@ TEST_SETUP(image_should) {
 TEST_TEAR_DOWN(image_should) {
 }
 
-void test_assert_color_equal(const char *expected, char *actual, int x, int y) {
+void test_assert_color_equal(const char *expected, char *actual, pixel px) {
     char message[100];
 
-    sprintf(message, "Pixel color does not match expected white for pixel (x,y) = (%d, %d)", x, y);
+    sprintf(message, "Pixel color does not match expected white for pixel (x,y) = (%d, %d)", px.x, px.y);
     TEST_ASSERT_EQUAL_MESSAGE(expected[0], actual[0], message); // R
     TEST_ASSERT_EQUAL_MESSAGE(expected[1], actual[1], message); // G
     TEST_ASSERT_EQUAL_MESSAGE(expected[2], actual[2], message); // B
@@ -42,36 +42,34 @@ TEST(image_should, calculate_the_color_for_a_given_pixel) {
     fractal_matrix_init(&iterations_taken_matrix, resolution);
 
     int iterations_taken_matrix_data[9] = {
-    //   X  0, 1, 2     Y
+            //   X  0, 1, 2     Y
             1, 1, 1, // 0
-            1,-1, 1, // 1
+            1, -1, 1, // 1
             1, 1, 1  // 2
     };
     fractal_matrix_initialize_data(iterations_taken_matrix, iterations_taken_matrix_data);
 
     int expected_colours[9] = {
-    //   X   0 , 1 , 2      Y
-            'w','w','w', // 0
-            'w','b','w', // 1
-            'w','w','w'  // 2
+            //   X   0 , 1 , 2      Y
+            'w', 'w', 'w', // 0
+            'w', 'b', 'w', // 1
+            'w', 'w', 'w'  // 2
     };
 
-    char * color = malloc(RBG_COLOR_SIZE);
+    char *color = malloc(RBG_COLOR_SIZE);
 
-    for(y = 0; y < 3; y++) {
-        for(x = 0; x < 3; x++) {
+    for (y = 0; y < 3; y++) {
+        for (x = 0; x < 3; x++) {
 
-            set_pixel_color(
-                    color,
-                    x, y,
-                    iterations_taken_matrix
-            );
+            pixel px = {x, y};
+            set_pixel_color(color, px, iterations_taken_matrix);
 
             if (expected_colours[(y * 3) + x] == 'w') {
-                test_assert_color_equal(white, color, x, y);
+                test_assert_color_equal(white, color, px);
             }
+
             if (expected_colours[(y * 3) + x] == 'b') {
-                test_assert_color_equal(black, color, x, y);
+                test_assert_color_equal(black, color, px);
             }
         }
     }
