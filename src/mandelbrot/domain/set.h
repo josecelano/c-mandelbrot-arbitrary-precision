@@ -4,7 +4,8 @@
 #include "acb.h"
 
 #include "../application/config.h"
-#include "zpoint.h"
+#include "./optimisation/main_cardioid.h"
+#include "./zpoint.h"
 
 #define MAX_ITERATIONS  -1
 #define INSIDE  1
@@ -33,16 +34,6 @@ int mandelbrot_set_calculate_num_iterations_for(zpoint point, int max_iterations
  * https://en.wikibooks.org/wiki/Fractals/Iterations_in_the_complex_plane/Mandelbrot_set/mandelbrot#Bailout_test
  */
 int bailout(acb_t c, slong prec);
-
-/**
- * It returns 1 if the complex c is inside the main cardioid section (period 1) of Mandelbrot Set.
- * Formula:
- * https://github.com/josecelano/c-mandelbrot-arbitrary-precision/blob/master/doc/img/cardioid-and-period-2-checking.png
- * More info:
- * https://en.wikipedia.org/wiki/Mandelbrot_set#Main_cardioid_and_period_bulbs
- * https://en.wikibooks.org/wiki/Fractals/Iterations_in_the_complex_plane/Mandelbrot_set/mandelbrot#Cardioid_and_period-2_checking
- */
-int inside_main_cardioid(acb_t c, slong prec, app_config config);
 
 /**
  * It returns 1 if the complex c is inside the period-2 bulb of Mandelbrot Set (big circle on the left of main body).
