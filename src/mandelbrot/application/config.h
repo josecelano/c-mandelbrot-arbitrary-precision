@@ -6,8 +6,9 @@
 
 // Verbose options
 typedef enum {
-    PRINT_PROGRESS = 1,
-    PRINT_PERIODS = 2,
+    PRINT_PROGRESS = 1,     // Print progress like: Progress: 99.609375%
+    PRINT_PERIODS = 2,      // Print period info when period checking is used
+    PRINT_ITERATIONS = 4,   // Print debug info for each loop iteration
 } verbose_option;
 
 typedef struct {
@@ -16,7 +17,7 @@ typedef struct {
 
 void app_config_init(app_config *config);
 
-void app_config_clear(app_config *config);
+void app_config_init_test(app_config *config);
 
 void app_config_enable_verbose_option(app_config *config, verbose_option option);
 
@@ -26,6 +27,6 @@ void app_config_disable_verbose_option(app_config *config, verbose_option option
  * Return ENABLED if verbose option is enabled.
  * @return
  */
-int app_config_verbose_option_enabled(app_config *config, verbose_option option);
+int app_config_verbose_option_enabled(app_config config, verbose_option option);
 
 #endif //C_MANDELBROT_ARBITRARY_PRECISION_CONFIG_H

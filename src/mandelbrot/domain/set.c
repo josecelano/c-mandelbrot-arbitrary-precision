@@ -9,10 +9,10 @@
 #include "../presentation/output.h"
 #include "../infrastructure/console.h"
 
-int mandelbrot_set_contains(zpoint point, int max_iterations, slong prec, int print_periods) {
+int mandelbrot_set_contains(zpoint point, int max_iterations, slong prec, app_config config) {
     int iterations_taken;
 
-    iterations_taken = mandelbrot_set_calculate_num_iterations_for(point, max_iterations, prec, print_periods);
+    iterations_taken = mandelbrot_set_calculate_num_iterations_for(point, max_iterations, prec, config);
 
     if (iterations_taken == MAX_ITERATIONS) {
         return INSIDE;
@@ -40,8 +40,7 @@ int check_for_period(
         arb_t period_tolerance,
         int check_counter,
         slong prec,
-        int print_periods,
-        int print_iterations
+        app_config config
 ) {
     int ret = 0;
 
@@ -58,13 +57,13 @@ int check_for_period(
     arb_sub(im_diff, z_im, old_im, prec);
     arb_abs(im_diff, im_diff);
 
-    if (print_periods) {
+    if (app_config_verbose_option_enabled(config, PRINT_PERIODS)) {
         print_period_checking(re_diff, im_diff);
     }
 
     if (arb_lt(re_diff, period_tolerance) && arb_lt(im_diff, period_tolerance)) {
         // Period found
-        if (print_periods) {
+        if (app_config_verbose_option_enabled(config, PRINT_PERIODS)) {
             print_period_found(check_counter, iter);
         }
         ret = 1;
@@ -76,7 +75,7 @@ int check_for_period(
     return ret;
 }
 
-int execute_iterations(acb_t c, int max_iterations, slong prec, int print_periods, int print_iterations, int *period) {
+int execute_iterations(acb_t c, int max_iterations, slong prec, app_config config, int *period) {
     int i, num_iter = MAX_ITERATIONS;
     acb_t f, z;
 
@@ -131,7 +130,7 @@ int execute_iterations(acb_t c, int max_iterations, slong prec, int print_period
 
         mandelbrot_formula(f, z, c, prec);
 
-        if (print_iterations) {
+        if (app_config_verbose_option_enabled(config, PRINT_ITERATIONS)) {
             // Print iteration
             print_loop_iteration(
                     i,
@@ -157,8 +156,7 @@ int execute_iterations(acb_t c, int max_iterations, slong prec, int print_period
         acb_get_imag(z_im, z);
 
         // Check for period
-        int period_found = check_for_period(i, c, z_re, z_im, old_re, old_im, period_tolerance, check_counter, prec,
-                                            print_periods, print_iterations);
+        int period_found = check_for_period(i, c, z_re, z_im, old_re, old_im, period_tolerance, check_counter, prec, config);
 
         if (period_found) {
             num_iter = MAX_ITERATIONS;
@@ -178,7 +176,7 @@ int execute_iterations(acb_t c, int max_iterations, slong prec, int print_period
             }
             update_counter++;
 
-            if (print_periods) {
+            if (app_config_verbose_option_enabled(config, PRINT_PERIODS)) {
                 console_printf("->update old\n");
             }
 
@@ -204,7 +202,7 @@ int execute_iterations(acb_t c, int max_iterations, slong prec, int print_period
     return num_iter;
 }
 
-int mandelbrot_set_calculate_num_iterations_for(zpoint point, int max_iterations, slong prec, int print_periods) {
+int mandelbrot_set_calculate_num_iterations_for(zpoint point, int max_iterations, slong prec, app_config config) {
 
     int inside = 0, i, num_iter = MAX_ITERATIONS;
     acb_t c;
@@ -213,20 +211,19 @@ int mandelbrot_set_calculate_num_iterations_for(zpoint point, int max_iterations
 
     acb_set_from_zpoint(c, point);
 
-    if (inside_main_cardioid(c, prec)) {
+    if (inside_main_cardioid(c, prec, config)) {
         acb_clear(c);
         return MAX_ITERATIONS;
     }
 
-    if (inside_period_2_bulb(c, prec)) {
+    if (inside_period_2_bulb(c, prec, config)) {
         acb_clear(c);
         return MAX_ITERATIONS;
     }
 
-    int print_iterations = 0;
     int period;
 
-    num_iter = execute_iterations(c, max_iterations, prec, print_periods, print_iterations, &period);
+    num_iter = execute_iterations(c, max_iterations, prec, config, &period);
 
     acb_clear(c);
     return num_iter;
@@ -269,7 +266,7 @@ int bailout(acb_t c, slong prec) {
     return ret;
 }
 
-int inside_main_cardioid(acb_t c, slong prec) {
+int inside_main_cardioid(acb_t c, slong prec, app_config config) {
     int ret = 0;
     arb_t x, y;           // Real and imaginary parts
     arb_t a, b;           // Left and right side of the comparison operation
@@ -344,7 +341,7 @@ int inside_main_cardioid(acb_t c, slong prec) {
     return ret;
 }
 
-int inside_period_2_bulb(acb_t c, slong prec) {
+int inside_period_2_bulb(acb_t c, slong prec, app_config config) {
     int ret = 0;
     arb_t x, y;           // Real and imaginary parts
     arb_t temp;           // Temporal results and constants in the formula

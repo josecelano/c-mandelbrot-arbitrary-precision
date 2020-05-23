@@ -22,11 +22,14 @@ void calculate_completed_mandelbrot(fractal_resolution resolution, fractal_matri
     int print_periods = 0;
     ztile tile;
 
+    app_config config;
+    app_config_init_test(&config);
+
     ztile_init(&tile);
 
     ztile_set_completed_mandelbrot_set(&tile, prec);
 
-    fractal_matrix_calculate_points(tile, max_iterations, prec, print_progress, print_periods, iterations_taken_matrix);
+    fractal_matrix_calculate_points(tile, max_iterations, prec, config, iterations_taken_matrix);
 
     ztile_clean(&tile);
 }

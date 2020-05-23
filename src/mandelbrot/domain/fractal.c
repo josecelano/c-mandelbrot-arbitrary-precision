@@ -55,7 +55,7 @@ void calculate_matrix_point(
         zpoint z_current_point,
         int max_iterations,
         slong prec,
-        int print_periods,
+        app_config config,
         int x,
         int y,
         fractal_matrix *iterations_taken_matrix
@@ -63,7 +63,7 @@ void calculate_matrix_point(
     int iterations_taken;
 
     // Check if point belongs to Mandelbrot Set
-    iterations_taken = mandelbrot_set_calculate_num_iterations_for(z_current_point, max_iterations, prec, print_periods);
+    iterations_taken = mandelbrot_set_calculate_num_iterations_for(z_current_point, max_iterations, prec, config);
 
     fractal_matrix_set_num_iter_per_point(iterations_taken_matrix, x, y, iterations_taken);
 }
@@ -72,7 +72,7 @@ void calculate_matrix_row(
         zpoint zx_point_increment,
         int max_iterations,
         slong prec,
-        int print_periods,
+        app_config config,
         int y,
         fractal_matrix *iterations_taken_matrix,
         zpoint *z_current_point
@@ -85,7 +85,7 @@ void calculate_matrix_row(
                 *z_current_point,
                 max_iterations,
                 prec,
-                print_periods,
+                config,
                 x, y,
                 iterations_taken_matrix
         );
@@ -101,8 +101,7 @@ void calculate_iterations_taken_matrix(
         zpoint zy_point_increment,
         int max_iterations,
         slong prec,
-        int print_progress,
-        int print_periods,
+        app_config config,
         fractal_matrix *iterations_taken_matrix
 ) {
     int y;
@@ -120,13 +119,13 @@ void calculate_iterations_taken_matrix(
                 zx_point_increment,
                 max_iterations,
                 prec,
-                print_periods,
+                config,
                 y,
                 iterations_taken_matrix,
                 &z_current_point
         );
 
-        if (print_progress == 1) {
+        if (app_config_verbose_option_enabled(config, PRINT_PROGRESS)) {
             print_render_progress(y, resolution.height);
         }
 
@@ -203,8 +202,7 @@ void fractal_matrix_calculate_points(
         ztile tile,
         int max_iterations,
         slong prec,
-        int print_progress,
-        int print_periods,
+        app_config config,
         fractal_matrix *iterations_taken_matrix
 ) {
     int x, y;
@@ -231,8 +229,7 @@ void fractal_matrix_calculate_points(
             zy_point_increment,
             max_iterations,
             prec,
-            print_progress,
-            print_periods,
+            config,
             // Output
             iterations_taken_matrix
     );

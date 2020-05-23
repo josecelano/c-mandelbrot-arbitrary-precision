@@ -77,9 +77,6 @@ int main(int argc, const char *argv[]) {
 
     // App config
     app_config config;
-    // Verbose options
-    int print_progress = 1;
-    int print_periods = 0;
 
     app_config_init(&config);
 
@@ -90,7 +87,7 @@ int main(int argc, const char *argv[]) {
     ztile_set_completed_mandelbrot_set(&tile, prec);
 
     time = clock();
-    fractal_matrix_calculate_points(tile, max_iterations, prec, print_progress, print_periods, &iterations_taken_matrix);
+    fractal_matrix_calculate_points(tile, max_iterations, prec, config, &iterations_taken_matrix);
     time = clock() - time;
 
     ztile_clean(&tile);
@@ -104,8 +101,6 @@ int main(int argc, const char *argv[]) {
     render_iterations_taken_matrix(iterations_taken_matrix);
 
     fractal_matrix_clean(&iterations_taken_matrix);
-
-    app_config_clear(&config);
 
     return 0;
 }

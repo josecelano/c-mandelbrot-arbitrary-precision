@@ -25,6 +25,9 @@ TEST(mandelbrot_set_should, contain_known_points_inside)
     zpoint point;
     char message[100];
 
+    app_config config;
+    app_config_init_test(&config);
+
     zpoint_init(&point);
 
     // Some complex number inside the Mandelbrot Set
@@ -41,7 +44,7 @@ TEST(mandelbrot_set_should, contain_known_points_inside)
     {
         zpoint_set_from_complex_dto(&point, z_in[i], prec);
 
-        ret = mandelbrot_set_contains(point, max_iterations, prec, print_periods);
+        ret = mandelbrot_set_contains(point, max_iterations, prec, config);
 
         sprintf(message, "Complex number (%s,%s) in test case #%d should be in Mandelbrot Set", z_in[i].re, z_in[i].im, i);
 
@@ -60,6 +63,9 @@ TEST(mandelbrot_set_should, not_contain_known_points_outside)
     zpoint point;
     char message[100];
 
+    app_config config;
+    app_config_init_test(&config);
+
     zpoint_init(&point);
 
     // Some complex number inside the Mandelbrot Set
@@ -76,7 +82,7 @@ TEST(mandelbrot_set_should, not_contain_known_points_outside)
     {
         zpoint_set_from_complex_dto(&point, z_out[i], prec);
 
-        ret = mandelbrot_set_contains(point, max_iterations, prec, print_periods);
+        ret = mandelbrot_set_contains(point, max_iterations, prec, config);
 
         sprintf(message, "Complex number (%s,%s) in test case #%d should not be in Mandelbrot Set", z_out[i].re, z_out[i].im, i);
 
@@ -93,6 +99,9 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_main_cardioid_in_order_to_i
     int i, ret;
     char message[100];
 
+    app_config config;
+    app_config_init_test(&config);
+
     acb_init(c);
 
     // Some complex number inside the main cardioid
@@ -108,7 +117,7 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_main_cardioid_in_order_to_i
     {
         complex_set_from_complex_dto(c, z_in[i], prec);
 
-        ret = inside_main_cardioid(c, prec);
+        ret = inside_main_cardioid(c, prec, config);
 
         sprintf(message, "complex number (%s,%s) in test case #%d is not inside the main cardioid", z_in[i].re, z_in[i].im, i);
 
@@ -128,7 +137,7 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_main_cardioid_in_order_to_i
     {
         complex_set_from_complex_dto(c, z_out[i], prec);
 
-        ret = inside_main_cardioid(c, prec);
+        ret = inside_main_cardioid(c, prec, config);
 
         sprintf(message, "complex number (%s,%s) in test case #%d is not outside the main cardioid", z_out[i].re, z_out[i].im, i);
 
@@ -145,6 +154,9 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_period_2_bulb_in_order_to_i
     int i, ret;
     char message[100];
 
+    app_config config;
+    app_config_init_test(&config);
+
     acb_init(c);
 
     // Some complex number inside the period-2 bulb (big circle on the left of the main cardioid)
@@ -160,7 +172,7 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_period_2_bulb_in_order_to_i
     {
         complex_set_from_complex_dto(c, z_in[i], prec);
 
-        ret = inside_period_2_bulb(c, prec);
+        ret = inside_period_2_bulb(c, prec, config);
 
         sprintf(message, "complex number (%s,%s) in test case #%d is not inside the period-2 bulb", z_in[i].re, z_in[i].im, i);
 
@@ -180,7 +192,7 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_period_2_bulb_in_order_to_i
     {
         complex_set_from_complex_dto(c, z_out[i], prec);
 
-        ret = inside_period_2_bulb(c, prec);
+        ret = inside_period_2_bulb(c, prec, config);
 
         sprintf(message, "complex number (%s,%s) in test case #%d is not outside the period-2 bulb", z_out[i].re, z_out[i].im, i);
 
@@ -194,11 +206,12 @@ TEST(mandelbrot_set_should, do_period_checking)
 {
     slong prec = 32;
     int max_iterations = 1000;
-    int print_periods = 0;
-    int print_iterations = 0;
     acb_t c;
     char message[100];
     int ret, period;
+
+    app_config config;
+    app_config_init_test(&config);
 
     acb_init(c);
 
@@ -213,35 +226,35 @@ TEST(mandelbrot_set_should, do_period_checking)
 
     // Period 0
     complex_set_from_complex_dto(c, point_with_period_0, prec);
-    ret = execute_iterations(c, max_iterations, prec, print_periods, print_iterations, &period);
+    ret = execute_iterations(c, max_iterations, prec, config, &period);
     sprintf(message, "Expected point (%s,%s) should have period 0, actual %d", point_with_period_0.re, point_with_period_0.im, period);
     TEST_ASSERT_EQUAL_MESSAGE(MAX_ITERATIONS, ret, message);
     TEST_ASSERT_EQUAL_MESSAGE(0, period, message);
 
     // Period 1
     complex_set_from_complex_dto(c, point_with_period_1, prec);
-    ret = execute_iterations(c, max_iterations, prec, print_periods, print_iterations, &period);
+    ret = execute_iterations(c, max_iterations, prec, config, &period);
     sprintf(message, "Expected point (%s,%s) should have period 1, actual %d", point_with_period_1.re, point_with_period_1.im, period);
     TEST_ASSERT_EQUAL_MESSAGE(MAX_ITERATIONS, ret, message);
     TEST_ASSERT_EQUAL_MESSAGE(1, period, message);
 
     // Period 2
     complex_set_from_complex_dto(c, point_with_period_2, prec);
-    ret = execute_iterations(c, max_iterations, prec, print_periods, print_iterations, &period);
+    ret = execute_iterations(c, max_iterations, prec, config, &period);
     sprintf(message, "Expected point (%s,%s) should have period 2, actual %d", point_with_period_2.re, point_with_period_2.im, period);
     TEST_ASSERT_EQUAL_MESSAGE(MAX_ITERATIONS, ret, message);
     TEST_ASSERT_EQUAL_MESSAGE(2, period, message);
 
     // Period 3
     complex_set_from_complex_dto(c, point_with_period_3, prec);
-    ret = execute_iterations(c, max_iterations, prec, print_periods, print_iterations, &period);
+    ret = execute_iterations(c, max_iterations, prec, config, &period);
     sprintf(message, "Expected point (%s,%s) should have period 3, actual %d", point_with_period_3.re, point_with_period_3.im, period);
     TEST_ASSERT_EQUAL_MESSAGE(MAX_ITERATIONS, ret, message);
     TEST_ASSERT_EQUAL_MESSAGE(3, period, message);
 
     // Period 4
     complex_set_from_complex_dto(c, point_with_period_4, prec);
-    ret = execute_iterations(c, max_iterations, prec, print_periods, print_iterations, &period);
+    ret = execute_iterations(c, max_iterations, prec, config, &period);
     sprintf(message, "Expected point (%s,%s) should have period 4, actual %d", point_with_period_4.re, point_with_period_4.im, period);
     TEST_ASSERT_EQUAL_MESSAGE(MAX_ITERATIONS, ret, message);
     TEST_ASSERT_EQUAL_MESSAGE(4, period, message);

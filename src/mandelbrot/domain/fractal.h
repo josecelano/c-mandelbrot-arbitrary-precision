@@ -4,6 +4,8 @@
 #include "acb.h"
 #include "ztile.h"
 
+#include "../application/config.h"
+
 typedef struct {
     int width;
     int height;
@@ -43,8 +45,7 @@ void fractal_matrix_calculate_points(
         ztile tile,
         int max_iterations,
         slong prec,
-        int print_progress,
-        int print_periods,
+        app_config config,
         fractal_matrix *iterations_taken_matrix
 );
 
