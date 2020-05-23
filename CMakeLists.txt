@@ -29,6 +29,10 @@ file(GLOB TEST_CODE
         ${PROJECT_SOURCE_DIR}/tests/mandelbrot/*.c
         ${PROJECT_SOURCE_DIR}/tests/mandelbrot/application/*.h
         ${PROJECT_SOURCE_DIR}/tests/mandelbrot/application/*.c
+        ${PROJECT_SOURCE_DIR}/tests/mandelbrot/domain/*.h
+        ${PROJECT_SOURCE_DIR}/tests/mandelbrot/domain/*.c
+        ${PROJECT_SOURCE_DIR}/tests/mandelbrot/infrastructure/*.h
+        ${PROJECT_SOURCE_DIR}/tests/mandelbrot/infrastructure/*.c
         )
 
 add_executable(

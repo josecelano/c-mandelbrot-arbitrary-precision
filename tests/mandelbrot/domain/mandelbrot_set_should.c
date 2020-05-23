@@ -1,10 +1,10 @@
 #include <stdio.h>
-#include "../lib/unity/unity.h"
-#include "../lib/unity/unity_fixture.h"
+#include "../../lib/unity/unity.h"
+#include "../../lib/unity/unity_fixture.h"
 
-#include "../../src/mandelbrot/domain/complex.h"
-#include "../../src/mandelbrot/domain/set.h"
-#include "../../src/mandelbrot/domain/zpoint.h"
+#include "../../../src/mandelbrot/domain/complex.h"
+#include "../../../src/mandelbrot/domain/set.h"
+#include "../../../src/mandelbrot/domain/zpoint.h"
 
 TEST_GROUP(mandelbrot_set_should);
 
