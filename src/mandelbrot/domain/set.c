@@ -5,7 +5,7 @@
 #include "../presentation/output.h"
 #include "./complex.h"
 #include "./formula.h"
-#include "./optimisation/main_cardioid.h"
+#include "./optimisation/main_cardioid_detection.h"
 #include "./optimisation/period2_detection.h"
 #include "./set.h"
 #include "./zpoint.h"

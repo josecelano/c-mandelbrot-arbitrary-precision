@@ -1,7 +1,7 @@
 #include "arb.h"
 #include "acb.h"
 
-#include "main_cardioid.h"
+#include "main_cardioid_detection.h"
 
 int inside_main_cardioid(acb_t c, slong prec, app_config config) {
     int ret = 0;

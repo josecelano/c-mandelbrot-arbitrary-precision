@@ -4,7 +4,7 @@
 #include "acb.h"
 
 #include "../application/config.h"
-#include "./optimisation/main_cardioid.h"
+#include "./optimisation/main_cardioid_detection.h"
 #include "./zpoint.h"
 
 #define MAX_ITERATIONS  -1
