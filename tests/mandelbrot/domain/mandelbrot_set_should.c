@@ -5,6 +5,7 @@
 #include "../../../src/mandelbrot/domain/complex.h"
 #include "../../../src/mandelbrot/domain/optimisation/main_cardioid_detection.h"
 #include "../../../src/mandelbrot/domain/optimisation/period2_detection.h"
+#include "../../../src/mandelbrot/domain/optimisation/periodicity_checking.h"
 #include "../../../src/mandelbrot/domain/set.h"
 #include "../../../src/mandelbrot/domain/zpoint.h"
 
