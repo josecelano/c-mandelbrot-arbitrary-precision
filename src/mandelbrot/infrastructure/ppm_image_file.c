@@ -12,11 +12,7 @@ void print_ppm_image_header(FILE *fp, fractal_resolution resolution) {
     fprintf(fp, "%d %d %d\n", resolution.width, resolution.height, 255);
 }
 
-void print_ppm_image_pixels(
-        FILE *fp,
-        const char *inside_color, const char *outside_color,
-        fractal_matrix iterations_taken_matrix
-) {
+void print_ppm_image_pixels(FILE *fp, fractal_matrix iterations_taken_matrix) {
     char *color = malloc(RBG_COLOR_SIZE);
 
     int x, y, num_iter_for_pixel;
@@ -34,14 +30,12 @@ void print_ppm_image_pixels(
 }
 
 void render_and_write_out_image(char *filename, fractal_matrix iterations_taken_matrix) {
-    const char black[3] = {0, 0, 0};
-    const char white[3] = {255, 255, 255};
     FILE *fp;
 
     fp = fopen(filename, "wb");
 
     print_ppm_image_header(fp, iterations_taken_matrix.resolution);
-    print_ppm_image_pixels(fp, black, white, iterations_taken_matrix);
+    print_ppm_image_pixels(fp, iterations_taken_matrix);
 
     fclose(fp);
 }
