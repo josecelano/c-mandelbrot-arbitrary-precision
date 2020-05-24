@@ -12,6 +12,17 @@ typedef struct {
     int height;
 } fractal_resolution;
 
+typedef enum {
+    TRUE = 1,
+    FALSE = 0
+} fractal_boolean;
+
+typedef struct {
+    fractal_boolean is_inside;      // Point inside/outside Mandelbrot Set.
+    unsigned int iterations_taken;  // Number of iterations done in the main fractal processing loop.
+    unsigned int period;            // if a period is found in the loop this will contain the period cycle length otherwise 0.
+} fractal_calculated_point;
+
 /**
  * Matrix[width][height] with number of Mandelbrot formula iterations needed for each pixel to diverge.
  * -1 for point/pixel inside Mandelbrot Set.
@@ -20,6 +31,8 @@ typedef struct {
     fractal_resolution resolution;
     int *data;
 } fractal_matrix;
+
+void fractal_calculated_point_init(fractal_calculated_point *calculated_point);
 
 void fractal_matrix_init(fractal_matrix *iterations_taken_matrix, fractal_resolution resolution);
 

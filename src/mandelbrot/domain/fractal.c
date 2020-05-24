@@ -14,6 +14,12 @@
 #include "./zpoint.h"
 #include "./ztile.h"
 
+void fractal_calculated_point_init(fractal_calculated_point *calculated_point) {
+    calculated_point->is_inside = TRUE;
+    calculated_point->iterations_taken = 0;
+    calculated_point->period = 0;
+}
+
 void fractal_matrix_init(fractal_matrix *iterations_taken_matrix, fractal_resolution resolution) {
     int matrix_size;
 
@@ -56,10 +62,13 @@ int fractal_matrix_point_belongs_to_mandelbrot_set(point p, fractal_matrix itera
 
 void
 calculate_matrix_point(zpoint z_current_point, point p, app_config config, fractal_matrix *iterations_taken_matrix) {
-    int inside, iterations_taken, period;
     acb_t c;
+    fractal_calculated_point calculated_point;
+    int iterations_taken;
 
     acb_init(c);
+
+    fractal_calculated_point_init(&calculated_point);
 
     acb_set_from_zpoint(c, z_current_point);
 
@@ -77,7 +86,7 @@ calculate_matrix_point(zpoint z_current_point, point p, app_config config, fract
 
     execute_iterations_with_period_checking(
             c, config,
-            &inside, &iterations_taken, &period
+            &calculated_point
     );
 
     /*
@@ -86,8 +95,10 @@ calculate_matrix_point(zpoint z_current_point, point p, app_config config, fract
      * We are in a WIP to return the ral number of iterations and an additional value that indicates whether the point
      * is INSIDE or not.
      */
-    if (inside == INSIDE) {
+    if (calculated_point.is_inside == TRUE) {
         iterations_taken = MAX_ITERATIONS;
+    } else {
+        iterations_taken = calculated_point.iterations_taken;
     }
 
     fractal_matrix_set_num_iter_per_point(iterations_taken_matrix, p, iterations_taken);

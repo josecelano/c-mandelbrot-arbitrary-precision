@@ -193,14 +193,15 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_period_2_bulb_in_order_to_i
 }
 
 TEST(mandelbrot_set_should, do_period_checking) {
-    acb_t c;
-    char message[100];
-    int inside, iterations_taken, period, expected_period;
-
     app_config config;
-    app_config_init_test(&config);
+    acb_t c;
+    int expected_period;
+    fractal_calculated_point calculated_point;
+    char message[100];
 
+    app_config_init_test(&config);
     acb_init(c);
+    fractal_calculated_point_init(&calculated_point);
 
     // Pre-selected points with known period from period 0 to 4
     complex_dto points[5] = {
@@ -216,12 +217,12 @@ TEST(mandelbrot_set_should, do_period_checking) {
 
         execute_iterations_with_period_checking(
                 c, config,
-                &inside, &iterations_taken, &period
+                &calculated_point
         );
 
         sprintf(message, "Point (%s,%s) should have period %d, actual %d",
-                points[expected_period].re, points[expected_period].im, expected_period, period);
-        TEST_ASSERT_EQUAL_MESSAGE(expected_period, period, message);
+                points[expected_period].re, points[expected_period].im, expected_period, calculated_point.period);
+        TEST_ASSERT_EQUAL_MESSAGE(expected_period, calculated_point.period, message);
     }
 
     acb_clear(c);

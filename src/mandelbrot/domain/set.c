@@ -12,14 +12,13 @@
 #include "./zpoint.h"
 
 int mandelbrot_set_contains(zpoint point, app_config config) {
-    int inside, iterations_taken, period;
+    fractal_calculated_point calculated_point;
 
-    mandelbrot_set_calculate_point(
-            point, config,
-            &inside, &iterations_taken, &period
-    );
+    fractal_calculated_point_init(&calculated_point);
 
-    return inside;
+    mandelbrot_set_calculate_point(point, config, &calculated_point);
+
+    return calculated_point.is_inside ? INSIDE : OUTSIDE;
 }
 
 int is_value_a_inside_point(int num_iter_for_pixel) {
@@ -30,14 +29,9 @@ int is_value_a_inside_point(int num_iter_for_pixel) {
     return OUTSIDE;
 }
 
-void
-execute_iterations_with_period_checking(acb_t c, app_config config, int *inside, int *iterations_taken, int *period) {
+void execute_iterations_with_period_checking(acb_t c, app_config config, fractal_calculated_point *calculated_point) {
     int i;
     acb_t f, z;
-
-    *inside = INSIDE;
-    *iterations_taken = 0;
-    *period = 0;
 
     acb_init(f);
     acb_init(z);
@@ -86,7 +80,7 @@ execute_iterations_with_period_checking(acb_t c, app_config config, int *inside,
 
     for (i = 1; i <= config.max_iterations; ++i) {
 
-        *iterations_taken = i;
+        calculated_point->iterations_taken = i;
 
         mandelbrot_formula(f, z, c, config.precision);
 
@@ -103,7 +97,7 @@ execute_iterations_with_period_checking(acb_t c, app_config config, int *inside,
         }
 
         if (bailout(f, config.precision)) {
-            *inside = OUTSIDE;
+            calculated_point->is_inside = FALSE;
             break;
         }
 
@@ -119,7 +113,7 @@ execute_iterations_with_period_checking(acb_t c, app_config config, int *inside,
         int period_found = check_for_period(i, c, z_re, z_im, old_re, old_im, period_tolerance, check_counter, config);
 
         if (period_found) {
-            *period = check_counter;
+            calculated_point->period = check_counter;
             break;
         }
         // End check for period
@@ -159,30 +153,26 @@ execute_iterations_with_period_checking(acb_t c, app_config config, int *inside,
     acb_clear(z);
 }
 
-void mandelbrot_set_calculate_point(zpoint point, app_config config, int *inside, int *iterations_taken, int *period) {
+void mandelbrot_set_calculate_point(zpoint point, app_config config, fractal_calculated_point *calculated_point) {
     acb_t c;
-
-    *inside = INSIDE;
-    *iterations_taken = 0;
-    *period = 0;
 
     acb_init(c);
 
     acb_set_from_zpoint(c, point);
 
     if (inside_main_cardioid(c, config)) {
-        *period = 1;
+        calculated_point->period = 1;
         acb_clear(c);
         return;
     }
 
     if (inside_period_2_bulb(c, config)) {
-        *period = 2;
+        calculated_point->period = 2;
         acb_clear(c);
         return;
     }
 
-    execute_iterations_with_period_checking(c, config, inside, iterations_taken, period);
+    execute_iterations_with_period_checking(c, config, calculated_point);
 
     acb_clear(c);
 }

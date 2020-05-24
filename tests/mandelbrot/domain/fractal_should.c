@@ -32,7 +32,7 @@ void test_assert_equal_iteration_matrix(
 
             num_iter = fractal_matrix_get_num_iter_per_point(p, iterations_taken_matrix);
 
-            sprintf(message, "expected number of iterations %d does not match actual %d for pixel (x,y) = (%d, %d)",
+            sprintf(message, " Expected number of iterations %d does not match actual %d for pixel (x,y) = (%d, %d)",
                     expected_num_iter,
                     num_iter,
                     x, y
@@ -59,13 +59,6 @@ TEST(fractal_should, calculate_complex_points_for_a_given_resolution_and_check_i
     fractal_matrix_init(&expected_iterations_taken_matrix, resolution);
     fractal_matrix_init(&iterations_taken_matrix, resolution);
 
-    ztile_init(&tile);
-    ztile_set_completed_mandelbrot_set(&tile, config);
-
-    fractal_matrix_calculate_points(tile, config, &iterations_taken_matrix);
-
-    ztile_clean(&tile);
-
     int expected_iterations_taken_matrix_data[100] = {
     // x 0, 1, 2, 3, 4, 5, 6, 7, 8, 9  // y
          1, 1, 1, 1, 1, 2, 1, 1, 1, 1, // 0
@@ -80,6 +73,13 @@ TEST(fractal_should, calculate_complex_points_for_a_given_resolution_and_check_i
          1, 1, 2, 2, 2, 2, 2, 2, 2, 1  // 9
     };
     fractal_matrix_initialize_data(expected_iterations_taken_matrix, expected_iterations_taken_matrix_data);
+
+    ztile_init(&tile);
+    ztile_set_completed_mandelbrot_set(&tile, config);
+
+    fractal_matrix_calculate_points(tile, config, &iterations_taken_matrix);
+
+    ztile_clean(&tile);
 
     test_assert_equal_iteration_matrix(expected_iterations_taken_matrix, iterations_taken_matrix);
 
