@@ -192,7 +192,7 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_period_2_bulb_in_order_to_i
     acb_clear(c);
 }
 
-TEST(mandelbrot_set_should, do_period_checking) {
+TEST(mandelbrot_set_should, detect_periods_to_increase_performace_decreasing_iterations) {
     app_config config;
     acb_t c;
     int expected_period;
@@ -233,5 +233,5 @@ TEST_GROUP_RUNNER(mandelbrot_set_should) {
     RUN_TEST_CASE(mandelbrot_set_should, not_contain_known_points_outside);
     RUN_TEST_CASE(mandelbrot_set_should, check_if_point_is_inside_main_cardioid_in_order_to_increase_performace);
     RUN_TEST_CASE(mandelbrot_set_should, check_if_point_is_inside_period_2_bulb_in_order_to_increase_performace);
-    RUN_TEST_CASE(mandelbrot_set_should, do_period_checking);
+    RUN_TEST_CASE(mandelbrot_set_should, detect_periods_to_increase_performace_decreasing_iterations);
 }

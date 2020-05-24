@@ -4,9 +4,9 @@
 #include "acb.h"
 
 #include "../application/config.h"
+#include "./fractal.h"
 #include "./optimisation/main_cardioid_detection.h"
 #include "./zpoint.h"
-#include "fractal.h"
 
 #define MAX_ITERATIONS  -1
 #define INSIDE  1
@@ -33,21 +33,6 @@ int bailout(acb_t c, slong prec);
 /**
  * Same output values as execute_iterations_with_period_checking
  */
-void
-mandelbrot_set_calculate_point(zpoint point, app_config config, fractal_calculated_point *calculated_point);
-
-/**
- * For:
- * Complex inside the Mandelbrot Set  -> returns
- *      * inside = 1
- *      * num_iter = number of iterations executed
- *      * period = if period was detected -> the period cycle length otherwise 0.
- * Complex outside the Mandelbrot Set -> returns
- *      * inside = 0
- *      * num_iter = the maximum number of iterations.
- *      * period = 0
- */
-void
-execute_iterations_with_period_checking(acb_t c, app_config config, fractal_calculated_point *calculated_point);
+void mandelbrot_set_calculate_point(zpoint point, app_config config, fractal_calculated_point *calculated_point);
 
 #endif //C_MANDELBROT_ARBITRARY_PRECISION_SET_H
