@@ -35,27 +35,27 @@ void fractal_calculated_point_set_in_period2_bulb(calculated_point_t *calculated
     calculated_point->period = 2;
 }
 
-void fractal_matrix_init(matrix_t *iterations_taken_matrix, resolution_t resolution) {
+void fractal_matrix_init(fractal_data_t *fractal_data, resolution_t resolution) {
     int matrix_size;
 
     // Resolution
-    iterations_taken_matrix->resolution.width = resolution.width;
-    iterations_taken_matrix->resolution.height = resolution.height;
+    fractal_data->resolution.width = resolution.width;
+    fractal_data->resolution.height = resolution.height;
 
-    iterations_taken_matrix->number_of_found_periods = 0;
-    iterations_taken_matrix->max_for_number_of_iterations = 0;
+    fractal_data->number_of_found_periods = 0;
+    fractal_data->max_for_number_of_iterations = 0;
 
     // Matrix
     matrix_size = resolution.width * resolution.height * sizeof(int);
-    iterations_taken_matrix->data = malloc(matrix_size);
+    fractal_data->data = malloc(matrix_size);
 }
 
-void fractal_matrix_clean(matrix_t *iterations_taken_matrix) {
-    free(iterations_taken_matrix->data);
+void fractal_matrix_clean(fractal_data_t *fractal_data) {
+    free(fractal_data->data);
 }
 
-void fractal_matrix_set_num_iter_per_point(matrix_t *iterations_taken_matrix, point_t p, int iterations_taken) {
-    iterations_taken_matrix->data[(p.y * iterations_taken_matrix->resolution.width) + p.x] = iterations_taken;
+void fractal_matrix_set_num_iter_per_point(fractal_data_t *fractal_data, point_t p, int iterations_taken) {
+    fractal_data->data[(p.y * fractal_data->resolution.width) + p.x] = iterations_taken;
 }
 
 /*
@@ -65,7 +65,7 @@ void fractal_matrix_set_num_iter_per_point(matrix_t *iterations_taken_matrix, po
  * Matrix should contain the real number of iterations and an additional value that indicates whether the point
  * is inside or not. The matrix should contain "fractal_calculated_point" instead of "int".
  */
-void fractal_matrix_set_calculated_point(matrix_t *iterations_taken_matrix, point_t p,
+void fractal_matrix_set_calculated_point(fractal_data_t *fractal_data, point_t p,
                                          calculated_point_t calculated_point) {
     int iterations_taken;
 
@@ -76,48 +76,48 @@ void fractal_matrix_set_calculated_point(matrix_t *iterations_taken_matrix, poin
         iterations_taken = MAX_ITERATIONS;
     }
 
-    fractal_matrix_set_num_iter_per_point(iterations_taken_matrix, p, iterations_taken);
+    fractal_matrix_set_num_iter_per_point(fractal_data, p, iterations_taken);
 
     // Update periods counter
     if (calculated_point.period_was_found) {
-        iterations_taken_matrix->number_of_found_periods++;
+        fractal_data->number_of_found_periods++;
     }
 
     // Update maximum for number of iterations
-    if (calculated_point.iterations_taken > iterations_taken_matrix->max_for_number_of_iterations) {
-        iterations_taken_matrix->max_for_number_of_iterations = calculated_point.iterations_taken;
+    if (calculated_point.iterations_taken > fractal_data->max_for_number_of_iterations) {
+        fractal_data->max_for_number_of_iterations = calculated_point.iterations_taken;
     }
 }
 
-void fractal_matrix_initialize_data(matrix_t iterations_taken_matrix, int *iterations_taken) {
+void fractal_matrix_initialize_data(fractal_data_t fractal_data, int *iterations_taken) {
     int i;
-    int size = iterations_taken_matrix.resolution.width * iterations_taken_matrix.resolution.height;
+    int size = fractal_data.resolution.width * fractal_data.resolution.height;
 
     for (i = 0; i < size; i++) {
-        iterations_taken_matrix.data[i] = iterations_taken[i];
+        fractal_data.data[i] = iterations_taken[i];
     }
 }
 
-int fractal_matrix_get_num_iter_per_point(point_t p, matrix_t iterations_taken_matrix) {
-    int width = iterations_taken_matrix.resolution.width;
-    int height = iterations_taken_matrix.resolution.height;
+int fractal_matrix_get_num_iter_per_point(point_t p, fractal_data_t fractal_data) {
+    int width = fractal_data.resolution.width;
+    int height = fractal_data.resolution.height;
 
-    return iterations_taken_matrix.data[(height - 1 - p.y) * width + p.x];
+    return fractal_data.data[(height - 1 - p.y) * width + p.x];
 }
 
-int fractal_matrix_point_belongs_to_mandelbrot_set(point_t p, matrix_t iterations_taken_matrix) {
-    int num_iter_for_pixel = fractal_matrix_get_num_iter_per_point(p, iterations_taken_matrix);
+int fractal_matrix_point_belongs_to_mandelbrot_set(point_t p, fractal_data_t fractal_data) {
+    int num_iter_for_pixel = fractal_matrix_get_num_iter_per_point(p, fractal_data);
     return is_value_a_inside_point(num_iter_for_pixel);
 }
 
 void
-calculate_matrix_point(zpoint_t z_current_point, point_t pt, config_t config, matrix_t *iterations_taken_matrix) {
+calculate_matrix_point(zpoint_t z_current_point, point_t pt, config_t config, fractal_data_t *fractal_data) {
     calculated_point_t calculated_point;
     fractal_calculated_point_init(&calculated_point);
 
     mandelbrot_set_calculate_point(z_current_point, config, &calculated_point);
 
-    fractal_matrix_set_calculated_point(iterations_taken_matrix, pt, calculated_point);
+    fractal_matrix_set_calculated_point(fractal_data, pt, calculated_point);
 }
 
 void calculate_next_point_to_the_right(zpoint_t *z, zpoint_t z_current_point, zpoint_t zx_point_increment, slong prec) {
@@ -125,10 +125,10 @@ void calculate_next_point_to_the_right(zpoint_t *z, zpoint_t z_current_point, zp
     zpoint_add(z, z_current_point, zx_point_increment, prec);
 }
 
-void calculate_matrix_row(zpoint_t zx_point_increment, config_t config, int y, matrix_t *iterations_taken_matrix,
+void calculate_matrix_row(zpoint_t zx_point_increment, config_t config, int y, fractal_data_t *fractal_data,
                           zpoint_t *z_current_point) {
     int x;
-    int width = iterations_taken_matrix->resolution.width;
+    int width = fractal_data->resolution.width;
     point_t current_point;
 
     for (x = 0; x < width; x++) {
@@ -137,17 +137,17 @@ void calculate_matrix_row(zpoint_t zx_point_increment, config_t config, int y, m
         calculate_matrix_point(
                 *z_current_point, current_point,
                 config,
-                iterations_taken_matrix);
+                fractal_data);
 
         calculate_next_point_to_the_right(z_current_point, *z_current_point, zx_point_increment, config.precision);
     }
 }
 
 void calculate_iterations_taken_matrix(zpoint_t left_bottom_point, zpoint_t zx_point_increment, zpoint_t zy_point_increment,
-                                       config_t config, matrix_t *iterations_taken_matrix) {
+                                       config_t config, fractal_data_t *fractal_data) {
     int y;
     zpoint_t z_current_point; // Represents the pixel being calculated
-    resolution_t resolution = iterations_taken_matrix->resolution;
+    resolution_t resolution = fractal_data->resolution;
 
     zpoint_init(&z_current_point);
 
@@ -160,7 +160,7 @@ void calculate_iterations_taken_matrix(zpoint_t left_bottom_point, zpoint_t zx_p
                 zx_point_increment,
                 config,
                 y,
-                iterations_taken_matrix,
+                fractal_data,
                 &z_current_point
         );
 
@@ -237,7 +237,7 @@ void calculate_real_and_imaginary_increments_per_point(
     arb_clear(step_im);
 }
 
-void fractal_matrix_calculate_points(ztile_t tile, config_t config, matrix_t *iterations_taken_matrix) {
+void fractal_matrix_calculate_points(ztile_t tile, config_t config, fractal_data_t *fractal_data) {
     int x, y;
     int img_idx = 0;
     int iterations_taken;
@@ -249,7 +249,7 @@ void fractal_matrix_calculate_points(ztile_t tile, config_t config, matrix_t *it
 
     calculate_real_and_imaginary_increments_per_point(
             tile,
-            iterations_taken_matrix->resolution,
+            fractal_data->resolution,
             config.precision,
             // Output
             &zx_point_increment,
@@ -262,7 +262,7 @@ void fractal_matrix_calculate_points(ztile_t tile, config_t config, matrix_t *it
             zy_point_increment,
             config,
             // Output
-            iterations_taken_matrix
+            fractal_data
     );
 
     zpoint_clean(&zx_point_increment);

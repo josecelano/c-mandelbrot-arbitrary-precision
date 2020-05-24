@@ -4,9 +4,9 @@
 #include "../domain/set.h"
 #include "ascii_graph.h"
 
-void set_point_character(char *point_char, point_t p, matrix_t iterations_taken_matrix) {
+void set_point_character(char *point_char, point_t p, fractal_data_t fractal_data) {
 
-    int ret = fractal_matrix_point_belongs_to_mandelbrot_set(p, iterations_taken_matrix);
+    int ret = fractal_matrix_point_belongs_to_mandelbrot_set(p, fractal_data);
 
     if (ret == INSIDE) {
         // Inside Mandelbrot Set

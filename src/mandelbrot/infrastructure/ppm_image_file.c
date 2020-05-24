@@ -18,28 +18,28 @@ void write_color(FILE *fp, rgb_color color) {
     fwrite(c, 1, RBG_COLOR_CHAR_SIZE, fp);
 }
 
-void print_ppm_image_pixels(FILE *fp, matrix_t iterations_taken_matrix) {
+void print_ppm_image_pixels(FILE *fp, fractal_data_t fractal_data) {
     int x, y, num_iter_for_pixel;
-    int width = iterations_taken_matrix.resolution.width;
-    int height = iterations_taken_matrix.resolution.height;
+    int width = fractal_data.resolution.width;
+    int height = fractal_data.resolution.height;
     pixel px;
 
     for (y = 0; y < height; y++) {
         for (x = 0; x < width; x++) {
             pixel_set_x_y(&px, x, y);
-            set_pixel_color(&px, iterations_taken_matrix, BLACK_ON_WHITE);
+            set_pixel_color(&px, fractal_data, BLACK_ON_WHITE);
             write_color(fp, px.color);
         }
     }
 }
 
-void render_and_write_out_image(char *filename, matrix_t iterations_taken_matrix) {
+void render_and_write_out_image(char *filename, fractal_data_t fractal_data) {
     FILE *fp;
 
     fp = fopen(filename, "wb");
 
-    print_ppm_image_header(fp, iterations_taken_matrix.resolution);
-    print_ppm_image_pixels(fp, iterations_taken_matrix);
+    print_ppm_image_header(fp, fractal_data.resolution);
+    print_ppm_image_pixels(fp, fractal_data);
 
     fclose(fp);
 }

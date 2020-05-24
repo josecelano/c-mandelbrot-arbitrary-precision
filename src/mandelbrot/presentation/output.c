@@ -60,7 +60,7 @@ void print_performance_data(clock_t time, resolution_t resolution, config_t conf
     console_printf("* Minimum complex y increment: %Le (4/%d)\n", (long double) 4 / resolution.height, resolution.height);
 }
 
-void print_fractal_matrix_data(matrix_t matrix) {
-    console_printf("* Number of found periods: %d\n", matrix.number_of_found_periods);
-    console_printf("* Max for number of iterations: %d (should be max iterations in config)\n", matrix.max_for_number_of_iterations);
+void print_fractal_matrix_data(fractal_data_t fractal_data) {
+    console_printf("* Number of found periods: %d\n", fractal_data.number_of_found_periods);
+    console_printf("* Max for number of iterations: %d (should be max iterations in config)\n", fractal_data.max_for_number_of_iterations);
 }

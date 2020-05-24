@@ -15,43 +15,43 @@
 /**
  * It renders a Mandelbrot fractal image in PPM format.
  */
-void render_ppm_image(matrix_t iterations_taken_matrix) {
+void render_ppm_image(fractal_data_t fractal_data) {
     char img_filename[50];
 
     sprintf(img_filename, "./output/mandelbrot-%dx%d.ppm",
-            iterations_taken_matrix.resolution.width,
-            iterations_taken_matrix.resolution.height
+            fractal_data.resolution.width,
+            fractal_data.resolution.height
     );
 
-    render_and_write_out_image(img_filename, iterations_taken_matrix);
+    render_and_write_out_image(img_filename, fractal_data);
 }
 
 /**
  * It renders a txt file with a Mandelbrot ASCII graph.
  */
-void render_ascii_graph(matrix_t iterations_taken_matrix) {
+void render_ascii_graph(fractal_data_t fractal_data) {
     char txt_filename[50];
 
     sprintf(txt_filename, "./output/mandelbrot-%dx%d.txt",
-            iterations_taken_matrix.resolution.width,
-            iterations_taken_matrix.resolution.height
+            fractal_data.resolution.width,
+            fractal_data.resolution.height
     );
 
-    render_and_write_out_ascii_graph(txt_filename, iterations_taken_matrix);
+    render_and_write_out_ascii_graph(txt_filename, fractal_data);
 }
 
 /**
  * It renders a txt file with a Mandelbrot iterations matrix.
  */
-void render_iterations_taken_matrix(matrix_t iterations_taken_matrix) {
+void render_iterations_taken_matrix(fractal_data_t fractal_data) {
     char txt_filename[50];
 
     sprintf(txt_filename, "./output/mandelbrot-iter-%dx%d.txt",
-            iterations_taken_matrix.resolution.width,
-            iterations_taken_matrix.resolution.height
+            fractal_data.resolution.width,
+            fractal_data.resolution.height
     );
 
-    render_and_write_out_iterations_matrix(txt_filename, iterations_taken_matrix);
+    render_and_write_out_iterations_matrix(txt_filename, fractal_data);
 }
 
 int main(int argc, const char *argv[]) {
@@ -60,7 +60,7 @@ int main(int argc, const char *argv[]) {
     resolution_t resolution = {256, 256};
 
     // Matrix with number of Mandelbrot formula iterations needed for each pixel to diverge.
-    matrix_t iterations_taken_matrix;
+    fractal_data_t fractal_data;
 
     // The tile we want to draw with complex points coordinates
     ztile_t tile;
@@ -72,29 +72,29 @@ int main(int argc, const char *argv[]) {
 
     app_config_init(&config);
 
-    fractal_matrix_init(&iterations_taken_matrix, resolution);
+    fractal_matrix_init(&fractal_data, resolution);
 
     ztile_init(&tile);
 
     ztile_set_completed_mandelbrot_set(&tile, config);
 
     time = clock();
-    fractal_matrix_calculate_points(tile, config, &iterations_taken_matrix);
+    fractal_matrix_calculate_points(tile, config, &fractal_data);
     time = clock() - time;
 
     ztile_clean(&tile);
 
     print_performance_data(time, resolution, config);
 
-    print_fractal_matrix_data(iterations_taken_matrix);
+    print_fractal_matrix_data(fractal_data);
 
-    render_ppm_image(iterations_taken_matrix);
+    render_ppm_image(fractal_data);
 
-    render_ascii_graph(iterations_taken_matrix);
+    render_ascii_graph(fractal_data);
 
-    render_iterations_taken_matrix(iterations_taken_matrix);
+    render_iterations_taken_matrix(fractal_data);
 
-    fractal_matrix_clean(&iterations_taken_matrix);
+    fractal_matrix_clean(&fractal_data);
 
     return 0;
 }

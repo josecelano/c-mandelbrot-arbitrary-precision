@@ -4,11 +4,11 @@
 #include "../presentation/ascii_graph.h"
 #include "./ascii_graph_file.h"
 
-void render_and_write_out_ascii_graph(char *filename, matrix_t iterations_taken_matrix) {
+void render_and_write_out_ascii_graph(char *filename, fractal_data_t fractal_data) {
     int x, y, num_iter_for_pixel;
     char point_char[1];
     FILE *fp;
-    resolution_t resolution = iterations_taken_matrix.resolution;
+    resolution_t resolution = fractal_data.resolution;
 
     fp = fopen(filename, "w");
 
@@ -19,7 +19,7 @@ void render_and_write_out_ascii_graph(char *filename, matrix_t iterations_taken_
 
             set_point_character(
                     point_char, p,
-                    iterations_taken_matrix);
+                    fractal_data);
 
             fwrite(point_char, 1, 1, fp);
         }
@@ -61,13 +61,13 @@ void write_num_iter(FILE *fp, int num_iter, int num_digits) {
     fwrite(num_iter_str, 1, num_digits, fp);
 }
 
-void render_and_write_out_iterations_matrix(char *filename, matrix_t iterations_taken_matrix) {
+void render_and_write_out_iterations_matrix(char *filename, fractal_data_t fractal_data) {
     int i, x, y, num_iter_for_pixel, ret;
     FILE *fp;
-    resolution_t resolution = iterations_taken_matrix.resolution;
+    resolution_t resolution = fractal_data.resolution;
     point_t p;
 
-    unsigned int max_for_number_of_iterations = iterations_taken_matrix.max_for_number_of_iterations;
+    unsigned int max_for_number_of_iterations = fractal_data.max_for_number_of_iterations;
     unsigned int num_digits;
 
     num_digits = calculate_total_digits_of(max_for_number_of_iterations);
@@ -81,9 +81,9 @@ void render_and_write_out_iterations_matrix(char *filename, matrix_t iterations_
 
             // TODO: WIP refactor, get fractal_calculated_point
 
-            num_iter_for_pixel = fractal_matrix_get_num_iter_per_point(p, iterations_taken_matrix);
+            num_iter_for_pixel = fractal_matrix_get_num_iter_per_point(p, fractal_data);
 
-            ret = fractal_matrix_point_belongs_to_mandelbrot_set(p, iterations_taken_matrix);
+            ret = fractal_matrix_point_belongs_to_mandelbrot_set(p, fractal_data);
 
             if (ret == INSIDE) {
                 // Inside Mandelbrot Set

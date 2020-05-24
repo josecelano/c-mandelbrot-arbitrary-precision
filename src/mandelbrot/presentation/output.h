@@ -22,6 +22,6 @@ void print_render_progress(int y, int height);
 
 void print_performance_data(clock_t time, resolution_t resolution, config_t config);
 
-void print_fractal_matrix_data(matrix_t matrix);
+void print_fractal_matrix_data(fractal_data_t fractal_data);
 
 #endif //C_MANDELBROT_ARBITRARY_PRECISION_OUTPUT_H

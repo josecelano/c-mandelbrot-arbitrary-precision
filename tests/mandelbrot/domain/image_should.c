@@ -40,8 +40,8 @@ TEST(image_should, calculate_the_color_for_a_given_pixel) {
     int num_iter_for_pixel;
 
     resolution_t resolution = {3, 3};
-    matrix_t iterations_taken_matrix;
-    fractal_matrix_init(&iterations_taken_matrix, resolution);
+    fractal_data_t fractal_data;
+    fractal_matrix_init(&fractal_data, resolution);
 
     int iterations_taken_matrix_data[9] = {
             // X  0, 1, 2  Y
@@ -49,7 +49,7 @@ TEST(image_should, calculate_the_color_for_a_given_pixel) {
             1, -1, 1,   // 1
             1, 1, 1     // 2
     };
-    fractal_matrix_initialize_data(iterations_taken_matrix, iterations_taken_matrix_data);
+    fractal_matrix_initialize_data(fractal_data, iterations_taken_matrix_data);
 
     int expected_colours[9] = {
             // X 0, 1, 2    Y
@@ -62,7 +62,7 @@ TEST(image_should, calculate_the_color_for_a_given_pixel) {
         for (x = 0; x < 3; x++) {
 
             pixel px = {x, y};
-            set_pixel_color(&px, iterations_taken_matrix, BLACK_ON_WHITE);
+            set_pixel_color(&px, fractal_data, BLACK_ON_WHITE);
 
             if (expected_colours[(y * 3) + x] == 'w') {
                 test_assert_color_equal(white, px);
@@ -74,7 +74,7 @@ TEST(image_should, calculate_the_color_for_a_given_pixel) {
         }
     }
 
-    fractal_matrix_clean(&iterations_taken_matrix);
+    fractal_matrix_clean(&fractal_data);
 }
 
 TEST_GROUP_RUNNER(image_should) {
