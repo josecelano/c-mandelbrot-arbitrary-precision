@@ -112,38 +112,12 @@ int fractal_matrix_point_belongs_to_mandelbrot_set(point p, fractal_matrix itera
 
 void
 calculate_matrix_point(zpoint z_current_point, point pt, app_config config, fractal_matrix *iterations_taken_matrix) {
-    acb_t c;
     fractal_calculated_point calculated_point;
-    int iterations_taken;
-
-    acb_init(c);
-
     fractal_calculated_point_init(&calculated_point);
 
-    acb_set_from_zpoint(c, z_current_point);
-
-    if (inside_main_cardioid(c, config)) {
-        fractal_calculated_point_set_in_main_cardioid(&calculated_point);
-        fractal_matrix_set_calculated_point(iterations_taken_matrix, pt, calculated_point);
-        acb_clear(c);
-        return;
-    }
-
-    if (inside_period_2_bulb(c, config)) {
-        fractal_calculated_point_set_in_period2_bulb(&calculated_point);
-        fractal_matrix_set_calculated_point(iterations_taken_matrix, pt, calculated_point);
-        acb_clear(c);
-        return;
-    }
-
-    execute_iterations_with_period_checking(
-            c, config,
-            &calculated_point
-    );
+    mandelbrot_set_calculate_point(z_current_point, config, &calculated_point);
 
     fractal_matrix_set_calculated_point(iterations_taken_matrix, pt, calculated_point);
-
-    acb_clear(c);
 }
 
 void calculate_next_point_to_the_right(zpoint *z, zpoint z_current_point, zpoint zx_point_increment, slong prec) {

@@ -161,13 +161,13 @@ void mandelbrot_set_calculate_point(zpoint point, app_config config, fractal_cal
     acb_set_from_zpoint(c, point);
 
     if (inside_main_cardioid(c, config)) {
-        calculated_point->period = 1;
+        fractal_calculated_point_set_in_main_cardioid(calculated_point);
         acb_clear(c);
         return;
     }
 
     if (inside_period_2_bulb(c, config)) {
-        calculated_point->period = 2;
+        fractal_calculated_point_set_in_period2_bulb(calculated_point);
         acb_clear(c);
         return;
     }
