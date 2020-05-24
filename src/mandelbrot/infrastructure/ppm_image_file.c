@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "../domain/image/color.h"
 #include "../domain/fractal.h"
+#include "../domain/image/color.h"
+#include "../domain/image/color_map.h"
 #include "../domain/image/image.h"
 #include "../domain/set.h"
-#include "ppm_image_file.h"
+#include "./ppm_image_file.h"
 
 void print_ppm_image_header(FILE *fp, fractal_resolution resolution) {
     fprintf(fp, "P6\n");
@@ -26,7 +27,7 @@ void print_ppm_image_pixels(FILE *fp, fractal_matrix iterations_taken_matrix) {
     for (y = 0; y < height; y++) {
         for (x = 0; x < width; x++) {
             pixel_set_x_y(&px, x, y);
-            set_pixel_color(&px, iterations_taken_matrix);
+            set_pixel_color(&px, iterations_taken_matrix, BLACK_ON_WHITE);
             write_color(fp, px.color);
         }
     }

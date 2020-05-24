@@ -62,7 +62,7 @@ TEST(image_should, calculate_the_color_for_a_given_pixel) {
         for (x = 0; x < 3; x++) {
 
             pixel px = {x, y};
-            set_pixel_color(&px, iterations_taken_matrix);
+            set_pixel_color(&px, iterations_taken_matrix, BLACK_ON_WHITE);
 
             if (expected_colours[(y * 3) + x] == 'w') {
                 test_assert_color_equal(white, px);
