@@ -4,18 +4,18 @@
 #include "../presentation/ascii_graph.h"
 #include "./ascii_graph_file.h"
 
-void render_and_write_out_ascii_graph(char *filename, fractal_matrix iterations_taken_matrix) {
+void render_and_write_out_ascii_graph(char *filename, matrix_t iterations_taken_matrix) {
     int x, y, num_iter_for_pixel;
     char point_char[1];
     FILE *fp;
-    fractal_resolution resolution = iterations_taken_matrix.resolution;
+    resolution_t resolution = iterations_taken_matrix.resolution;
 
     fp = fopen(filename, "w");
 
     for (y = 0; y < resolution.height; y++) {
         for (x = 0; x < resolution.width; x++) {
 
-            point p = {x, y};
+            point_t p = {x, y};
 
             set_point_character(
                     point_char, p,
@@ -61,11 +61,11 @@ void write_num_iter(FILE *fp, int num_iter, int num_digits) {
     fwrite(num_iter_str, 1, num_digits, fp);
 }
 
-void render_and_write_out_iterations_matrix(char *filename, fractal_matrix iterations_taken_matrix) {
+void render_and_write_out_iterations_matrix(char *filename, matrix_t iterations_taken_matrix) {
     int i, x, y, num_iter_for_pixel, ret;
     FILE *fp;
-    fractal_resolution resolution = iterations_taken_matrix.resolution;
-    point p;
+    resolution_t resolution = iterations_taken_matrix.resolution;
+    point_t p;
 
     unsigned int max_for_number_of_iterations = iterations_taken_matrix.max_for_number_of_iterations;
     unsigned int num_digits;

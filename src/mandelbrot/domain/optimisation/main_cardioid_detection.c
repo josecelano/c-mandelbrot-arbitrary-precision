@@ -3,7 +3,7 @@
 
 #include "main_cardioid_detection.h"
 
-int inside_main_cardioid(acb_t c, app_config config) {
+int inside_main_cardioid(acb_t c, config_t config) {
     int ret = 0;
     arb_t x, y;           // Real and imaginary parts
     arb_t a, b;           // Left and right side of the comparison operation

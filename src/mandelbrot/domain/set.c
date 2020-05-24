@@ -11,8 +11,8 @@
 #include "./set.h"
 #include "./zpoint.h"
 
-int mandelbrot_set_contains(zpoint point, app_config config) {
-    fractal_calculated_point calculated_point;
+int mandelbrot_set_contains(zpoint_t point, config_t config) {
+    calculated_point_t calculated_point;
 
     fractal_calculated_point_init(&calculated_point);
 
@@ -29,7 +29,7 @@ int is_value_a_inside_point(int num_iter_for_pixel) {
     return OUTSIDE;
 }
 
-void mandelbrot_set_calculate_point(zpoint point, app_config config, fractal_calculated_point *calculated_point) {
+void mandelbrot_set_calculate_point(zpoint_t point, config_t config, calculated_point_t *calculated_point) {
     acb_t c;
 
     acb_init(c);

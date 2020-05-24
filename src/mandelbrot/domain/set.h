@@ -15,7 +15,7 @@
 /**
  * It returns INSIDE if the point belongs to mandelbrot Set and OUTSIDE if it does not.
  */
-int mandelbrot_set_contains(zpoint point, app_config config);
+int mandelbrot_set_contains(zpoint_t point, config_t config);
 
 /**
  * Check is the value in the matrix represents a point inside the Mandelbrot Set.
@@ -33,6 +33,6 @@ int bailout(acb_t c, slong prec);
 /**
  * Same output values as execute_iterations_with_period_checking
  */
-void mandelbrot_set_calculate_point(zpoint point, app_config config, fractal_calculated_point *calculated_point);
+void mandelbrot_set_calculate_point(zpoint_t point, config_t config, calculated_point_t *calculated_point);
 
 #endif //C_MANDELBROT_ARBITRARY_PRECISION_SET_H

@@ -14,10 +14,10 @@ TEST_SETUP(ascii_graph_should) {
 TEST_TEAR_DOWN(ascii_graph_should) {
 }
 
-void calculate_completed_mandelbrot(fractal_resolution resolution, fractal_matrix *iterations_taken_matrix) {
-    ztile tile;
+void calculate_completed_mandelbrot(resolution_t resolution, matrix_t *iterations_taken_matrix) {
+    ztile_t tile;
 
-    app_config config;
+    config_t config;
     app_config_init_test(&config);
 
     ztile_init(&tile);
@@ -43,8 +43,8 @@ void test_assert_txt_files_equal(char *expected_filename, char *actual_filename)
 
 TEST(ascii_graph_should, generate_an_ascii_version_of_the_mandelbrot_set) {
 
-    fractal_resolution resolution = {256, 256};
-    fractal_matrix iterations_taken_matrix;
+    resolution_t resolution = {256, 256};
+    matrix_t iterations_taken_matrix;
 
     fractal_matrix_init(&iterations_taken_matrix, resolution);
 
@@ -67,8 +67,8 @@ TEST(ascii_graph_should, generate_an_ascii_version_of_the_mandelbrot_set) {
 
 TEST(ascii_graph_should, generate_a_text_version_of_the_iterations_taken_matrix) {
 
-    fractal_resolution resolution = {256, 256};
-    fractal_matrix iterations_taken_matrix;
+    resolution_t resolution = {256, 256};
+    matrix_t iterations_taken_matrix;
 
     fractal_matrix_init(&iterations_taken_matrix, resolution);
 

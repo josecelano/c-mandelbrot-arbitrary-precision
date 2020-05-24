@@ -6,10 +6,10 @@
 typedef struct {
     int x;
     int y;
-} point;
+} point_t;
 
-void point_set(point *p, int x, int y);
+void point_set(point_t *p, int x, int y);
 
-void point_set_from_pixel(point *p, pixel px);
+void point_set_from_pixel(point_t *p, pixel px);
 
 #endif //C_MANDELBROT_ARBITRARY_PRECISION_POINT_H

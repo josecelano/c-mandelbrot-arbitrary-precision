@@ -19,16 +19,16 @@ TEST_TEAR_DOWN(mandelbrot_set_should) {
 
 TEST(mandelbrot_set_should, contain_known_points_inside) {
     int i, ret;
-    zpoint point;
+    zpoint_t point;
     char message[100];
 
-    app_config config;
+    config_t config;
     app_config_init_test(&config);
 
     zpoint_init(&point);
 
     // Some complex number inside the Mandelbrot Set
-    complex_dto z_in[6] = {
+    complex_dto_t z_in[6] = {
             {"0",       "0"},
             {"-1",      "0"},
             {"-0.5",    "0"},
@@ -54,16 +54,16 @@ TEST(mandelbrot_set_should, contain_known_points_inside) {
 TEST(mandelbrot_set_should, not_contain_known_points_outside) {
     int i, ret;
     int print_periods = 0;
-    zpoint point;
+    zpoint_t point;
     char message[100];
 
-    app_config config;
+    config_t config;
     app_config_init_test(&config);
 
     zpoint_init(&point);
 
     // Some complex number inside the Mandelbrot Set
-    complex_dto z_out[6] = {
+    complex_dto_t z_out[6] = {
             {"-2", "2"},
             {"0",  "2"},
             {"2",  "2"},
@@ -91,13 +91,13 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_main_cardioid_in_order_to_i
     int i, ret;
     char message[100];
 
-    app_config config;
+    config_t config;
     app_config_init_test(&config);
 
     acb_init(c);
 
     // Some complex number inside the main cardioid
-    complex_dto z_in[5] = {
+    complex_dto_t z_in[5] = {
             {"0",    "0"},
             {"-0.6", "0"},
             {"0.2",  "0"},
@@ -117,7 +117,7 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_main_cardioid_in_order_to_i
     }
 
     // Some complex number outside the main cardioid
-    complex_dto z_out[5] = {
+    complex_dto_t z_out[5] = {
             {"0.3", "0"},
             {"-2",  "0"},
             {"0",   "0.7"},
@@ -144,13 +144,13 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_period_2_bulb_in_order_to_i
     int i, ret;
     char message[100];
 
-    app_config config;
+    config_t config;
     app_config_init_test(&config);
 
     acb_init(c);
 
     // Some complex number inside the period-2 bulb (big circle on the left of the main cardioid)
-    complex_dto z_in[5] = {
+    complex_dto_t z_in[5] = {
             {"-1",   "0"},
             {"-1.1", "0.1"},
             {"-0.9", "0.1"},
@@ -170,7 +170,7 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_period_2_bulb_in_order_to_i
     }
 
     // Some complex number outside the period-2 bulb
-    complex_dto z_out[5] = {
+    complex_dto_t z_out[5] = {
             {"0.3", "0"},
             {"-2",  "0"},
             {"0",   "0.7"},
@@ -193,10 +193,10 @@ TEST(mandelbrot_set_should, check_if_point_is_inside_period_2_bulb_in_order_to_i
 }
 
 TEST(mandelbrot_set_should, detect_periods_to_increase_performace_decreasing_iterations) {
-    app_config config;
+    config_t config;
     acb_t c;
     int expected_period;
-    fractal_calculated_point calculated_point;
+    calculated_point_t calculated_point;
     char message[100];
 
     app_config_init_test(&config);
@@ -204,7 +204,7 @@ TEST(mandelbrot_set_should, detect_periods_to_increase_performace_decreasing_ite
     fractal_calculated_point_init(&calculated_point);
 
     // Pre-selected points with known period from period 0 to 4
-    complex_dto points[5] = {
+    complex_dto_t points[5] = {
             {"0",    "0"},
             {"-0.1", "0.1"},
             {"0",    "1"},

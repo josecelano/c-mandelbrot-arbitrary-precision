@@ -20,8 +20,8 @@ void print_period_found(int period, int i);
 
 void print_render_progress(int y, int height);
 
-void print_performance_data(clock_t time, fractal_resolution resolution, app_config config);
+void print_performance_data(clock_t time, resolution_t resolution, config_t config);
 
-void print_fractal_matrix_data(fractal_matrix matrix);
+void print_fractal_matrix_data(matrix_t matrix);
 
 #endif //C_MANDELBROT_ARBITRARY_PRECISION_OUTPUT_H

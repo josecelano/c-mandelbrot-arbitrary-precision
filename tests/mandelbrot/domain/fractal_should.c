@@ -15,13 +15,13 @@ TEST_TEAR_DOWN(fractal_should)
 }
 
 void test_assert_equal_iteration_matrix(
-        fractal_matrix expected_iterations_taken_matrix,
-        fractal_matrix iterations_taken_matrix
+        matrix_t expected_iterations_taken_matrix,
+        matrix_t iterations_taken_matrix
         ) {
     int x, y, expected_num_iter, num_iter;
     char message[100];
-    fractal_resolution resolution = iterations_taken_matrix.resolution;
-    point p;
+    resolution_t resolution = iterations_taken_matrix.resolution;
+    point_t p;
 
     for (y = 0; y < resolution.height; y++) {
         for (x = 0; x < resolution.width; x++) {
@@ -48,13 +48,13 @@ TEST(fractal_should, calculate_complex_points_for_a_given_resolution_and_check_i
     int x, y;
     char message[100];
 
-    app_config config;
+    config_t config;
     app_config_init_test(&config);
 
-    ztile tile;
-    fractal_resolution resolution = {10, 10};
-    fractal_matrix expected_iterations_taken_matrix;
-    fractal_matrix iterations_taken_matrix;
+    ztile_t tile;
+    resolution_t resolution = {10, 10};
+    matrix_t expected_iterations_taken_matrix;
+    matrix_t iterations_taken_matrix;
 
     fractal_matrix_init(&expected_iterations_taken_matrix, resolution);
     fractal_matrix_init(&iterations_taken_matrix, resolution);
@@ -96,13 +96,13 @@ TEST(fractal_should, calculate_iterations_taken_matrix_for_a_non_symmetrical_ima
     int x, y;
     char message[100];
 
-    app_config config;
+    config_t config;
     app_config_init_test(&config);
 
-    ztile tile;
-    fractal_resolution resolution = {10, 10};
-    fractal_matrix expected_iterations_taken_matrix;
-    fractal_matrix iterations_taken_matrix;
+    ztile_t tile;
+    resolution_t resolution = {10, 10};
+    matrix_t expected_iterations_taken_matrix;
+    matrix_t iterations_taken_matrix;
 
     fractal_matrix_init(&expected_iterations_taken_matrix, resolution);
     fractal_matrix_init(&iterations_taken_matrix, resolution);

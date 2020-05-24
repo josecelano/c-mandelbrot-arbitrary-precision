@@ -1,6 +1,6 @@
 #include "period2_detection.h"
 
-int inside_period_2_bulb(acb_t c, app_config config) {
+int inside_period_2_bulb(acb_t c, config_t config) {
     int ret = 0;
     arb_t x, y;           // Real and imaginary parts
     arb_t temp;           // Temporal results and constants in the formula

@@ -14,28 +14,28 @@
 #include "./zpoint.h"
 #include "./ztile.h"
 
-void fractal_calculated_point_init(fractal_calculated_point *calculated_point) {
+void fractal_calculated_point_init(calculated_point_t *calculated_point) {
     calculated_point->is_inside = TRUE;
     calculated_point->iterations_taken = 0;
     calculated_point->period_was_found = FALSE;
     calculated_point->period = 0;
 }
 
-void fractal_calculated_point_set_in_main_cardioid(fractal_calculated_point *calculated_point) {
+void fractal_calculated_point_set_in_main_cardioid(calculated_point_t *calculated_point) {
     calculated_point->is_inside = TRUE;
     calculated_point->iterations_taken = 0;
     calculated_point->period_was_found = TRUE;
     calculated_point->period = 1;
 }
 
-void fractal_calculated_point_set_in_period2_bulb(fractal_calculated_point *calculated_point) {
+void fractal_calculated_point_set_in_period2_bulb(calculated_point_t *calculated_point) {
     calculated_point->is_inside = TRUE;
     calculated_point->iterations_taken = 0;
     calculated_point->period_was_found = TRUE;
     calculated_point->period = 2;
 }
 
-void fractal_matrix_init(fractal_matrix *iterations_taken_matrix, fractal_resolution resolution) {
+void fractal_matrix_init(matrix_t *iterations_taken_matrix, resolution_t resolution) {
     int matrix_size;
 
     // Resolution
@@ -50,11 +50,11 @@ void fractal_matrix_init(fractal_matrix *iterations_taken_matrix, fractal_resolu
     iterations_taken_matrix->data = malloc(matrix_size);
 }
 
-void fractal_matrix_clean(fractal_matrix *iterations_taken_matrix) {
+void fractal_matrix_clean(matrix_t *iterations_taken_matrix) {
     free(iterations_taken_matrix->data);
 }
 
-void fractal_matrix_set_num_iter_per_point(fractal_matrix *iterations_taken_matrix, point p, int iterations_taken) {
+void fractal_matrix_set_num_iter_per_point(matrix_t *iterations_taken_matrix, point_t p, int iterations_taken) {
     iterations_taken_matrix->data[(p.y * iterations_taken_matrix->resolution.width) + p.x] = iterations_taken;
 }
 
@@ -65,8 +65,8 @@ void fractal_matrix_set_num_iter_per_point(fractal_matrix *iterations_taken_matr
  * Matrix should contain the real number of iterations and an additional value that indicates whether the point
  * is inside or not. The matrix should contain "fractal_calculated_point" instead of "int".
  */
-void fractal_matrix_set_calculated_point(fractal_matrix *iterations_taken_matrix, point p,
-                                         fractal_calculated_point calculated_point) {
+void fractal_matrix_set_calculated_point(matrix_t *iterations_taken_matrix, point_t p,
+                                         calculated_point_t calculated_point) {
     int iterations_taken;
 
     iterations_taken = calculated_point.iterations_taken;
@@ -89,7 +89,7 @@ void fractal_matrix_set_calculated_point(fractal_matrix *iterations_taken_matrix
     }
 }
 
-void fractal_matrix_initialize_data(fractal_matrix iterations_taken_matrix, int *iterations_taken) {
+void fractal_matrix_initialize_data(matrix_t iterations_taken_matrix, int *iterations_taken) {
     int i;
     int size = iterations_taken_matrix.resolution.width * iterations_taken_matrix.resolution.height;
 
@@ -98,21 +98,21 @@ void fractal_matrix_initialize_data(fractal_matrix iterations_taken_matrix, int 
     }
 }
 
-int fractal_matrix_get_num_iter_per_point(point p, fractal_matrix iterations_taken_matrix) {
+int fractal_matrix_get_num_iter_per_point(point_t p, matrix_t iterations_taken_matrix) {
     int width = iterations_taken_matrix.resolution.width;
     int height = iterations_taken_matrix.resolution.height;
 
     return iterations_taken_matrix.data[(height - 1 - p.y) * width + p.x];
 }
 
-int fractal_matrix_point_belongs_to_mandelbrot_set(point p, fractal_matrix iterations_taken_matrix) {
+int fractal_matrix_point_belongs_to_mandelbrot_set(point_t p, matrix_t iterations_taken_matrix) {
     int num_iter_for_pixel = fractal_matrix_get_num_iter_per_point(p, iterations_taken_matrix);
     return is_value_a_inside_point(num_iter_for_pixel);
 }
 
 void
-calculate_matrix_point(zpoint z_current_point, point pt, app_config config, fractal_matrix *iterations_taken_matrix) {
-    fractal_calculated_point calculated_point;
+calculate_matrix_point(zpoint_t z_current_point, point_t pt, config_t config, matrix_t *iterations_taken_matrix) {
+    calculated_point_t calculated_point;
     fractal_calculated_point_init(&calculated_point);
 
     mandelbrot_set_calculate_point(z_current_point, config, &calculated_point);
@@ -120,16 +120,16 @@ calculate_matrix_point(zpoint z_current_point, point pt, app_config config, frac
     fractal_matrix_set_calculated_point(iterations_taken_matrix, pt, calculated_point);
 }
 
-void calculate_next_point_to_the_right(zpoint *z, zpoint z_current_point, zpoint zx_point_increment, slong prec) {
+void calculate_next_point_to_the_right(zpoint_t *z, zpoint_t z_current_point, zpoint_t zx_point_increment, slong prec) {
     // Increase real part to move one pixel to the right
     zpoint_add(z, z_current_point, zx_point_increment, prec);
 }
 
-void calculate_matrix_row(zpoint zx_point_increment, app_config config, int y, fractal_matrix *iterations_taken_matrix,
-                          zpoint *z_current_point) {
+void calculate_matrix_row(zpoint_t zx_point_increment, config_t config, int y, matrix_t *iterations_taken_matrix,
+                          zpoint_t *z_current_point) {
     int x;
     int width = iterations_taken_matrix->resolution.width;
-    point current_point;
+    point_t current_point;
 
     for (x = 0; x < width; x++) {
         point_set(&current_point, x, y);
@@ -143,11 +143,11 @@ void calculate_matrix_row(zpoint zx_point_increment, app_config config, int y, f
     }
 }
 
-void calculate_iterations_taken_matrix(zpoint left_bottom_point, zpoint zx_point_increment, zpoint zy_point_increment,
-                                       app_config config, fractal_matrix *iterations_taken_matrix) {
+void calculate_iterations_taken_matrix(zpoint_t left_bottom_point, zpoint_t zx_point_increment, zpoint_t zy_point_increment,
+                                       config_t config, matrix_t *iterations_taken_matrix) {
     int y;
-    zpoint z_current_point; // Represents the pixel being calculated
-    fractal_resolution resolution = iterations_taken_matrix->resolution;
+    zpoint_t z_current_point; // Represents the pixel being calculated
+    resolution_t resolution = iterations_taken_matrix->resolution;
 
     zpoint_init(&z_current_point);
 
@@ -179,12 +179,12 @@ void calculate_iterations_taken_matrix(zpoint left_bottom_point, zpoint zx_point
 }
 
 void calculate_real_and_imaginary_increments_per_point(
-        ztile tile,
-        fractal_resolution resolution,
+        ztile_t tile,
+        resolution_t resolution,
         slong prec,
         // Output
-        zpoint *zx_point_increment,
-        zpoint *zy_point_increment
+        zpoint_t *zx_point_increment,
+        zpoint_t *zy_point_increment
 ) {
     arb_t zero;
     arb_t res_x_t, res_y_t;
@@ -237,12 +237,12 @@ void calculate_real_and_imaginary_increments_per_point(
     arb_clear(step_im);
 }
 
-void fractal_matrix_calculate_points(ztile tile, app_config config, fractal_matrix *iterations_taken_matrix) {
+void fractal_matrix_calculate_points(ztile_t tile, config_t config, matrix_t *iterations_taken_matrix) {
     int x, y;
     int img_idx = 0;
     int iterations_taken;
 
-    zpoint zx_point_increment, zy_point_increment;
+    zpoint_t zx_point_increment, zy_point_increment;
 
     zpoint_init(&zx_point_increment);
     zpoint_init(&zy_point_increment);

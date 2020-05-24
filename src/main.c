@@ -15,7 +15,7 @@
 /**
  * It renders a Mandelbrot fractal image in PPM format.
  */
-void render_ppm_image(fractal_matrix iterations_taken_matrix) {
+void render_ppm_image(matrix_t iterations_taken_matrix) {
     char img_filename[50];
 
     sprintf(img_filename, "./output/mandelbrot-%dx%d.ppm",
@@ -29,7 +29,7 @@ void render_ppm_image(fractal_matrix iterations_taken_matrix) {
 /**
  * It renders a txt file with a Mandelbrot ASCII graph.
  */
-void render_ascii_graph(fractal_matrix iterations_taken_matrix) {
+void render_ascii_graph(matrix_t iterations_taken_matrix) {
     char txt_filename[50];
 
     sprintf(txt_filename, "./output/mandelbrot-%dx%d.txt",
@@ -43,7 +43,7 @@ void render_ascii_graph(fractal_matrix iterations_taken_matrix) {
 /**
  * It renders a txt file with a Mandelbrot iterations matrix.
  */
-void render_iterations_taken_matrix(fractal_matrix iterations_taken_matrix) {
+void render_iterations_taken_matrix(matrix_t iterations_taken_matrix) {
     char txt_filename[50];
 
     sprintf(txt_filename, "./output/mandelbrot-iter-%dx%d.txt",
@@ -57,18 +57,18 @@ void render_iterations_taken_matrix(fractal_matrix iterations_taken_matrix) {
 int main(int argc, const char *argv[]) {
 
     // Resolution for output image and ASCII graph
-    fractal_resolution resolution = {256, 256};
+    resolution_t resolution = {256, 256};
 
     // Matrix with number of Mandelbrot formula iterations needed for each pixel to diverge.
-    fractal_matrix iterations_taken_matrix;
+    matrix_t iterations_taken_matrix;
 
     // The tile we want to draw with complex points coordinates
-    ztile tile;
+    ztile_t tile;
 
     // Calculate the time taken for fractal matrix generation
     clock_t time;
 
-    app_config config;
+    config_t config;
 
     app_config_init(&config);
 

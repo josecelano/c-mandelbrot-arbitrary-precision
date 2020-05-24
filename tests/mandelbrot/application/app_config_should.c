@@ -16,7 +16,7 @@ TEST_TEAR_DOWN(app_config_should) {
 
 TEST(app_config_should, have_a_verbose_option_to_print_progress_enabled_by_default) {
 
-    app_config config;
+    config_t config;
     int enabled;
 
     app_config_init(&config);
@@ -28,7 +28,7 @@ TEST(app_config_should, have_a_verbose_option_to_print_progress_enabled_by_defau
 
 TEST(app_config_should, have_a_verbose_option_to_print_periods_disabled_by_default) {
 
-    app_config config;
+    config_t config;
     int enabled;
 
     app_config_init(&config);
@@ -40,7 +40,7 @@ TEST(app_config_should, have_a_verbose_option_to_print_periods_disabled_by_defau
 
 TEST(app_config_should, allow_to_enable_and_disable_a_verbose_option) {
 
-    app_config config;
+    config_t config;
     int ret;
 
     app_config_init(&config);

@@ -9,7 +9,7 @@
 #include "../set.h"
 
 int check_for_period(int iter, acb_t c, arb_t z_re, arb_t z_im, arb_t old_re, arb_t old_im, arb_t period_tolerance,
-                     int check_counter, app_config config) {
+                     int check_counter, config_t config) {
     int ret = 0;
 
     arb_t re_diff, im_diff;
@@ -43,7 +43,7 @@ int check_for_period(int iter, acb_t c, arb_t z_re, arb_t z_im, arb_t old_re, ar
     return ret;
 }
 
-void execute_iterations_with_period_checking(acb_t c, app_config config, fractal_calculated_point *calculated_point) {
+void execute_iterations_with_period_checking(acb_t c, config_t config, calculated_point_t *calculated_point) {
     int i;
     acb_t f, z;
 

@@ -8,7 +8,7 @@
 #include "../domain/set.h"
 #include "./ppm_image_file.h"
 
-void print_ppm_image_header(FILE *fp, fractal_resolution resolution) {
+void print_ppm_image_header(FILE *fp, resolution_t resolution) {
     fprintf(fp, "P6\n");
     fprintf(fp, "%d %d %d\n", resolution.width, resolution.height, 255);
 }
@@ -18,7 +18,7 @@ void write_color(FILE *fp, rgb_color color) {
     fwrite(c, 1, RBG_COLOR_CHAR_SIZE, fp);
 }
 
-void print_ppm_image_pixels(FILE *fp, fractal_matrix iterations_taken_matrix) {
+void print_ppm_image_pixels(FILE *fp, matrix_t iterations_taken_matrix) {
     int x, y, num_iter_for_pixel;
     int width = iterations_taken_matrix.resolution.width;
     int height = iterations_taken_matrix.resolution.height;
@@ -33,7 +33,7 @@ void print_ppm_image_pixels(FILE *fp, fractal_matrix iterations_taken_matrix) {
     }
 }
 
-void render_and_write_out_image(char *filename, fractal_matrix iterations_taken_matrix) {
+void render_and_write_out_image(char *filename, matrix_t iterations_taken_matrix) {
     FILE *fp;
 
     fp = fopen(filename, "wb");

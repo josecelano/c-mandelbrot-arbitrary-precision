@@ -39,8 +39,8 @@ TEST(image_should, calculate_the_color_for_a_given_pixel) {
     int width = 3, height = 3;
     int num_iter_for_pixel;
 
-    fractal_resolution resolution = {3, 3};
-    fractal_matrix iterations_taken_matrix;
+    resolution_t resolution = {3, 3};
+    matrix_t iterations_taken_matrix;
     fractal_matrix_init(&iterations_taken_matrix, resolution);
 
     int iterations_taken_matrix_data[9] = {

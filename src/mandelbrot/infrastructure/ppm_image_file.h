@@ -3,6 +3,6 @@
 
 #include "../domain/fractal.h"
 
-void render_and_write_out_image(char *filename, fractal_matrix iterations_taken_matrix);
+void render_and_write_out_image(char *filename, matrix_t iterations_taken_matrix);
 
 #endif //C_MANDELBROT_ARBITRARY_PRECISION_PPM_IMAGE_FILE_H
