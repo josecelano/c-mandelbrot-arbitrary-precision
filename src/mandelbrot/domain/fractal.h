@@ -18,9 +18,10 @@ typedef enum {
 } fractal_boolean;
 
 typedef struct {
-    fractal_boolean is_inside;      // Point inside/outside Mandelbrot Set.
-    unsigned int iterations_taken;  // Number of iterations done in the main fractal processing loop.
-    unsigned int period;            // if a period is found in the loop this will contain the period cycle length otherwise 0.
+    fractal_boolean is_inside;          // Point inside/outside Mandelbrot Set.
+    unsigned int iterations_taken;      // Number of iterations done in the main fractal processing loop.
+    fractal_boolean period_was_found;   // True if period was found.
+    unsigned int period;                // if a period is found in the loop this will contain the period cycle length otherwise 0.
 } fractal_calculated_point;
 
 /**
@@ -29,10 +30,15 @@ typedef struct {
  */
 typedef struct {
     fractal_resolution resolution;
+    unsigned int number_of_found_periods;   // Number of periods found when it's used the periods checking optimisation.
     int *data;
 } fractal_matrix;
 
 void fractal_calculated_point_init(fractal_calculated_point *calculated_point);
+
+void fractal_calculated_point_set_in_main_cardioid(fractal_calculated_point *calculated_point);
+
+void fractal_calculated_point_set_in_period2_bulb(fractal_calculated_point *calculated_point);
 
 void fractal_matrix_init(fractal_matrix *iterations_taken_matrix, fractal_resolution resolution);
 

@@ -119,10 +119,11 @@ For 256x256px image:
 * Size: 256x256px (65536)
 * Max iter: 100
 * Precision: 32
-* Time for matrix generation: 0.452419s = 452419000.000000ns
-* Performance: 6.903366e+03‬ ns/px
+* Time for matrix generation: 0.805649s = 805649000.000000ns
+* Performance: 1.229323e+04‬ ns/px
 * Minimum complex x increment: 1.562500e-02 (4/256)
 * Minimum complex y increment: 1.562500e-02 (4/256)
+* Number of found periods: 5610
 
 For 512x512px image:
 * Size: 512x512px (262144)

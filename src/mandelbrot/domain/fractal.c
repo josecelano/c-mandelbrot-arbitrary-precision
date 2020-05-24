@@ -17,15 +17,34 @@
 void fractal_calculated_point_init(fractal_calculated_point *calculated_point) {
     calculated_point->is_inside = TRUE;
     calculated_point->iterations_taken = 0;
+    calculated_point->period_was_found = FALSE;
     calculated_point->period = 0;
+}
+
+void fractal_calculated_point_set_in_main_cardioid(fractal_calculated_point *calculated_point) {
+    calculated_point->is_inside = TRUE;
+    calculated_point->iterations_taken = 0;
+    calculated_point->period_was_found = TRUE;
+    calculated_point->period = 1;
+}
+
+void fractal_calculated_point_set_in_period2_bulb(fractal_calculated_point *calculated_point) {
+    calculated_point->is_inside = TRUE;
+    calculated_point->iterations_taken = 0;
+    calculated_point->period_was_found = TRUE;
+    calculated_point->period = 2;
 }
 
 void fractal_matrix_init(fractal_matrix *iterations_taken_matrix, fractal_resolution resolution) {
     int matrix_size;
 
+    // Resolution
     iterations_taken_matrix->resolution.width = resolution.width;
     iterations_taken_matrix->resolution.height = resolution.height;
 
+    iterations_taken_matrix->number_of_found_periods = 0;
+
+    // Matrix
     matrix_size = resolution.width * resolution.height * sizeof(int);
     iterations_taken_matrix->data = malloc(matrix_size);
 }
@@ -34,9 +53,33 @@ void fractal_matrix_clean(fractal_matrix *iterations_taken_matrix) {
     free(iterations_taken_matrix->data);
 }
 
-void
-fractal_matrix_set_num_iter_per_point(fractal_matrix *iterations_taken_matrix, point p, int iterations_taken) {
+void fractal_matrix_set_num_iter_per_point(fractal_matrix *iterations_taken_matrix, point p, int iterations_taken) {
     iterations_taken_matrix->data[(p.y * iterations_taken_matrix->resolution.width) + p.x] = iterations_taken;
+}
+
+/*
+ * TODO: WIP refactor
+ * fractal_matrix.data stores -1 for points inside Mandelbrot Set.
+ * -1 means max number of iterations in the loop.
+ * Matrix should contain the real number of iterations and an additional value that indicates whether the point
+ * is inside or not. The matrix should contain "fractal_calculated_point" instead of "int".
+ */
+void fractal_matrix_set_calculated_point(fractal_matrix *iterations_taken_matrix, point p,
+                                         fractal_calculated_point calculated_point) {
+    int iterations_taken;
+
+    iterations_taken = calculated_point.iterations_taken;
+
+    // TODO: remove when refactor is done
+    if (calculated_point.is_inside) {
+        iterations_taken = MAX_ITERATIONS;
+    }
+
+    fractal_matrix_set_num_iter_per_point(iterations_taken_matrix, p, iterations_taken);
+
+    if (calculated_point.period_was_found) {
+        iterations_taken_matrix->number_of_found_periods++;
+    }
 }
 
 void fractal_matrix_initialize_data(fractal_matrix iterations_taken_matrix, int *iterations_taken) {
@@ -61,7 +104,7 @@ int fractal_matrix_point_belongs_to_mandelbrot_set(point p, fractal_matrix itera
 }
 
 void
-calculate_matrix_point(zpoint z_current_point, point p, app_config config, fractal_matrix *iterations_taken_matrix) {
+calculate_matrix_point(zpoint z_current_point, point pt, app_config config, fractal_matrix *iterations_taken_matrix) {
     acb_t c;
     fractal_calculated_point calculated_point;
     int iterations_taken;
@@ -73,13 +116,15 @@ calculate_matrix_point(zpoint z_current_point, point p, app_config config, fract
     acb_set_from_zpoint(c, z_current_point);
 
     if (inside_main_cardioid(c, config)) {
-        fractal_matrix_set_num_iter_per_point(iterations_taken_matrix, p, MAX_ITERATIONS);
+        fractal_calculated_point_set_in_main_cardioid(&calculated_point);
+        fractal_matrix_set_calculated_point(iterations_taken_matrix, pt, calculated_point);
         acb_clear(c);
         return;
     }
 
     if (inside_period_2_bulb(c, config)) {
-        fractal_matrix_set_num_iter_per_point(iterations_taken_matrix, p, MAX_ITERATIONS);
+        fractal_calculated_point_set_in_period2_bulb(&calculated_point);
+        fractal_matrix_set_calculated_point(iterations_taken_matrix, pt, calculated_point);
         acb_clear(c);
         return;
     }
@@ -89,19 +134,7 @@ calculate_matrix_point(zpoint z_current_point, point p, app_config config, fract
             &calculated_point
     );
 
-    /*
-     * TODO: fractal_matrix stores -1 for points inside Mandelbrot Set.
-     * -1 means max number of iterations in the loop.
-     * We are in a WIP to return the ral number of iterations and an additional value that indicates whether the point
-     * is INSIDE or not.
-     */
-    if (calculated_point.is_inside == TRUE) {
-        iterations_taken = MAX_ITERATIONS;
-    } else {
-        iterations_taken = calculated_point.iterations_taken;
-    }
-
-    fractal_matrix_set_num_iter_per_point(iterations_taken_matrix, p, iterations_taken);
+    fractal_matrix_set_calculated_point(iterations_taken_matrix, pt, calculated_point);
 
     acb_clear(c);
 }

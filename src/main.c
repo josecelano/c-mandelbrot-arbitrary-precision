@@ -86,6 +86,8 @@ int main(int argc, const char *argv[]) {
 
     print_performance_data(time, resolution, config);
 
+    print_fractal_matrix_data(iterations_taken_matrix);
+
     render_ppm_image(iterations_taken_matrix);
 
     render_ascii_graph(iterations_taken_matrix);
