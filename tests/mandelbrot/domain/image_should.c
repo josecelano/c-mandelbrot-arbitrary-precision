@@ -14,13 +14,15 @@ TEST_SETUP(image_should) {
 TEST_TEAR_DOWN(image_should) {
 }
 
-void test_assert_color_equal(const char *expected, char *actual, pixel px) {
+void test_assert_color_equal(rgb_color expected, pixel px) {
     char message[100];
+    rgb_color actual = px.color;
 
-    sprintf(message, "Pixel color does not match expected white for pixel (x,y) = (%d, %d)", px.x, px.y);
-    TEST_ASSERT_EQUAL_MESSAGE(expected[0], actual[0], message); // R
-    TEST_ASSERT_EQUAL_MESSAGE(expected[1], actual[1], message); // G
-    TEST_ASSERT_EQUAL_MESSAGE(expected[2], actual[2], message); // B
+    sprintf(message, "Pixel color { %d, %d, %d} does not match expected { %d, %d, %d} for pixel (x,y) = (%d, %d)",
+            actual.r, actual.g, actual.b, expected.r, expected.g, expected.b, px.x, px.y);
+    TEST_ASSERT_EQUAL_MESSAGE(expected.r, actual.r, message); // R
+    TEST_ASSERT_EQUAL_MESSAGE(expected.g, actual.g, message); // G
+    TEST_ASSERT_EQUAL_MESSAGE(expected.b, actual.b, message); // B
 }
 
 /**
@@ -30,8 +32,8 @@ void test_assert_color_equal(const char *expected, char *actual, pixel px) {
  *     but then we have to re-think this test.
  */
 TEST(image_should, calculate_the_color_for_a_given_pixel) {
-    const char black[3] = {0, 0, 0};
-    const char white[3] = {255, 255, 255};
+    rgb_color black = {0, 0, 0};
+    rgb_color white = {255, 255, 255};
 
     int x, y;
     int width = 3, height = 3;
@@ -42,40 +44,37 @@ TEST(image_should, calculate_the_color_for_a_given_pixel) {
     fractal_matrix_init(&iterations_taken_matrix, resolution);
 
     int iterations_taken_matrix_data[9] = {
-            //   X  0, 1, 2     Y
-            1, 1, 1, // 0
-            1, -1, 1, // 1
-            1, 1, 1  // 2
+            // X  0, 1, 2  Y
+            1, 1, 1,    // 0
+            1, -1, 1,   // 1
+            1, 1, 1     // 2
     };
     fractal_matrix_initialize_data(iterations_taken_matrix, iterations_taken_matrix_data);
 
     int expected_colours[9] = {
-            //   X   0 , 1 , 2      Y
-            'w', 'w', 'w', // 0
-            'w', 'b', 'w', // 1
-            'w', 'w', 'w'  // 2
+            // X 0, 1, 2    Y
+            'w', 'w', 'w',  // 0
+            'w', 'b', 'w',  // 1
+            'w', 'w', 'w'   // 2
     };
-
-    char *color = malloc(RBG_COLOR_SIZE);
 
     for (y = 0; y < 3; y++) {
         for (x = 0; x < 3; x++) {
 
             pixel px = {x, y};
-            set_pixel_color(color, px, iterations_taken_matrix);
+            set_pixel_color(&px, iterations_taken_matrix);
 
             if (expected_colours[(y * 3) + x] == 'w') {
-                test_assert_color_equal(white, color, px);
+                test_assert_color_equal(white, px);
             }
 
             if (expected_colours[(y * 3) + x] == 'b') {
-                test_assert_color_equal(black, color, px);
+                test_assert_color_equal(black, px);
             }
         }
     }
 
     fractal_matrix_clean(&iterations_taken_matrix);
-    free(color);
 }
 
 TEST_GROUP_RUNNER(image_should) {
