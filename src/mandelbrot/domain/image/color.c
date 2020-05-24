@@ -3,7 +3,7 @@
 
 #include "color.h"
 #include "pixel.h"
-#include "set.h"
+#include "../set.h"
 
 void color_pixel_with_black_and_white_color_map(rgb_color color, pixel px, fractal_matrix iterations_taken_matrix) {
     const char black[3] = {0, 0, 0};

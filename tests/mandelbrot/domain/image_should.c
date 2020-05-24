@@ -3,8 +3,8 @@
 #include "../../lib/helpers.h"
 #include "../../lib/unity_extension.h"
 
-#include "../../../src/mandelbrot/domain/color.h"
-#include "../../../src/mandelbrot/domain/image.h"
+#include "../../../src/mandelbrot/domain/image/color.h"
+#include "../../../src/mandelbrot/domain/image/image.h"
 
 TEST_GROUP(image_should);
 

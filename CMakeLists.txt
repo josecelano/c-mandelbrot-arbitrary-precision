@@ -16,6 +16,8 @@ file(GLOB PRODUCTION_CODE
         ${PROJECT_SOURCE_DIR}/src/mandelbrot/application/*.h
         ${PROJECT_SOURCE_DIR}/src/mandelbrot/domain/*.c
         ${PROJECT_SOURCE_DIR}/src/mandelbrot/domain/*.h
+        ${PROJECT_SOURCE_DIR}/src/mandelbrot/domain/image/*.c
+        ${PROJECT_SOURCE_DIR}/src/mandelbrot/domain/image/*.h
         ${PROJECT_SOURCE_DIR}/src/mandelbrot/domain/optimisation/*.c
         ${PROJECT_SOURCE_DIR}/src/mandelbrot/domain/optimisation/*.h
         ${PROJECT_SOURCE_DIR}/src/mandelbrot/infrastructure/*.c

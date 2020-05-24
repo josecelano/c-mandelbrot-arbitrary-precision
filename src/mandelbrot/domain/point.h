@@ -1,7 +1,7 @@
 #ifndef C_MANDELBROT_ARBITRARY_PRECISION_POINT_H
 #define C_MANDELBROT_ARBITRARY_PRECISION_POINT_H
 
-#include "./pixel.h"
+#include "image/pixel.h"
 
 typedef struct {
     int x;

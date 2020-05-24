@@ -1,7 +1,7 @@
 #ifndef C_MANDELBROT_ARBITRARY_PRECISION_COLOR_H
 #define C_MANDELBROT_ARBITRARY_PRECISION_COLOR_H
 
-#include "fractal.h"
+#include "../fractal.h"
 #include "pixel.h"
 
 #define RBG_COLOR_SIZE sizeof(char) * 3

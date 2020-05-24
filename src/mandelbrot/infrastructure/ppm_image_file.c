@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "../domain/color.h"
+#include "../domain/image/color.h"
 #include "../domain/fractal.h"
-#include "../domain/image.h"
+#include "../domain/image/image.h"
 #include "../domain/set.h"
 #include "ppm_image_file.h"
 
