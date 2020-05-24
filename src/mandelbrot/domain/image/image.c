@@ -1,10 +1,11 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "color.h"
 #include "../fractal.h"
-#include "image.h"
 #include "../set.h"
+#include "./color.h"
+#include "./image.h"
+#include "color_map.h"
 
 /**
  * TODO: Move color to pixel struct and pass only pixel px
