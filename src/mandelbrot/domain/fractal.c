@@ -43,6 +43,7 @@ void fractal_matrix_init(fractal_matrix *iterations_taken_matrix, fractal_resolu
     iterations_taken_matrix->resolution.height = resolution.height;
 
     iterations_taken_matrix->number_of_found_periods = 0;
+    iterations_taken_matrix->max_for_number_of_iterations = 0;
 
     // Matrix
     matrix_size = resolution.width * resolution.height * sizeof(int);
@@ -77,8 +78,14 @@ void fractal_matrix_set_calculated_point(fractal_matrix *iterations_taken_matrix
 
     fractal_matrix_set_num_iter_per_point(iterations_taken_matrix, p, iterations_taken);
 
+    // Update periods counter
     if (calculated_point.period_was_found) {
         iterations_taken_matrix->number_of_found_periods++;
+    }
+
+    // Update maximum for number of iterations
+    if (calculated_point.iterations_taken > iterations_taken_matrix->max_for_number_of_iterations) {
+        iterations_taken_matrix->max_for_number_of_iterations = calculated_point.iterations_taken;
     }
 }
 

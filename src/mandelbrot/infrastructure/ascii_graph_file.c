@@ -2,7 +2,7 @@
 
 #include "../domain/set.h"
 #include "../presentation/ascii_graph.h"
-#include "ascii_graph_file.h"
+#include "./ascii_graph_file.h"
 
 void render_and_write_out_ascii_graph(char *filename, fractal_matrix iterations_taken_matrix) {
     int x, y, num_iter_for_pixel;
@@ -30,12 +30,47 @@ void render_and_write_out_ascii_graph(char *filename, fractal_matrix iterations_
     fclose(fp);
 }
 
-void render_and_write_out_iterations_matrix(char *filename, fractal_matrix iterations_taken_matrix) {
-    int x, y, num_iter_for_pixel, ret;
+/**
+ * It calculates the number of digits for a integer number. For example:
+ * 123456 -> 6
+ * 123    -> 3
+ * 26578  -> 5
+ */
+unsigned int calculate_total_digits_of(unsigned int number) {
+    unsigned int count = 0;
+
+    do {
+        count++;
+        number /= 10;
+    } while (number != 0);
+
+    return count;
+}
+
+void write_n_spaces(FILE *fp, int n) {
+    int i;
+    for (i = 0; i < n; i++) {
+        fwrite(" ", 1, 1, fp);
+    }
+}
+
+void write_num_iter(FILE *fp, int num_iter, int num_digits) {
     char num_iter_str[50];
+
+    sprintf(num_iter_str, "%*d", num_digits, num_iter);
+    fwrite(num_iter_str, 1, num_digits, fp);
+}
+
+void render_and_write_out_iterations_matrix(char *filename, fractal_matrix iterations_taken_matrix) {
+    int i, x, y, num_iter_for_pixel, ret;
     FILE *fp;
     fractal_resolution resolution = iterations_taken_matrix.resolution;
     point p;
+
+    unsigned int max_for_number_of_iterations = iterations_taken_matrix.max_for_number_of_iterations;
+    unsigned int num_digits;
+
+    num_digits = calculate_total_digits_of(max_for_number_of_iterations);
 
     fp = fopen(filename, "w");
 
@@ -44,22 +79,18 @@ void render_and_write_out_iterations_matrix(char *filename, fractal_matrix itera
 
             point_set(&p, x, y);
 
+            // TODO: WIP refactor, get fractal_calculated_point
+
             num_iter_for_pixel = fractal_matrix_get_num_iter_per_point(p, iterations_taken_matrix);
 
             ret = fractal_matrix_point_belongs_to_mandelbrot_set(p, iterations_taken_matrix);
 
-            // TODO: 3 literal (and 3 spaces) is the number of digits for the greatest number of iterations during
-            // matrix calculations which is a constant in main.c right now but it has to be calculated dynamically.
-            // We should add function for fractal_matrix that returns max number of interactions in the matrix data,
-            // and calculate the number of digits of that value. The function can store the maximum while is calculating
-            // the points.
             if (ret == INSIDE) {
                 // Inside Mandelbrot Set
-                fwrite("   ", 1, 3, fp);
+                write_n_spaces(fp, num_digits);
             } else {
                 // Outside Mandelbrot Set
-                sprintf(num_iter_str, "%3d", num_iter_for_pixel);
-                fwrite(num_iter_str, 1, 3, fp);
+                write_num_iter(fp, num_iter_for_pixel, num_digits);
             }
         }
         fwrite("\n", sizeof(char), 1, fp);

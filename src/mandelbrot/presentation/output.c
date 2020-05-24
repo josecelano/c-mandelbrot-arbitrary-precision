@@ -62,4 +62,5 @@ void print_performance_data(clock_t time, fractal_resolution resolution, app_con
 
 void print_fractal_matrix_data(fractal_matrix matrix) {
     console_printf("* Number of found periods: %d\n", matrix.number_of_found_periods);
+    console_printf("* Max for number of iterations: %d (should be max iterations in config)\n", matrix.max_for_number_of_iterations);
 }
