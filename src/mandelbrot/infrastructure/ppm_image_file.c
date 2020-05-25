@@ -26,7 +26,7 @@ void print_ppm_image_pixels(FILE *fp, fractal_data_t fractal_data) {
 
     for (y = 0; y < height; y++) {
         for (x = 0; x < width; x++) {
-            pixel_set_x_y(&px, x, y);
+            pixel_set_coordinates(&px, x, y);
             set_pixel_color(&px, fractal_data, BLACK_ON_WHITE);
             write_color(fp, px.color);
         }

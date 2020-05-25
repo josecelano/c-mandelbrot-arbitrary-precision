@@ -9,7 +9,7 @@ typedef struct {
     rgb_color color;
 } pixel;
 
-void pixel_set_x_y(pixel *px, int x, int y);
+void pixel_set_coordinates(pixel *px, int x, int y);
 
 void pixel_set_color(pixel *px, rgb_color color);
 

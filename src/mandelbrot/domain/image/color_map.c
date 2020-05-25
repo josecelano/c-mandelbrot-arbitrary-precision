@@ -9,14 +9,14 @@ void color_pixel_with_black_on_white_color_map(pixel *px, fractal_data_t fractal
     rgb_color black = {0, 0, 0};
     rgb_color white = {255, 255, 255};
 
-    int ret;
-    point_t p;
+    point_t point;
+    calculated_point_t calculated_point;
 
-    point_set_from_pixel(&p, *px);
+    point_copy_coordinates_from_pixel(&point, *px);
 
-    ret = fractal_matrix_point_belongs_to_mandelbrot_set(p, fractal_data);
+    fractal_matrix_get_calculated_point(fractal_data, point, &calculated_point);
 
-    if (ret == INSIDE) {
+    if (calculated_point.is_inside) {
         pixel_set_color(px, black);
         return;
     }
@@ -28,14 +28,14 @@ void color_pixel_with_white_on_black_color_map(pixel *px, fractal_data_t fractal
     rgb_color black = {0, 0, 0};
     rgb_color white = {255, 255, 255};
 
-    int ret;
-    point_t p;
+    point_t point;
+    calculated_point_t calculated_point;
 
-    point_set_from_pixel(&p, *px);
+    point_copy_coordinates_from_pixel(&point, *px);
 
-    ret = fractal_matrix_point_belongs_to_mandelbrot_set(p, fractal_data);
+    fractal_matrix_get_calculated_point(fractal_data, point, &calculated_point);
 
-    if (ret == INSIDE) {
+    if (calculated_point.is_inside) {
         pixel_set_color(px, white);
         return;
     }

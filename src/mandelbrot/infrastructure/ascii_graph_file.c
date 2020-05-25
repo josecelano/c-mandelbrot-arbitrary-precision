@@ -5,7 +5,7 @@
 #include "./ascii_graph_file.h"
 
 void render_and_write_out_ascii_graph(char *filename, fractal_data_t fractal_data) {
-    int x, y, num_iter_for_pixel;
+    int x, y;
     char point_char[1];
     FILE *fp;
     resolution_t resolution = fractal_data.resolution;
@@ -15,11 +15,9 @@ void render_and_write_out_ascii_graph(char *filename, fractal_data_t fractal_dat
     for (y = 0; y < resolution.height; y++) {
         for (x = 0; x < resolution.width; x++) {
 
-            point_t p = {x, y};
+            point_t point = {x, y};
 
-            set_point_character(
-                    point_char, p,
-                    fractal_data);
+            set_point_character(point_char, point, fractal_data);
 
             fwrite(point_char, 1, 1, fp);
         }
@@ -62,10 +60,11 @@ void write_num_iter(FILE *fp, int num_iter, int num_digits) {
 }
 
 void render_and_write_out_iterations_matrix(char *filename, fractal_data_t fractal_data) {
-    int i, x, y, num_iter_for_pixel, ret;
+    int i, x, y;
     FILE *fp;
     resolution_t resolution = fractal_data.resolution;
-    point_t p;
+    point_t point;
+    calculated_point_t calculated_point;
 
     unsigned int max_for_number_of_iterations = fractal_data.max_for_number_of_iterations;
     unsigned int num_digits;
@@ -77,20 +76,16 @@ void render_and_write_out_iterations_matrix(char *filename, fractal_data_t fract
     for (y = 0; y < resolution.height; y++) {
         for (x = 0; x < resolution.width; x++) {
 
-            point_set(&p, x, y);
+            point_set_coordinates(&point, x, y);
 
-            // TODO: WIP refactor, get fractal_calculated_point
+            fractal_matrix_get_calculated_point(fractal_data, point, &calculated_point);
 
-            num_iter_for_pixel = fractal_matrix_get_num_iter_per_point(p, fractal_data);
-
-            ret = fractal_matrix_point_belongs_to_mandelbrot_set(p, fractal_data);
-
-            if (ret == INSIDE) {
-                // Inside Mandelbrot Set
+            if (calculated_point.is_inside) {
+                // Inside Mandelbrot Set -> print spaces
                 write_n_spaces(fp, num_digits);
             } else {
-                // Outside Mandelbrot Set
-                write_num_iter(fp, num_iter_for_pixel, num_digits);
+                // Outside Mandelbrot Set -> print number of iterations taken
+                write_num_iter(fp, calculated_point.iterations_taken, num_digits);
             }
         }
         fwrite("\n", sizeof(char), 1, fp);

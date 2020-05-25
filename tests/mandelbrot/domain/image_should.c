@@ -6,6 +6,17 @@
 #include "../../../src/mandelbrot/domain/image/color.h"
 #include "../../../src/mandelbrot/domain/image/image.h"
 
+/* TODO:
+ *  1) Add a test for a non symmetrical image.
+ *  2) Actually this test is testing that the color map is applied correctly. We can use 2 different color maps.
+ *     On the other hand the function fractal_matrix_initialize_iterations_taken was used when we stored only the number
+ *     of iterations. Now we store calculated_point and we should create a new builder. That builder it seems to be used
+ *     only in this test. Maybe we should create a constructor and pass all calculated point with 2 matrix:
+ *         * number of iterations
+ *         * point inside/outside
+ *     Otherwise we could continue using an special value (-1) for number of iterations to represent a point inside.
+ */
+
 TEST_GROUP(image_should);
 
 TEST_SETUP(image_should) {
@@ -25,12 +36,6 @@ void test_assert_color_equal(rgb_color expected, pixel px) {
     TEST_ASSERT_EQUAL_MESSAGE(expected.b, actual.b, message); // B
 }
 
-/**
- * TODO: Code Review. This test is testing 2 things at he same time:
- *  1) White/Black color map is applied correctly depending of the number of iterations from iterations taken matrix.
- *  2) They 'y' coordinates for a point/pixel is inverted. We could add a test for 'get_iterations_taken_for_point'
- *     but then we have to re-think this test.
- */
 TEST(image_should, calculate_the_color_for_a_given_pixel) {
     rgb_color black = {0, 0, 0};
     rgb_color white = {255, 255, 255};
@@ -44,15 +49,26 @@ TEST(image_should, calculate_the_color_for_a_given_pixel) {
     fractal_matrix_init(&fractal_data, resolution);
 
     int iterations_taken_matrix_data[9] = {
-            // X  0, 1, 2  Y
-            1, 1, 1,    // 0
-            1, -1, 1,   // 1
-            1, 1, 1     // 2
+    // X    0,  1,  2    // Y
+            1,  1,  1,   // 0
+            1,100,  1,   // 1
+            1,  1,  1    // 2
     };
-    fractal_matrix_initialize_data(fractal_data, iterations_taken_matrix_data);
+    fractal_matrix_initialize_iterations_taken(&fractal_data, iterations_taken_matrix_data);
+
+    point_t point;
+    point_set_coordinates(&point, 1, 1);
+
+    calculated_point_t calculated_point = {
+            .is_inside = TRUE,
+            .iterations_taken = 100,
+            .period_was_found = FALSE,
+            .period = 0
+    };
+    fractal_matrix_set_calculated_point(&fractal_data, point, calculated_point);
 
     int expected_colours[9] = {
-            // X 0, 1, 2    Y
+    // X      0,   1,   2   // Y
             'w', 'w', 'w',  // 0
             'w', 'b', 'w',  // 1
             'w', 'w', 'w'   // 2

@@ -48,35 +48,35 @@ void fractal_matrix_init(fractal_data_t *fractal_data, resolution_t resolution) 
     // Matrix
     matrix_size = resolution.width * resolution.height * sizeof(int);
     fractal_data->data = malloc(matrix_size);
+
+    // Calculated points matrix
+    matrix_size = resolution.width * resolution.height * sizeof(calculated_point_t);
+    fractal_data->calculated_points = malloc(matrix_size);
 }
 
 void fractal_matrix_clean(fractal_data_t *fractal_data) {
     free(fractal_data->data);
+    free(fractal_data->calculated_points);
 }
 
 void fractal_matrix_set_num_iter_per_point(fractal_data_t *fractal_data, point_t p, int iterations_taken) {
     fractal_data->data[(p.y * fractal_data->resolution.width) + p.x] = iterations_taken;
 }
 
-/*
- * TODO: WIP refactor
- * fractal_matrix.data stores -1 for points inside Mandelbrot Set.
- * -1 means max number of iterations in the loop.
- * Matrix should contain the real number of iterations and an additional value that indicates whether the point
- * is inside or not. The matrix should contain "fractal_calculated_point" instead of "int".
- */
-void fractal_matrix_set_calculated_point(fractal_data_t *fractal_data, point_t p,
-                                         calculated_point_t calculated_point) {
+void fractal_matrix_set_calculated_point(fractal_data_t *fractal_data, point_t p, calculated_point_t calculated_point) {
     int iterations_taken;
 
-    iterations_taken = calculated_point.iterations_taken;
-
     // TODO: remove when refactor is done
+    // Update iterations taken in iteration taken matrix
+    iterations_taken = calculated_point.iterations_taken;
     if (calculated_point.is_inside) {
         iterations_taken = MAX_ITERATIONS;
     }
-
     fractal_matrix_set_num_iter_per_point(fractal_data, p, iterations_taken);
+    // End TODO
+
+    // Store calculated point in the matrix struct member
+    fractal_data->calculated_points[(p.y * fractal_data->resolution.width) + p.x] = calculated_point;
 
     // Update periods counter
     if (calculated_point.period_was_found) {
@@ -89,29 +89,43 @@ void fractal_matrix_set_calculated_point(fractal_data_t *fractal_data, point_t p
     }
 }
 
-void fractal_matrix_initialize_data(fractal_data_t fractal_data, int *iterations_taken) {
-    int i;
-    int size = fractal_data.resolution.width * fractal_data.resolution.height;
+void fractal_matrix_get_calculated_point(fractal_data_t fractal_data, point_t p, calculated_point_t *calculated_point) {
+    *calculated_point = fractal_data.calculated_points[(p.y * fractal_data.resolution.width) + p.x];
+}
 
-    for (i = 0; i < size; i++) {
-        fractal_data.data[i] = iterations_taken[i];
+void fractal_matrix_initialize_iterations_taken(fractal_data_t *fractal_data, int *iterations_taken) {
+    int i;
+
+    int x, y;
+    point_t point;
+    calculated_point_t calculated_point;
+
+    for (y = 0; y < fractal_data->resolution.height; y++) {
+        for (x = 0; x < fractal_data->resolution.width; x++) {
+            point_set_coordinates(&point, x, y);
+
+            calculated_point.is_inside = FALSE;
+            calculated_point.iterations_taken = iterations_taken[y * fractal_data->resolution.width + x];
+            calculated_point.period_was_found = FALSE;
+            calculated_point.period = 0;
+
+            fractal_matrix_set_calculated_point(fractal_data, point, calculated_point);
+        }
     }
 }
 
-int fractal_matrix_get_num_iter_per_point(point_t p, fractal_data_t fractal_data) {
-    int width = fractal_data.resolution.width;
-    int height = fractal_data.resolution.height;
-
-    return fractal_data.data[(height - 1 - p.y) * width + p.x];
+int fractal_matrix_get_num_iter_per_point(fractal_data_t fractal_data, point_t point) {
+    calculated_point_t calculated_point;
+    fractal_matrix_get_calculated_point(fractal_data, point, &calculated_point);
+    return calculated_point.iterations_taken;
 }
 
 int fractal_matrix_point_belongs_to_mandelbrot_set(point_t p, fractal_data_t fractal_data) {
-    int num_iter_for_pixel = fractal_matrix_get_num_iter_per_point(p, fractal_data);
+    int num_iter_for_pixel = fractal_matrix_get_num_iter_per_point(fractal_data, p);
     return is_value_a_inside_point(num_iter_for_pixel);
 }
 
-void
-calculate_matrix_point(zpoint_t z_current_point, point_t pt, config_t config, fractal_data_t *fractal_data) {
+void calculate_matrix_point(zpoint_t z_current_point, point_t pt, config_t config, fractal_data_t *fractal_data) {
     calculated_point_t calculated_point;
     fractal_calculated_point_init(&calculated_point);
 
@@ -132,7 +146,7 @@ void calculate_matrix_row(zpoint_t zx_point_increment, config_t config, int y, f
     point_t current_point;
 
     for (x = 0; x < width; x++) {
-        point_set(&current_point, x, y);
+        point_set_coordinates(&current_point, x, y);
 
         calculate_matrix_point(
                 *z_current_point, current_point,
@@ -143,8 +157,9 @@ void calculate_matrix_row(zpoint_t zx_point_increment, config_t config, int y, f
     }
 }
 
-void calculate_iterations_taken_matrix(zpoint_t left_bottom_point, zpoint_t zx_point_increment, zpoint_t zy_point_increment,
-                                       config_t config, fractal_data_t *fractal_data) {
+void
+calculate_iterations_taken_matrix(zpoint_t left_bottom_point, zpoint_t zx_point_increment, zpoint_t zy_point_increment,
+                                  config_t config, fractal_data_t *fractal_data) {
     int y;
     zpoint_t z_current_point; // Represents the pixel being calculated
     resolution_t resolution = fractal_data->resolution;

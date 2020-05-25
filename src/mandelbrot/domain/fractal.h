@@ -24,16 +24,15 @@ typedef struct {
     unsigned int period;                // if a period is found in the loop this will contain the period cycle length otherwise 0.
 } calculated_point_t;
 
-/**
- * Matrix[width][height] with number of Mandelbrot formula iterations needed for each pixel to diverge.
- * -1 for point/pixel inside Mandelbrot Set.
- */
 typedef struct {
     resolution_t resolution;
-    unsigned int number_of_found_periods;   // Number of periods found when it's used the periods checking optimisation.
+    unsigned int number_of_found_periods;       // Number of periods found when it's used the periods checking optimisation.
     unsigned int max_for_number_of_iterations;  // Max number of iterations done of all points.
     int *data;
+    calculated_point_t *calculated_points;      // Array of calculated points.
 } fractal_data_t;
+
+/* calculated_point functions */
 
 void fractal_calculated_point_init(calculated_point_t *calculated_point);
 
@@ -41,17 +40,23 @@ void fractal_calculated_point_set_in_main_cardioid(calculated_point_t *calculate
 
 void fractal_calculated_point_set_in_period2_bulb(calculated_point_t *calculated_point);
 
+/* fractal_data functions */
+
 void fractal_matrix_init(fractal_data_t *fractal_data, resolution_t resolution);
 
 void fractal_matrix_clean(fractal_data_t *fractal_data);
 
-void fractal_matrix_initialize_data(fractal_data_t fractal_data, int *iterations_taken);
+void fractal_matrix_initialize_iterations_taken(fractal_data_t *fractal_data, int *iterations_taken);
 
 /**
  * Iteration taken matrix is flipped horizontally, that's is to say y pixel coordinates increase from bottom to top.
  * For standard graphics format (used in PPM format) (0,0) pixel coordinates is the left top corner of the image.
  */
-int fractal_matrix_get_num_iter_per_point(point_t p, fractal_data_t fractal_data);
+int fractal_matrix_get_num_iter_per_point(fractal_data_t fractal_data, point_t point);
+
+void fractal_matrix_set_calculated_point(fractal_data_t *fractal_data, point_t p, calculated_point_t calculated_point);
+
+void fractal_matrix_get_calculated_point(fractal_data_t fractal_data, point_t p, calculated_point_t *calculated_point);
 
 /**
  * It returns INSIDE if the point in the matrix belongs to Mandelbrot Set.
