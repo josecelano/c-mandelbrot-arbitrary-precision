@@ -16,7 +16,7 @@ void color_pixel_with_black_on_white_color_map(pixel *px, fractal_data_t fractal
 
     point_copy_coordinates_from_pixel(&point, *px);
 
-    fractal_matrix_get_calculated_point(fractal_data, point, &calculated_point);
+    fractal_data_get_calculated_point(fractal_data, point, &calculated_point);
 
     if (calculated_point.is_inside) {
         pixel_set_color(px, black);
@@ -35,7 +35,7 @@ void color_pixel_with_white_on_black_color_map(pixel *px, fractal_data_t fractal
 
     point_copy_coordinates_from_pixel(&point, *px);
 
-    fractal_matrix_get_calculated_point(fractal_data, point, &calculated_point);
+    fractal_data_get_calculated_point(fractal_data, point, &calculated_point);
 
     if (calculated_point.is_inside) {
         pixel_set_color(px, white);

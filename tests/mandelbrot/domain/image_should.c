@@ -9,7 +9,7 @@
 /* TODO:
  *  1) Add a test for a non symmetrical image.
  *  2) Actually this test is testing that the color map is applied correctly. We can use 2 different color maps.
- *     On the other hand the function fractal_matrix_initialize_iterations_taken was used when we stored only the number
+ *     On the other hand the function fractal_data_initialize_iterations_taken was used when we stored only the number
  *     of iterations. Now we store calculated_point and we should create a new builder. That builder it seems to be used
  *     only in this test. Maybe we should create a constructor and pass all calculated point with 2 matrix:
  *         * number of iterations
@@ -46,7 +46,7 @@ TEST(image_should, calculate_the_color_for_a_given_pixel) {
 
     resolution_t resolution = {3, 3};
     fractal_data_t fractal_data;
-    fractal_matrix_init(&fractal_data, resolution);
+    fractal_data_init(&fractal_data, resolution);
 
     int iterations_taken_matrix_data[9] = {
     // X    0,  1,  2    // Y
@@ -54,7 +54,7 @@ TEST(image_should, calculate_the_color_for_a_given_pixel) {
             1,100,  1,   // 1
             1,  1,  1    // 2
     };
-    fractal_matrix_initialize_iterations_taken(&fractal_data, iterations_taken_matrix_data);
+    fractal_data_initialize_iterations_taken(&fractal_data, iterations_taken_matrix_data);
 
     point_t point;
     point_set_coordinates(&point, 1, 1);
@@ -65,7 +65,7 @@ TEST(image_should, calculate_the_color_for_a_given_pixel) {
             .period_was_found = FALSE,
             .period = 0
     };
-    fractal_matrix_set_calculated_point(&fractal_data, point, calculated_point);
+    fractal_data_set_calculated_point(&fractal_data, point, calculated_point);
 
     int expected_colours[9] = {
     // X      0,   1,   2   // Y
@@ -90,7 +90,7 @@ TEST(image_should, calculate_the_color_for_a_given_pixel) {
         }
     }
 
-    fractal_matrix_clean(&fractal_data);
+    fractal_data_clean(&fractal_data);
 }
 
 TEST_GROUP_RUNNER(image_should) {

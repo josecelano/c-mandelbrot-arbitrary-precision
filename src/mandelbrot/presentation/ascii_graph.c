@@ -9,7 +9,7 @@ void set_point_character(char *point_char, point_t point, fractal_data_t fractal
 
     calculated_point_t calculated_point;
 
-    fractal_matrix_get_calculated_point(fractal_data, point, &calculated_point);
+    fractal_data_get_calculated_point(fractal_data, point, &calculated_point);
 
     if (calculated_point.is_inside) {
         // Inside Mandelbrot Set

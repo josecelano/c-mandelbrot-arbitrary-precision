@@ -39,7 +39,7 @@ void calculate_next_point_to_the_right(zpoint_t *z, zpoint_t z_current_point, zp
 
 /** Public functions **/
 
-void fractal_matrix_init(fractal_data_t *fractal_data, resolution_t resolution) {
+void fractal_data_init(fractal_data_t *fractal_data, resolution_t resolution) {
     int matrix_size;
 
     // Resolution
@@ -54,11 +54,11 @@ void fractal_matrix_init(fractal_data_t *fractal_data, resolution_t resolution) 
     fractal_data->calculated_points = malloc(matrix_size);
 }
 
-void fractal_matrix_clean(fractal_data_t *fractal_data) {
+void fractal_data_clean(fractal_data_t *fractal_data) {
     free(fractal_data->calculated_points);
 }
 
-void fractal_matrix_initialize_iterations_taken(fractal_data_t *fractal_data, int *iterations_taken) {
+void fractal_data_initialize_iterations_taken(fractal_data_t *fractal_data, int *iterations_taken) {
     int i;
 
     int x, y;
@@ -74,18 +74,12 @@ void fractal_matrix_initialize_iterations_taken(fractal_data_t *fractal_data, in
             calculated_point.period_was_found = FALSE;
             calculated_point.period = 0;
 
-            fractal_matrix_set_calculated_point(fractal_data, point, calculated_point);
+            fractal_data_set_calculated_point(fractal_data, point, calculated_point);
         }
     }
 }
 
-int fractal_matrix_get_num_iter_per_point(fractal_data_t fractal_data, point_t point) {
-    calculated_point_t calculated_point;
-    fractal_matrix_get_calculated_point(fractal_data, point, &calculated_point);
-    return calculated_point.iterations_taken;
-}
-
-void fractal_matrix_set_calculated_point(fractal_data_t *fractal_data, point_t point, calculated_point_t calculated_point) {
+void fractal_data_set_calculated_point(fractal_data_t *fractal_data, point_t point, calculated_point_t calculated_point) {
     int iterations_taken;
 
     // Store calculated point in the matrix struct member
@@ -102,11 +96,11 @@ void fractal_matrix_set_calculated_point(fractal_data_t *fractal_data, point_t p
     }
 }
 
-void fractal_matrix_get_calculated_point(fractal_data_t fractal_data, point_t point, calculated_point_t *calculated_point) {
+void fractal_data_get_calculated_point(fractal_data_t fractal_data, point_t point, calculated_point_t *calculated_point) {
     *calculated_point = fractal_data.calculated_points[(point.y * fractal_data.resolution.width) + point.x];
 }
 
-void fractal_matrix_calculate_points(ztile_t tile, config_t config, fractal_data_t *fractal_data) {
+void fractal_data_calculate_points(fractal_data_t *fractal_data, ztile_t tile, config_t config) {
     int x, y;
     int img_idx = 0;
     int iterations_taken;
@@ -271,7 +265,7 @@ void calculate_matrix_point(
 
     mandelbrot_set_calculate_point(z_current_point, config, &calculated_point);
 
-    fractal_matrix_set_calculated_point(fractal_data, pt, calculated_point);
+    fractal_data_set_calculated_point(fractal_data, pt, calculated_point);
 }
 
 void calculate_next_point_to_the_right(zpoint_t *z, zpoint_t z_current_point, zpoint_t zx_point_increment, slong prec) {

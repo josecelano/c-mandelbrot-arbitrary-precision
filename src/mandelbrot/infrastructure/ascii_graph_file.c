@@ -79,7 +79,7 @@ void render_and_write_out_iterations_matrix(char *filename, fractal_data_t fract
 
             point_set_coordinates(&point, x, y);
 
-            fractal_matrix_get_calculated_point(fractal_data, point, &calculated_point);
+            fractal_data_get_calculated_point(fractal_data, point, &calculated_point);
 
             if (calculated_point.is_inside) {
                 // Inside Mandelbrot Set -> print spaces

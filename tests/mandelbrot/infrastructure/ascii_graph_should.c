@@ -24,7 +24,7 @@ void calculate_completed_mandelbrot(resolution_t resolution, fractal_data_t *fra
 
     ztile_set_completed_mandelbrot_set(&tile, config);
 
-    fractal_matrix_calculate_points(tile, config, fractal_data);
+    fractal_data_calculate_points(fractal_data, tile, config);
 
     ztile_clean(&tile);
 }
@@ -46,7 +46,7 @@ TEST(ascii_graph_should, generate_an_ascii_version_of_the_mandelbrot_set) {
     resolution_t resolution = {256, 256};
     fractal_data_t fractal_data;
 
-    fractal_matrix_init(&fractal_data, resolution);
+    fractal_data_init(&fractal_data, resolution);
 
     char expected_filename[100];
     char filename[100];
@@ -62,7 +62,7 @@ TEST(ascii_graph_should, generate_an_ascii_version_of_the_mandelbrot_set) {
     sprintf(expected_filename, "./tests/fixtures/mandelbrot-%dx%d.txt", resolution.width, resolution.height);
     test_assert_txt_files_equal(expected_filename, filename);
 
-    fractal_matrix_clean(&fractal_data);
+    fractal_data_clean(&fractal_data);
 }
 
 TEST(ascii_graph_should, generate_a_text_version_of_the_iterations_taken_matrix) {
@@ -70,7 +70,7 @@ TEST(ascii_graph_should, generate_a_text_version_of_the_iterations_taken_matrix)
     resolution_t resolution = {256, 256};
     fractal_data_t fractal_data;
 
-    fractal_matrix_init(&fractal_data, resolution);
+    fractal_data_init(&fractal_data, resolution);
 
     char expected_filename[100];
     char filename[100];
@@ -86,7 +86,7 @@ TEST(ascii_graph_should, generate_a_text_version_of_the_iterations_taken_matrix)
     sprintf(expected_filename, "./tests/fixtures/mandelbrot-iter-%dx%d.txt", resolution.width, resolution.height);
     test_assert_txt_files_equal(expected_filename, filename);
 
-    fractal_matrix_clean(&fractal_data);
+    fractal_data_clean(&fractal_data);
 }
 
 TEST_GROUP_RUNNER(ascii_graph_should) {

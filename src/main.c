@@ -72,14 +72,14 @@ int main(int argc, const char *argv[]) {
 
     app_config_init(&config);
 
-    fractal_matrix_init(&fractal_data, resolution);
+    fractal_data_init(&fractal_data, resolution);
 
     ztile_init(&tile);
 
     ztile_set_completed_mandelbrot_set(&tile, config);
 
     time = clock();
-    fractal_matrix_calculate_points(tile, config, &fractal_data);
+    fractal_data_calculate_points(&fractal_data, tile, config);
     time = clock() - time;
 
     ztile_clean(&tile);
@@ -94,7 +94,7 @@ int main(int argc, const char *argv[]) {
 
     render_iterations_taken_matrix(fractal_data);
 
-    fractal_matrix_clean(&fractal_data);
+    fractal_data_clean(&fractal_data);
 
     return 0;
 }
