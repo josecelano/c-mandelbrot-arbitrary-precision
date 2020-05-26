@@ -59,7 +59,6 @@ void fractal_data_clean(fractal_data_t *fractal_data) {
 }
 
 void fractal_data_initialize_iterations_taken(fractal_data_t *fractal_data, int *iterations_taken) {
-    int i;
 
     int x, y;
     point_t point;
@@ -70,7 +69,7 @@ void fractal_data_initialize_iterations_taken(fractal_data_t *fractal_data, int 
             point_set_coordinates(&point, x, y);
 
             calculated_point.is_inside = FALSE;
-            calculated_point.iterations_taken = iterations_taken[y * fractal_data->resolution.width + x];
+            calculated_point.iterations_taken = (unsigned int) iterations_taken[y * fractal_data->resolution.width + x];
             calculated_point.period_was_found = FALSE;
             calculated_point.period = 0;
 
@@ -80,8 +79,6 @@ void fractal_data_initialize_iterations_taken(fractal_data_t *fractal_data, int 
 }
 
 void fractal_data_set_calculated_point(fractal_data_t *fractal_data, point_t point, calculated_point_t calculated_point) {
-    int iterations_taken;
-
     // Store calculated point in the matrix struct member
     fractal_data->calculated_points[(point.y * fractal_data->resolution.width) + point.x] = calculated_point;
 
@@ -101,10 +98,6 @@ void fractal_data_get_calculated_point(fractal_data_t fractal_data, point_t poin
 }
 
 void fractal_data_calculate_points(fractal_data_t *fractal_data, ztile_t tile, config_t config) {
-    int x, y;
-    int img_idx = 0;
-    int iterations_taken;
-
     zpoint_t zx_point_increment, zy_point_increment;
 
     zpoint_init(&zx_point_increment);

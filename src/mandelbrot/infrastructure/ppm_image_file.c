@@ -14,7 +14,7 @@ void print_ppm_image_header(FILE *fp, resolution_t resolution) {
 }
 
 void write_color(FILE *fp, rgb_color color) {
-    char c[3] = {color.r, color.g, color.b};
+    char c[3] = {(char) color.r, (char) color.g, (char) color.b};
     fwrite(c, 1, RBG_COLOR_CHAR_SIZE, fp);
 }
 

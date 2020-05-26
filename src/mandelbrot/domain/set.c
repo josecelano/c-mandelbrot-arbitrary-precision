@@ -22,14 +22,6 @@ int mandelbrot_set_contains(zpoint_t point, config_t config) {
     return calculated_point.is_inside ? INSIDE : OUTSIDE;
 }
 
-int is_value_a_inside_point(int num_iter_for_pixel) {
-    if (num_iter_for_pixel == MAX_ITERATIONS) {
-        return INSIDE;
-    }
-
-    return OUTSIDE;
-}
-
 void mandelbrot_set_calculate_point(zpoint_t point, config_t config, calculated_point_t *calculated_point) {
     acb_t c;
 

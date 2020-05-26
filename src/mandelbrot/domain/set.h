@@ -19,11 +19,6 @@
 int mandelbrot_set_contains(zpoint_t point, config_t config);
 
 /**
- * Check is the value in the matrix represents a point inside the Mandelbrot Set.
- */
-int is_value_a_inside_point(int num_iter_for_pixel);
-
-/**
  * Bailout formula:
  * Zx²+Zy² < ER²
  * It returns 1 if we have reached the escape condition. The points diverges (does not belong to set).

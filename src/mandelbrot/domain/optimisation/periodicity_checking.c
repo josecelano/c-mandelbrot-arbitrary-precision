@@ -95,7 +95,7 @@ void execute_iterations_with_period_checking(acb_t c, config_t config, calculate
 
     for (i = 1; i <= config.max_iterations; ++i) {
 
-        calculated_point->iterations_taken = i;
+        calculated_point->iterations_taken = (unsigned int) i;
 
         mandelbrot_formula(f, z, c, config.precision);
 
@@ -128,7 +128,7 @@ void execute_iterations_with_period_checking(acb_t c, config_t config, calculate
         int period_found = check_for_period(i, c, z_re, z_im, old_re, old_im, period_tolerance, check_counter, config);
 
         if (period_found) {
-            calculated_point->period = check_counter;
+            calculated_point->period = (unsigned int) check_counter;
             break;
         }
         // End check for period
