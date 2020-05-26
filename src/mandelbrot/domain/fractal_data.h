@@ -25,9 +25,9 @@ void fractal_matrix_initialize_iterations_taken(fractal_data_t *fractal_data, in
  */
 int fractal_matrix_get_num_iter_per_point(fractal_data_t fractal_data, point_t point);
 
-void fractal_matrix_set_calculated_point(fractal_data_t *fractal_data, point_t p, calculated_point_t calculated_point);
+void fractal_matrix_set_calculated_point(fractal_data_t *fractal_data, point_t point, calculated_point_t calculated_point);
 
-void fractal_matrix_get_calculated_point(fractal_data_t fractal_data, point_t p, calculated_point_t *calculated_point);
+void fractal_matrix_get_calculated_point(fractal_data_t fractal_data, point_t point, calculated_point_t *calculated_point);
 
 /**
  * For points inside Mandelbrot Set it returns MAX_ITERATIONS

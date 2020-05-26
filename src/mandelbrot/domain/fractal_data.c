@@ -85,11 +85,11 @@ int fractal_matrix_get_num_iter_per_point(fractal_data_t fractal_data, point_t p
     return calculated_point.iterations_taken;
 }
 
-void fractal_matrix_set_calculated_point(fractal_data_t *fractal_data, point_t p, calculated_point_t calculated_point) {
+void fractal_matrix_set_calculated_point(fractal_data_t *fractal_data, point_t point, calculated_point_t calculated_point) {
     int iterations_taken;
 
     // Store calculated point in the matrix struct member
-    fractal_data->calculated_points[(p.y * fractal_data->resolution.width) + p.x] = calculated_point;
+    fractal_data->calculated_points[(point.y * fractal_data->resolution.width) + point.x] = calculated_point;
 
     // Update periods counter
     if (calculated_point.period_was_found) {
@@ -102,8 +102,8 @@ void fractal_matrix_set_calculated_point(fractal_data_t *fractal_data, point_t p
     }
 }
 
-void fractal_matrix_get_calculated_point(fractal_data_t fractal_data, point_t p, calculated_point_t *calculated_point) {
-    *calculated_point = fractal_data.calculated_points[(p.y * fractal_data.resolution.width) + p.x];
+void fractal_matrix_get_calculated_point(fractal_data_t fractal_data, point_t point, calculated_point_t *calculated_point) {
+    *calculated_point = fractal_data.calculated_points[(point.y * fractal_data.resolution.width) + point.x];
 }
 
 void fractal_matrix_calculate_points(ztile_t tile, config_t config, fractal_data_t *fractal_data) {
