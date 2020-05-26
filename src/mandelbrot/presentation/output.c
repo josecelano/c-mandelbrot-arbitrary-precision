@@ -2,7 +2,7 @@
 #include "arb.h"
 #include <time.h>
 
-#include "../domain/fractal.h"
+#include "../domain/fractal_data.h"
 #include "../infrastructure/console.h"
 
 void print_loop_iteration(

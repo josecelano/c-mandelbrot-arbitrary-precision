@@ -2,7 +2,7 @@
 #include "../../lib/unity/unity_fixture.h"
 #include "../../lib/unity_extension.h"
 
-#include "../../../src/mandelbrot/domain/fractal.h"
+#include "../../../src/mandelbrot/domain/fractal_data.h"
 
 TEST_GROUP(fractal_should);
 

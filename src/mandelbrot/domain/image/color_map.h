@@ -1,7 +1,7 @@
 #ifndef C_MANDELBROT_ARBITRARY_PRECISION_COLOR_MAP_H
 #define C_MANDELBROT_ARBITRARY_PRECISION_COLOR_MAP_H
 
-#include "../fractal.h"
+#include "../fractal_data.h"
 #include "./pixel.h"
 
 typedef enum {
