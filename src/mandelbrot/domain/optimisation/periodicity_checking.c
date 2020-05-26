@@ -4,6 +4,7 @@
 #include "../../application/config.h"
 #include "../../infrastructure/console.h"
 #include "../../presentation/output.h"
+#include "../calculated_point.h"
 #include "../formula.h"
 #include "../fractal.h"
 #include "../set.h"

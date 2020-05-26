@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+#include "../domain/calculated_point.h"
 #include "../domain/set.h"
 #include "../presentation/ascii_graph.h"
 #include "./ascii_graph_file.h"

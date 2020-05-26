@@ -3,6 +3,7 @@
 
 #include "../infrastructure/console.h"
 #include "../presentation/output.h"
+#include "./calculated_point.h"
 #include "./complex.h"
 #include "./formula.h"
 #include "./optimisation/main_cardioid_detection.h"

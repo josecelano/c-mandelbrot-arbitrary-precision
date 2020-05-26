@@ -4,7 +4,7 @@
 #include "acb.h"
 
 #include "../../application/config.h"
-#include "../fractal.h"
+#include "../calculated_point.h"
 
 void execute_iterations_with_period_checking(acb_t c, config_t config, calculated_point_t *calculated_point);
 

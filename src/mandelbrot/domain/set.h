@@ -4,6 +4,7 @@
 #include "acb.h"
 
 #include "../application/config.h"
+#include "./calculated_point.h"
 #include "./fractal.h"
 #include "./optimisation/main_cardioid_detection.h"
 #include "./zpoint.h"

@@ -1,4 +1,5 @@
 #include "../presentation/output.h"
+#include "./calculated_point.h"
 #include "./fractal_data.h"
 #include "./set.h"
 

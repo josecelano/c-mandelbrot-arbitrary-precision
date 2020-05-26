@@ -1,9 +1,11 @@
 #include <string.h>
 #include <stdio.h>
-#include "color.h"
-#include "pixel.h"
+
+#include "../calculated_point.h"
 #include "../set.h"
-#include "color_map.h"
+#include "./color.h"
+#include "./color_map.h"
+#include "./pixel.h"
 
 void color_pixel_with_black_on_white_color_map(pixel *px, fractal_data_t fractal_data) {
     rgb_color black = {0, 0, 0};

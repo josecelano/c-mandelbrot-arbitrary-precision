@@ -1,7 +1,10 @@
 #ifndef C_MANDELBROT_ARBITRARY_PRECISION_FRACTAL_DATA_H
 #define C_MANDELBROT_ARBITRARY_PRECISION_FRACTAL_DATA_H
 
+#include "./calculated_point.h"
 #include "./fractal.h"
+#include "./point.h"
+#include "./ztile.h"
 
 typedef struct {
     resolution_t resolution;

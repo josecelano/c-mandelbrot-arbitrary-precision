@@ -1,8 +1,9 @@
 #include <stdio.h>
 
+#include "../domain/calculated_point.h"
 #include "../domain/fractal.h"
 #include "../domain/set.h"
-#include "ascii_graph.h"
+#include "./ascii_graph.h"
 
 void set_point_character(char *point_char, point_t point, fractal_data_t fractal_data) {
 
