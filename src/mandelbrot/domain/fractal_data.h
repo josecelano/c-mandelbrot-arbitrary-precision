@@ -27,11 +27,6 @@ void fractal_matrix_set_calculated_point(fractal_data_t *fractal_data, point_t p
 void fractal_matrix_get_calculated_point(fractal_data_t fractal_data, point_t p, calculated_point_t *calculated_point);
 
 /**
- * It returns INSIDE if the point in the matrix belongs to Mandelbrot Set.
- */
-int fractal_matrix_point_belongs_to_mandelbrot_set(point_t p, fractal_data_t fractal_data);
-
-/**
  * For points inside Mandelbrot Set it returns MAX_ITERATIONS
  * For points outside it returns number of iterations needed to diverge.
  */

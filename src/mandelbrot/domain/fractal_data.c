@@ -105,11 +105,6 @@ void fractal_matrix_get_calculated_point(fractal_data_t fractal_data, point_t p,
     *calculated_point = fractal_data.calculated_points[(p.y * fractal_data.resolution.width) + p.x];
 }
 
-int fractal_matrix_point_belongs_to_mandelbrot_set(point_t p, fractal_data_t fractal_data) {
-    int num_iter_for_pixel = fractal_matrix_get_num_iter_per_point(fractal_data, p);
-    return is_value_a_inside_point(num_iter_for_pixel);
-}
-
 void fractal_matrix_calculate_points(ztile_t tile, config_t config, fractal_data_t *fractal_data) {
     int x, y;
     int img_idx = 0;
