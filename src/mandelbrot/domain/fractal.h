@@ -28,7 +28,6 @@ typedef struct {
     resolution_t resolution;
     unsigned int number_of_found_periods;       // Number of periods found when it's used the periods checking optimisation.
     unsigned int max_for_number_of_iterations;  // Max number of iterations done of all points.
-    int *data;
     calculated_point_t *calculated_points;      // Array of calculated points.
 } fractal_data_t;
 

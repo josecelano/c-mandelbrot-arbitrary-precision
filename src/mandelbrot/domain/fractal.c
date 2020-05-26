@@ -45,35 +45,17 @@ void fractal_matrix_init(fractal_data_t *fractal_data, resolution_t resolution) 
     fractal_data->number_of_found_periods = 0;
     fractal_data->max_for_number_of_iterations = 0;
 
-    // Matrix
-    matrix_size = resolution.width * resolution.height * sizeof(int);
-    fractal_data->data = malloc(matrix_size);
-
     // Calculated points matrix
     matrix_size = resolution.width * resolution.height * sizeof(calculated_point_t);
     fractal_data->calculated_points = malloc(matrix_size);
 }
 
 void fractal_matrix_clean(fractal_data_t *fractal_data) {
-    free(fractal_data->data);
     free(fractal_data->calculated_points);
-}
-
-void fractal_matrix_set_num_iter_per_point(fractal_data_t *fractal_data, point_t p, int iterations_taken) {
-    fractal_data->data[(p.y * fractal_data->resolution.width) + p.x] = iterations_taken;
 }
 
 void fractal_matrix_set_calculated_point(fractal_data_t *fractal_data, point_t p, calculated_point_t calculated_point) {
     int iterations_taken;
-
-    // TODO: remove when refactor is done
-    // Update iterations taken in iteration taken matrix
-    iterations_taken = calculated_point.iterations_taken;
-    if (calculated_point.is_inside) {
-        iterations_taken = MAX_ITERATIONS;
-    }
-    fractal_matrix_set_num_iter_per_point(fractal_data, p, iterations_taken);
-    // End TODO
 
     // Store calculated point in the matrix struct member
     fractal_data->calculated_points[(p.y * fractal_data->resolution.width) + p.x] = calculated_point;
