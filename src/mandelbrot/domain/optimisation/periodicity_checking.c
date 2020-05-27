@@ -75,8 +75,9 @@ void execute_iterations_with_period_checking(acb_t c, config_t config, calculate
     arb_set_str(old_re, "0.0", config.precision);
     arb_set_str(old_im, "0.0", config.precision);
 
-    // TODO:
+    // TODO: calculate period tolerance & max number of iterations.
     // * We need to know how to calculate the period tolerance
+    // * Adn how to calculate the max number of iterations dynamically.
     // * And only apply period checking after a minimum number of iterations
     // See other examples:
     // * https://github.com/HyveInnovate/gnofract4d/blob/master/examples/cpp/custom_mandelbrot_formula.c#L356-L389

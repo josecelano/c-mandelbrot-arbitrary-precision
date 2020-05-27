@@ -56,10 +56,9 @@ TEST(formula_should, calculate_the_mandelbrot_function)
 
     for (i = 0; i < 9; ++i)
     {
-        // TODO: use from dto version
-        complex_set_from_re_im_str(z, zf[i][0].re, zf[i][0].im, prec);
-        complex_set_from_re_im_str(c, zf[i][1].re, zf[i][1].im, prec);
-        complex_set_from_re_im_str(expected_result, zf[i][2].re, zf[i][2].im, prec);
+        complex_set_from_dto(z, zf[i][0], prec);
+        complex_set_from_dto(c, zf[i][1], prec);
+        complex_set_from_dto(expected_result, zf[i][2], prec);
 
         mandelbrot_formula(result, z, c, prec);
 
