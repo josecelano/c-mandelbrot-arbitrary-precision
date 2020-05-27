@@ -41,7 +41,7 @@ void render_ascii_graph(fractal_data_t fractal_data) {
 }
 
 /**
- * It renders a txt file with a Mandelbrot iterations matrix.
+ * It renders a txt file with the Mandelbrot iterations taken for points outside.
  */
 void render_iterations_taken_matrix(fractal_data_t fractal_data) {
     char txt_filename[50];
@@ -52,6 +52,35 @@ void render_iterations_taken_matrix(fractal_data_t fractal_data) {
     );
 
     render_and_write_out_iterations_matrix(txt_filename, fractal_data);
+}
+
+/**
+ * It renders a txt file with the Mandelbrot iterations taken for all points outside (inside/outside).
+ */
+void render_full_iterations_taken_matrix(fractal_data_t fractal_data) {
+    char txt_filename[50];
+
+    sprintf(txt_filename, "./output/mandelbrot-full-iter-%dx%d.txt",
+            fractal_data.resolution.width,
+            fractal_data.resolution.height
+    );
+
+    render_and_write_out_full_iterations_matrix(txt_filename, fractal_data);
+}
+
+/**
+ * It renders a txt file with the found periods (for points inside Mandelbrot Set)
+ * when period checking optimisation is used.
+ */
+void render_periods_matrix(fractal_data_t fractal_data) {
+    char txt_filename[50];
+
+    sprintf(txt_filename, "./output/mandelbrot-periods-%dx%d.txt",
+            fractal_data.resolution.width,
+            fractal_data.resolution.height
+    );
+
+    render_and_write_out_periods_matrix(txt_filename, fractal_data);
 }
 
 int main(int argc, const char *argv[]) {
@@ -93,6 +122,10 @@ int main(int argc, const char *argv[]) {
     render_ascii_graph(fractal_data);
 
     render_iterations_taken_matrix(fractal_data);
+
+    render_full_iterations_taken_matrix(fractal_data);
+
+    render_periods_matrix(fractal_data);
 
     fractal_data_clean(&fractal_data);
 

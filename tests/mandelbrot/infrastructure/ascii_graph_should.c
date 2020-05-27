@@ -89,7 +89,57 @@ TEST(ascii_graph_should, generate_a_text_version_of_the_iterations_taken_matrix)
     fractal_data_clean(&fractal_data);
 }
 
+TEST(ascii_graph_should, generate_a_text_version_of_the_full_iterations_taken_matrix) {
+
+    resolution_t resolution = {256, 256};
+    fractal_data_t fractal_data;
+
+    fractal_data_init(&fractal_data, resolution);
+
+    char expected_filename[100];
+    char filename[100];
+
+    // Given the complete mandelbrot
+    calculate_completed_mandelbrot(resolution, &fractal_data);
+
+    // When we write out the iterations taken matrix including iterations for points inside the Mandelbrot Set
+    sprintf(filename, "./tests/output/mandelbrot-full-iter-%dx%d.txt", resolution.width, resolution.height);
+    render_and_write_out_full_iterations_matrix(filename, fractal_data);
+
+    // We get the expected content for the file
+    sprintf(expected_filename, "./tests/fixtures/mandelbrot-full-iter-%dx%d.txt", resolution.width, resolution.height);
+    test_assert_txt_files_equal(expected_filename, filename);
+
+    fractal_data_clean(&fractal_data);
+}
+
+TEST(ascii_graph_should, generate_a_text_version_of_periods_matrix) {
+
+    resolution_t resolution = {256, 256};
+    fractal_data_t fractal_data;
+
+    fractal_data_init(&fractal_data, resolution);
+
+    char expected_filename[100];
+    char filename[100];
+
+    // Given the complete mandelbrot and applying the "periodicity detection" optimisation method
+    calculate_completed_mandelbrot(resolution, &fractal_data);
+
+    // When we write out the periods found for points inside the Mandelbrot Set
+    sprintf(filename, "./tests/output/mandelbrot-periods-%dx%d.txt", resolution.width, resolution.height);
+    render_and_write_out_periods_matrix(filename, fractal_data);
+
+    // We get the expected content for the file
+    sprintf(expected_filename, "./tests/fixtures/mandelbrot-periods-%dx%d.txt", resolution.width, resolution.height);
+    test_assert_txt_files_equal(expected_filename, filename);
+
+    fractal_data_clean(&fractal_data);
+}
+
 TEST_GROUP_RUNNER(ascii_graph_should) {
     RUN_TEST_CASE(ascii_graph_should, generate_an_ascii_version_of_the_mandelbrot_set);
     RUN_TEST_CASE(ascii_graph_should, generate_a_text_version_of_the_iterations_taken_matrix);
+    RUN_TEST_CASE(ascii_graph_should, generate_a_text_version_of_the_full_iterations_taken_matrix);
+    RUN_TEST_CASE(ascii_graph_should, generate_a_text_version_of_periods_matrix);
 }
