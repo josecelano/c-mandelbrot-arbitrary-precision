@@ -7,7 +7,7 @@
 typedef enum {
     BLACK_ON_WHITE = 0,
     WHITE_ON_BLACK = 1,
-} color_map_name;
+} color_map_t;
 
 void color_pixel_with_black_on_white_color_map(pixel *px, fractal_data_t fractal_data);
 
