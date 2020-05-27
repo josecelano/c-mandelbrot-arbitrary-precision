@@ -3,6 +3,7 @@
 #include "../../lib/unity_extension.h"
 
 #include "../../../src/mandelbrot/domain/fractal_data.h"
+#include "./fractal_data_builder.h"
 
 TEST_GROUP(fractal_should);
 
@@ -69,7 +70,7 @@ TEST(fractal_should, calculate_complex_points_for_a_given_resolution_and_check_i
              1,  2,  2,  3,  3,  3, 2, 2, 2, 2, // 8
              1,  1,  2,  2,  2,  2, 2, 2, 2, 1  // 9
     };
-    fractal_data_initialize_iterations_taken(&expected_fractal_data, expected_iterations_taken_matrix_data);
+    fractal_data_set_iterations_taken_for_all_points(&expected_fractal_data, expected_iterations_taken_matrix_data);
 
     ztile_init(&tile);
     ztile_set_completed_mandelbrot_set(&tile, config);
@@ -130,7 +131,7 @@ TEST(fractal_should, calculate_iterations_taken_matrix_for_a_non_symmetrical_ima
              9,  8,  8,  9,  9, 25,  9,  7,  5, 4,  // 8
              8,  7,  7,  7,  8, 10, 11,  6,  5, 4   // 9
     };
-    fractal_data_initialize_iterations_taken(&expected_fractal_data, expected_iterations_taken_matrix_data);
+    fractal_data_set_iterations_taken_for_all_points(&expected_fractal_data, expected_iterations_taken_matrix_data);
 
     test_assert_equal_iteration_matrix(expected_fractal_data, fractal_data);
 

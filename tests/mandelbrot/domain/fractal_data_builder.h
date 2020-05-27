@@ -1,0 +1,6 @@
+#ifndef C_MANDELBROT_ARBITRARY_PRECISION_FRACTAL_DATA_BUILDER_H
+#define C_MANDELBROT_ARBITRARY_PRECISION_FRACTAL_DATA_BUILDER_H
+
+void fractal_data_set_iterations_taken_for_all_points(fractal_data_t *fractal_data, int *iterations_taken);
+
+#endif //C_MANDELBROT_ARBITRARY_PRECISION_FRACTAL_DATA_BUILDER_H

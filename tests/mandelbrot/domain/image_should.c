@@ -5,13 +5,15 @@
 
 #include "../../../src/mandelbrot/domain/image/color.h"
 #include "../../../src/mandelbrot/domain/image/image.h"
+#include "./fractal_data_builder.h"
 
 /* TODO:
  *  1) Add a test for a non symmetrical image.
  *  2) Actually this test is testing that the color map is applied correctly. We can use 2 different color maps.
- *     On the other hand the function fractal_data_initialize_iterations_taken was used when we stored only the number
- *     of iterations. Now we store calculated_point and we should create a new builder. That builder it seems to be used
- *     only in this test. Maybe we should create a constructor and pass all calculated point with 2 matrix:
+ *     On the other hand the function 'fractal_data_set_iterations_taken_for_all_points' was used when we stored
+ *     only the number of iterations. Now we store calculated_point and we should create a new builder.
+ *     That builder it seems to be used in TEST code. Maybe we should create a constructor and pass all calculated
+ *     point with 2 matrix:
  *         * number of iterations
  *         * point inside/outside
  *     Otherwise we could continue using an special value (-1) for number of iterations to represent a point inside.
@@ -54,7 +56,7 @@ TEST(image_should, calculate_the_color_for_a_given_pixel) {
             1,100,  1,   // 1
             1,  1,  1    // 2
     };
-    fractal_data_initialize_iterations_taken(&fractal_data, iterations_taken_matrix_data);
+    fractal_data_set_iterations_taken_for_all_points(&fractal_data, iterations_taken_matrix_data);
 
     point_t point;
     point_set_coordinates(&point, 1, 1);

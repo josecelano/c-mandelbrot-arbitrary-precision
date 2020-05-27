@@ -17,13 +17,10 @@ void fractal_data_init(fractal_data_t *fractal_data, resolution_t resolution);
 
 void fractal_data_clean(fractal_data_t *fractal_data);
 
-// TODO: Code Review. It's only used in TEST code. Replace by a builder? And include the rest of members.
-void fractal_data_initialize_iterations_taken(fractal_data_t *fractal_data, int *iterations_taken);
+void fractal_data_calculate_points(fractal_data_t *fractal_data, ztile_t tile, config_t config);
 
 void fractal_data_set_calculated_point(fractal_data_t *fractal_data, point_t point, calculated_point_t calculated_point);
 
 void fractal_data_get_calculated_point(fractal_data_t fractal_data, point_t point, calculated_point_t *calculated_point);
-
-void fractal_data_calculate_points(fractal_data_t *fractal_data, ztile_t tile, config_t config);
 
 #endif //C_MANDELBROT_ARBITRARY_PRECISION_FRACTAL_DATA_H
