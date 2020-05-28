@@ -17,7 +17,7 @@
 /**
  * It renders a Mandelbrot fractal image in PPM format.
  */
-void render_ppm_image(fractal_data_t fractal_data) {
+void render_ppm_image_with_back_on_white_color_map(fractal_data_t fractal_data) {
     char img_filename[50];
 
     sprintf(img_filename, "./output/mandelbrot-%dx%d.ppm",
@@ -31,7 +31,7 @@ void render_ppm_image(fractal_data_t fractal_data) {
 /**
  * It renders a txt file with a Mandelbrot ASCII graph.
  */
-void render_ascii_graph(fractal_data_t fractal_data) {
+void render_ascii_graph_with_at_sign_ascii_map(fractal_data_t fractal_data) {
     char txt_filename[50];
 
     sprintf(txt_filename, "./output/mandelbrot-%dx%d.txt",
@@ -45,7 +45,7 @@ void render_ascii_graph(fractal_data_t fractal_data) {
 /**
  * It renders a txt file with the Mandelbrot iterations taken for points outside.
  */
-void render_iterations_taken_matrix(fractal_data_t fractal_data) {
+void render_ascii_graph_with_iterations_ascii_map(fractal_data_t fractal_data) {
     char txt_filename[50];
 
     sprintf(txt_filename, "./output/mandelbrot-iter-%dx%d.txt",
@@ -59,7 +59,7 @@ void render_iterations_taken_matrix(fractal_data_t fractal_data) {
 /**
  * It renders a txt file with the Mandelbrot iterations taken for all points outside (inside/outside).
  */
-void render_full_iterations_taken_matrix(fractal_data_t fractal_data) {
+void render_ascii_graph_with_full_iterations_ascii_map(fractal_data_t fractal_data) {
     char txt_filename[50];
 
     sprintf(txt_filename, "./output/mandelbrot-full-iter-%dx%d.txt",
@@ -74,7 +74,7 @@ void render_full_iterations_taken_matrix(fractal_data_t fractal_data) {
  * It renders a txt file with the found periods (for points inside Mandelbrot Set)
  * when period checking optimisation is used.
  */
-void render_periods_matrix(fractal_data_t fractal_data) {
+void render_ascii_graph_with_periods_ascii_map(fractal_data_t fractal_data) {
     char txt_filename[50];
 
     sprintf(txt_filename, "./output/mandelbrot-periods-%dx%d.txt",
@@ -119,15 +119,20 @@ int main(int argc, const char *argv[]) {
 
     print_fractal_matrix_data(fractal_data);
 
-    render_ppm_image(fractal_data);
+    // Render images
 
-    render_ascii_graph(fractal_data);
+    render_ppm_image_with_back_on_white_color_map(fractal_data);
 
-    render_iterations_taken_matrix(fractal_data);
+    // Render ascii graphs
 
-    render_full_iterations_taken_matrix(fractal_data);
+    render_ascii_graph_with_at_sign_ascii_map(fractal_data);
 
-    render_periods_matrix(fractal_data);
+    render_ascii_graph_with_iterations_ascii_map(fractal_data);
+
+    render_ascii_graph_with_full_iterations_ascii_map(fractal_data);
+
+    render_ascii_graph_with_periods_ascii_map(fractal_data);
+
 
     fractal_data_clean(&fractal_data);
 
