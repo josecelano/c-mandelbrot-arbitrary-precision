@@ -70,10 +70,16 @@ Run:
 ./bin/run
 ```
 
-`run` command will create 2 files in the `output` dir:
-* mandelbrot-256x256.ppm (Mandelbrot image)
+`run` command will create these images in the `output` dir:
+* mandelbrot-256x256.ppm (Mandelbrot image with Black on White color map)
+* mandelbrot-white-on-black-256x256.ppm (Mandelbrot image with White on Back color map)
+* mandelbrot-periods-256x256.ppm (Mandelbrot image with colored periods)
+
+and these ASCII graphs:
 * mandelbrot-256x256.txt (Mandelbrot ASCII version)
-* mandelbrot-iter-256x256.txt (Mandelbrot Iterations Taken Matrix txt version)
+* mandelbrot-iter-256x256.txt (Mandelbrot with number of iterations taken for point outside)
+* mandelbrot-full-iter-256x256.txt (Mandelbrot with number of iterations taken for all points)
+* mandelbrot-periods-256x256.txt (Mandelbrot with periods detected for inside points)
 
 You can see those samples files in folder `samples`.
 
