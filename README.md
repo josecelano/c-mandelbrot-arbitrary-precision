@@ -117,62 +117,6 @@ Compile and run:
 * [Another C Mandelbrot implementation with arbitrary precision](https://github.com/josch/mandelbrot/blob/master/mandel_mpfr.c)
 * [PHP Mandelbrot implementation with arbitrary precision](https://github.com/josecelano/php-mandelbrot-arbitrary-precision)
 
-## Performance
-
-Full mandelbrot from (-2,2) to (2,2).
-
-For 256x256px image:
-* Size: 256x256px (65536)
-* Max iter: 100
-* Precision: 32
-* Time for matrix generation: 0.805649s = 805649000.000000ns
-* Performance: 1.229323e+04‬ ns/px
-* Minimum complex x increment: 1.562500e-02 (4/256)
-* Minimum complex y increment: 1.562500e-02 (4/256)
-* Number of found periods: 5610
-
-For 512x512px image:
-* Size: 512x512px (262144)
-* Max iter: 100
-* Precision: 32
-* Time for matrix generation: 1.841765s = 1841765000.000000ns
-* Performance: 7.025776e+03‬ ns/px
-* Minimum complex x increment: 7.812500e-03 (4/512)
-* Minimum complex y increment: 7.812500e-03 (4/512)
-
-For 1024x1024px image:
-* Size: 1024x1024px (1048576)
-* Max iter: 100
-* Precision: 32
-* Time for matrix generation: 8.076328s = 8076328000.000000ns
-* Performance: 7.702187e+03‬ ns/px
-* Minimum complex x increment: 3.906250e-03 (4/1024)
-* Minimum complex y increment: 3.906250e-03 (4/1024)
-
-For 8192x8192px image:
-* Size: 8192x8192px (67108864)
-* Max iter: 100
-* Precision: 32
-* Time for matrix generation: 444.213337s = 444213337000.000000ns
-* Performance: 6.619295e+03‬ ns/px
-* Minimum complex x increment: 4.882812e-04 (4/8192)
-* Minimum complex y increment: 4.882812e-04 (4/8192)
-
-For 16384x16384px image:
-* Size: 16384x16384px (268435456)
-* Max iter: 100
-* Precision: 32
-* Time for matrix generation: 2281.666958s = 2281666958000.000000ns
-* Performance: 8.499872e+03‬ ns/px
-* Minimum complex x increment: 2.441406e-04 (4/16384)
-* Minimum complex y increment: 2.441406e-04 (4/16384)
-
-Performance links:
-* [Post with different performance improvement](https://www.martin-ueding.de/posts/mandelbrot-performance/)
-* [Another article about Mandelbrot algorithm improvements](https://gist.github.com/mrange/20fa976388167e294aa01a1266ad0a8c)
-* [Performance ranking](https://benchmarksgame-team.pages.debian.net/benchmarksgame/performance/mandelbrot.html)
-* [List of speed improvements](https://en.wikibooks.org/wiki/Fractals/Iterations_in_the_complex_plane/Mandelbrot_set/mandelbrot#Speed_improvements_-_optimisation)
-
 ## Mandelbrot online explorers
 
 This is a list of sites where you can explore Mandelbrot Set:
@@ -205,3 +149,7 @@ How to print arbitrary precision numbers:
 void console_print_complex(char *prefix, acb_t c);
 void console_print_real(char *prefix, arb_t c);
 ```
+
+## Documentation
+
+- [Performance](doc/performace.md)
