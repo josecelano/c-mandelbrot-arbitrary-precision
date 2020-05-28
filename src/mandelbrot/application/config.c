@@ -4,7 +4,7 @@ void app_set_default_production_config(config_t *config) {
     config->precision = 32;
     config->max_iterations = 100;
     config->verbose_options = 0;
-    config->verbose_options = config->verbose_options | PRINT_PROGRESS;
+    config->verbose_options = config->verbose_options | VO_PRINT_PROGRESS;
 }
 
 void app_set_default_test_config(config_t *config) {

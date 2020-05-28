@@ -8,9 +8,9 @@
 
 // Verbose options
 typedef enum {
-    PRINT_PROGRESS = 1,     // Print progress like: Progress: 99.609375%
-    PRINT_PERIODS = 2,      // Print period info when period checking is used
-    PRINT_ITERATIONS = 4,   // Print debug info for each loop iteration
+    VO_PRINT_PROGRESS = 1,     // Print progress like: Progress: 99.609375%
+    VO_PRINT_PERIODS = 2,      // Print period info when period checking is used
+    VO_PRINT_ITERATIONS = 4,   // Print debug info for each loop iteration
 } verbose_option_t;
 
 typedef struct {

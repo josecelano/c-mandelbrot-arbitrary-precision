@@ -80,7 +80,7 @@ TEST(image_should, calculate_the_color_for_a_given_pixel) {
         for (x = 0; x < 3; x++) {
 
             pixel px = {x, y};
-            set_pixel_color(&px, fractal_data, BLACK_ON_WHITE);
+            set_pixel_color(&px, fractal_data, CM_BLACK_ON_WHITE);
 
             if (expected_colours[(y * 3) + x] == 'w') {
                 test_assert_color_equal(white, px);

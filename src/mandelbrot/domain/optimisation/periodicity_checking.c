@@ -26,13 +26,13 @@ int check_for_period(int iter, acb_t c, arb_t z_re, arb_t z_im, arb_t old_re, ar
     arb_sub(im_diff, z_im, old_im, config.precision);
     arb_abs(im_diff, im_diff);
 
-    if (app_config_verbose_option_enabled(config, PRINT_PERIODS)) {
+    if (app_config_verbose_option_enabled(config, VO_PRINT_PERIODS)) {
         print_period_checking(re_diff, im_diff);
     }
 
     if (arb_lt(re_diff, period_tolerance) && arb_lt(im_diff, period_tolerance)) {
         // Period found
-        if (app_config_verbose_option_enabled(config, PRINT_PERIODS)) {
+        if (app_config_verbose_option_enabled(config, VO_PRINT_PERIODS)) {
             print_period_found(check_counter, iter);
         }
         ret = 1;
@@ -100,7 +100,7 @@ void execute_iterations_with_period_checking(acb_t c, config_t config, calculate
 
         mandelbrot_formula(f, z, c, config.precision);
 
-        if (app_config_verbose_option_enabled(config, PRINT_ITERATIONS)) {
+        if (app_config_verbose_option_enabled(config, VO_PRINT_ITERATIONS)) {
             // Print iteration
             print_loop_iteration(
                     i,
@@ -145,7 +145,7 @@ void execute_iterations_with_period_checking(acb_t c, config_t config, calculate
             }
             update_counter++;
 
-            if (app_config_verbose_option_enabled(config, PRINT_PERIODS)) {
+            if (app_config_verbose_option_enabled(config, VO_PRINT_PERIODS)) {
                 console_printf("->update old\n");
             }
 

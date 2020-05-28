@@ -131,7 +131,7 @@ void calculate_points(
                 &z_current_point
         );
 
-        if (app_config_verbose_option_enabled(config, PRINT_PROGRESS)) {
+        if (app_config_verbose_option_enabled(config, VO_PRINT_PROGRESS)) {
             print_render_progress(y, resolution.height);
         }
 

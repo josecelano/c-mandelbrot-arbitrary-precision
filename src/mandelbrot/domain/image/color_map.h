@@ -5,8 +5,8 @@
 #include "./pixel.h"
 
 typedef enum {
-    BLACK_ON_WHITE = 0,
-    WHITE_ON_BLACK = 1,
+    CM_BLACK_ON_WHITE = 0,
+    CM_WHITE_ON_BLACK = 1,
     CM_COLORED_PERIODS = 2, // A different color for each point inside where a period was detected (period detection)
 } color_map_t;
 

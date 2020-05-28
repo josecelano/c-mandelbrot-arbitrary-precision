@@ -13,16 +13,16 @@ void default_ascii_map(point_t point, fractal_data_t fractal_data, FILE *fp) {
 
 void write_point(point_t point, fractal_data_t fractal_data, FILE *fp, ascii_map_t ascii_map ) {
     switch (ascii_map) {
-        case AT_SIGN:
+        case AM_AT_SIGN:
             write_point_with_ar_sign_ascii_map(point, fractal_data, fp);
             break;
-        case ITERATIONS:
+        case AM_ITERATIONS:
             write_point_with_iterations_ascii_map(point, fractal_data, fp);
             break;
-        case FULL_ITERATIONS:
+        case AM_FULL_ITERATIONS:
             write_point_with_full_iterations_ascii_map(point, fractal_data, fp);
             break;
-        case PERIODS:
+        case AM_PERIODS:
             write_point_with_periods_ascii_map(point, fractal_data, fp);
             break;
         default:

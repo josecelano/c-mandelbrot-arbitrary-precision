@@ -28,7 +28,7 @@ void render_ppm_image_with_back_on_white_color_map(fractal_data_t fractal_data) 
             fractal_data.resolution.height
     );
 
-    render_and_write_out_image(img_filename, fractal_data, BLACK_ON_WHITE);
+    render_and_write_out_image(img_filename, fractal_data, CM_BLACK_ON_WHITE);
 }
 
 /**
@@ -44,7 +44,7 @@ void render_ppm_image_with_white_on_black_color_map(fractal_data_t fractal_data)
             fractal_data.resolution.height
     );
 
-    render_and_write_out_image(img_filename, fractal_data, WHITE_ON_BLACK);
+    render_and_write_out_image(img_filename, fractal_data, CM_WHITE_ON_BLACK);
 }
 
 /**
@@ -72,7 +72,7 @@ void render_ascii_graph_with_at_sign_ascii_map(fractal_data_t fractal_data) {
             fractal_data.resolution.height
     );
 
-    render_fractal_and_write_out_the_text_file(txt_filename, fractal_data, AT_SIGN);
+    render_fractal_and_write_out_the_text_file(txt_filename, fractal_data, AM_AT_SIGN);
 }
 
 /**
@@ -86,7 +86,7 @@ void render_ascii_graph_with_iterations_ascii_map(fractal_data_t fractal_data) {
             fractal_data.resolution.height
     );
 
-    render_fractal_and_write_out_the_text_file(txt_filename, fractal_data, ITERATIONS);
+    render_fractal_and_write_out_the_text_file(txt_filename, fractal_data, AM_ITERATIONS);
 }
 
 /**
@@ -100,7 +100,7 @@ void render_ascii_graph_with_full_iterations_ascii_map(fractal_data_t fractal_da
             fractal_data.resolution.height
     );
 
-    render_fractal_and_write_out_the_text_file(txt_filename, fractal_data, FULL_ITERATIONS);
+    render_fractal_and_write_out_the_text_file(txt_filename, fractal_data, AM_FULL_ITERATIONS);
 }
 
 /**
@@ -115,7 +115,7 @@ void render_ascii_graph_with_periods_ascii_map(fractal_data_t fractal_data) {
             fractal_data.resolution.height
     );
 
-    render_fractal_and_write_out_the_text_file(txt_filename, fractal_data, PERIODS);
+    render_fractal_and_write_out_the_text_file(txt_filename, fractal_data, AM_PERIODS);
 }
 
 int main(int argc, const char *argv[]) {
