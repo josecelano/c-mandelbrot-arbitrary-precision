@@ -8,6 +8,8 @@
 #include "mandelbrot/infrastructure/ascii_graph_file.h"
 #include "mandelbrot/infrastructure/ppm_image_file.h"
 #include "mandelbrot/presentation/output.h"
+#include "mandelbrot/domain/ascii_graph/ascii_map.h"
+#include "mandelbrot/domain/ascii_graph/ascii_graph.h"
 
 // TODO: Hexagonal architecture refactor in progress.
 //  * Move render_* functions to application/command and presentation/console-command folders.
@@ -37,7 +39,7 @@ void render_ascii_graph(fractal_data_t fractal_data) {
             fractal_data.resolution.height
     );
 
-    render_and_write_out_ascii_graph(txt_filename, fractal_data);
+    render_fractal_and_write_out_the_text_file(txt_filename, fractal_data, AT_SIGN);
 }
 
 /**
@@ -51,7 +53,7 @@ void render_iterations_taken_matrix(fractal_data_t fractal_data) {
             fractal_data.resolution.height
     );
 
-    render_and_write_out_iterations_matrix(txt_filename, fractal_data);
+    render_fractal_and_write_out_the_text_file(txt_filename, fractal_data, ITERATIONS);
 }
 
 /**
@@ -65,7 +67,7 @@ void render_full_iterations_taken_matrix(fractal_data_t fractal_data) {
             fractal_data.resolution.height
     );
 
-    render_and_write_out_full_iterations_matrix(txt_filename, fractal_data);
+    render_fractal_and_write_out_the_text_file(txt_filename, fractal_data, FULL_ITERATIONS);
 }
 
 /**
@@ -80,7 +82,7 @@ void render_periods_matrix(fractal_data_t fractal_data) {
             fractal_data.resolution.height
     );
 
-    render_and_write_out_periods_matrix(txt_filename, fractal_data);
+    render_fractal_and_write_out_the_text_file(txt_filename, fractal_data, PERIODS);
 }
 
 int main(int argc, const char *argv[]) {

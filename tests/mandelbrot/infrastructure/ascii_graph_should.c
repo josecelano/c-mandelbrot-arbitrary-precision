@@ -5,6 +5,8 @@
 #include "../../lib/unity_extension.h"
 
 #include "../../../src/mandelbrot/infrastructure/ascii_graph_file.h"
+#include "../../../src/mandelbrot/domain/ascii_graph/ascii_map.h"
+#include "../../../src/mandelbrot/domain/ascii_graph/ascii_graph.h"
 
 TEST_GROUP(ascii_graph_should);
 
@@ -56,7 +58,7 @@ TEST(ascii_graph_should, generate_an_ascii_version_of_the_mandelbrot_set) {
 
     // When we write out the ASCII graph
     sprintf(filename, "./tests/output/mandelbrot-%dx%d.txt", resolution.width, resolution.height);
-    render_and_write_out_ascii_graph(filename, fractal_data);
+    render_fractal_and_write_out_the_text_file(filename, fractal_data, AT_SIGN);
 
     // We get the expected content for the file
     sprintf(expected_filename, "./tests/fixtures/mandelbrot-%dx%d.txt", resolution.width, resolution.height);
@@ -80,7 +82,7 @@ TEST(ascii_graph_should, generate_a_text_version_of_the_iterations_taken_matrix)
 
     // When we write out the iterations taken matrix
     sprintf(filename, "./tests/output/mandelbrot-iter-%dx%d.txt", resolution.width, resolution.height);
-    render_and_write_out_iterations_matrix(filename, fractal_data);
+    render_fractal_and_write_out_the_text_file(filename, fractal_data, ITERATIONS);
 
     // We get the expected content for the file
     sprintf(expected_filename, "./tests/fixtures/mandelbrot-iter-%dx%d.txt", resolution.width, resolution.height);
@@ -104,7 +106,7 @@ TEST(ascii_graph_should, generate_a_text_version_of_the_full_iterations_taken_ma
 
     // When we write out the iterations taken matrix including iterations for points inside the Mandelbrot Set
     sprintf(filename, "./tests/output/mandelbrot-full-iter-%dx%d.txt", resolution.width, resolution.height);
-    render_and_write_out_full_iterations_matrix(filename, fractal_data);
+    render_fractal_and_write_out_the_text_file(filename, fractal_data, FULL_ITERATIONS);
 
     // We get the expected content for the file
     sprintf(expected_filename, "./tests/fixtures/mandelbrot-full-iter-%dx%d.txt", resolution.width, resolution.height);
@@ -128,7 +130,7 @@ TEST(ascii_graph_should, generate_a_text_version_of_periods_matrix) {
 
     // When we write out the periods found for points inside the Mandelbrot Set
     sprintf(filename, "./tests/output/mandelbrot-periods-%dx%d.txt", resolution.width, resolution.height);
-    render_and_write_out_periods_matrix(filename, fractal_data);
+    render_fractal_and_write_out_the_text_file(filename, fractal_data, PERIODS);
 
     // We get the expected content for the file
     sprintf(expected_filename, "./tests/fixtures/mandelbrot-periods-%dx%d.txt", resolution.width, resolution.height);

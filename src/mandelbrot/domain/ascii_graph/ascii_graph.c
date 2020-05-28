@@ -12,15 +12,21 @@ void default_ascii_map(point_t point, fractal_data_t fractal_data, FILE *fp) {
 }
 
 void write_point(point_t point, fractal_data_t fractal_data, FILE *fp, ascii_map_t ascii_map ) {
-    if (ascii_map == AT_SIGN) {
-        write_point_with_ar_sign_ascii_map(point, fractal_data, fp);
-        return;
+    switch (ascii_map)
+    {
+        case AT_SIGN:
+            write_point_with_ar_sign_ascii_map(point, fractal_data, fp);
+            break;
+        case ITERATIONS:
+            write_point_with_iterations_ascii_map(point, fractal_data, fp);
+            break;
+        case FULL_ITERATIONS:
+            write_point_with_full_iterations_ascii_map(point, fractal_data, fp);
+            break;
+        case PERIODS:
+            write_point_with_periods_ascii_map(point, fractal_data, fp);
+            break;
+        default:
+            default_ascii_map(point, fractal_data, fp);
     }
-
-    if (ascii_map == ITERATIONS) {
-        write_point_with_iterations_ascii_map(point, fractal_data, fp);
-        return;
-    }
-
-    default_ascii_map(point, fractal_data, fp);
 }

@@ -68,3 +68,28 @@ void write_point_with_iterations_ascii_map(point_t point, fractal_data_t fractal
         write_num_iter(fp, calculated_point.iterations_taken, num_digits);
     }
 }
+
+void write_point_with_full_iterations_ascii_map(point_t point, fractal_data_t fractal_data, FILE *fp) {
+    unsigned int max_for_number_of_iterations, num_digits;
+    calculated_point_t calculated_point;
+
+    max_for_number_of_iterations = fractal_data.max_for_number_of_iterations;
+    num_digits = calculate_total_digits_of(max_for_number_of_iterations);
+
+    fractal_data_get_calculated_point(fractal_data, point, &calculated_point);
+    write_num_iter(fp, calculated_point.iterations_taken, num_digits);
+}
+
+void write_point_with_periods_ascii_map(point_t point, fractal_data_t fractal_data, FILE *fp) {
+    char period_str[50];
+    calculated_point_t calculated_point;
+
+    fractal_data_get_calculated_point(fractal_data, point, &calculated_point);
+
+    if (calculated_point.period > 0) {
+        sprintf(period_str, "%2d", calculated_point.period);
+        fwrite(period_str, sizeof(char), 2, fp);
+    } else {
+        fwrite("  ", sizeof(char), 2, fp);
+    }
+}
