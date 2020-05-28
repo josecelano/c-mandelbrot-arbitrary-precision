@@ -12,8 +12,7 @@ void default_ascii_map(point_t point, fractal_data_t fractal_data, FILE *fp) {
 }
 
 void write_point(point_t point, fractal_data_t fractal_data, FILE *fp, ascii_map_t ascii_map ) {
-    switch (ascii_map)
-    {
+    switch (ascii_map) {
         case AT_SIGN:
             write_point_with_ar_sign_ascii_map(point, fractal_data, fp);
             break;

@@ -39,12 +39,26 @@ void render_ppm_image_with_back_on_white_color_map(fractal_data_t fractal_data) 
 void render_ppm_image_with_white_on_black_color_map(fractal_data_t fractal_data) {
     char img_filename[50];
 
-    sprintf(img_filename, "./output/mandelbrot-white_on-black-%dx%d.ppm",
+    sprintf(img_filename, "./output/mandelbrot-white-on-black-%dx%d.ppm",
             fractal_data.resolution.width,
             fractal_data.resolution.height
     );
 
     render_and_write_out_image(img_filename, fractal_data, WHITE_ON_BLACK);
+}
+
+/**
+ * It renders a Mandelbrot image where each point inside have a different color depending on the period.
+ */
+void render_ppm_image_with_colored_periods_color_map(fractal_data_t fractal_data) {
+    char img_filename[50];
+
+    sprintf(img_filename, "./output/mandelbrot-periods-%dx%d.ppm",
+            fractal_data.resolution.width,
+            fractal_data.resolution.height
+    );
+
+    render_and_write_out_image(img_filename, fractal_data, CM_COLORED_PERIODS);
 }
 
 /**
@@ -143,6 +157,8 @@ int main(int argc, const char *argv[]) {
     render_ppm_image_with_back_on_white_color_map(fractal_data);
 
     render_ppm_image_with_white_on_black_color_map(fractal_data);
+
+    render_ppm_image_with_colored_periods_color_map(fractal_data);
 
     // Render ascii graphs
 
