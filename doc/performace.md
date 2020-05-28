@@ -13,7 +13,6 @@ For 256x256px image:
 * Minimum complex x increment: 1.562500e-02 (4/256)
 * Minimum complex y increment: 1.562500e-02 (4/256)
 * Number of found periods: 5610
-* Max for number of iterations: 100 (should be max iterations in config)
 
 For 512x512px image:
 * Size: 512x512px (262144)
@@ -24,7 +23,6 @@ For 512x512px image:
 * Minimum complex x increment: 7.812500e-03 (4/512)
 * Minimum complex y increment: 7.812500e-03 (4/512)
 * Number of found periods: 22496
-* Max for number of iterations: 100 (should be max iterations in config)
 
 For 1024x1024px image:
 * Size: 1024x1024px (1048576)
@@ -35,7 +33,6 @@ For 1024x1024px image:
 * Minimum complex x increment: 3.906250e-03 (4/1024)
 * Minimum complex y increment: 3.906250e-03 (4/1024)
 * Number of found periods: 90046
-* Max for number of iterations: 100 (should be max iterations in config)
 
 For 4096x4096px image:
 * Size: 4096x4096px (16777216)
@@ -46,7 +43,6 @@ For 4096x4096px image:
 * Minimum complex x increment: 9.765625e-04 (4/4096)
 * Minimum complex y increment: 9.765625e-04 (4/4096)
 * Number of found periods: 1441140
-* Max for number of iterations: 100 (should be max iterations in config)
 
 For 8192x8192px image:
 * Size: 8192x8192px (67108864)
@@ -57,16 +53,16 @@ For 8192x8192px image:
 * Minimum complex x increment: 4.882812e-04 (4/8192)
 * Minimum complex y increment: 4.882812e-04 (4/8192)
 * Number of found periods: 5764706
-* Max for number of iterations: 100 (should be max iterations in config)
 
-For 16384x16384px image:
-* Size: 16384x16384px (268435456)
+For 11024x11024px image:
+* Size: 11024x11024px (121528576)
 * Max iter: 100
 * Precision: 32
-* Time for matrix generation: 2281.666958s = 2281666958000.000000ns
-* Performance: 8.499872e+03‬ ns/px
-* Minimum complex x increment: 2.441406e-04 (4/16384)
-* Minimum complex y increment: 2.441406e-04 (4/16384)
+* Time for matrix generation: 1707.922790s = 1707922790000.000000ns
+* Performance: 1.405367e+04‬ ns/px
+* Minimum complex x increment: 3.628447e-04 (4/11024)
+* Minimum complex y increment: 3.628447e-04 (4/11024)
+* Number of found periods: 10439350
 
 ### Links
 
