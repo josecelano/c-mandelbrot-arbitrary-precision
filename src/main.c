@@ -10,12 +10,15 @@
 #include "mandelbrot/presentation/output.h"
 #include "mandelbrot/domain/ascii_graph/ascii_map.h"
 #include "mandelbrot/domain/ascii_graph/ascii_graph.h"
+#include "mandelbrot/domain/image/color_map.h"
 
 // TODO: Hexagonal architecture refactor in progress.
 //  * Move render_* functions to application/command and presentation/console-command folders.
 
 /**
  * It renders a Mandelbrot fractal image in PPM format.
+ * Inside -> black
+ * Outside -> white
  */
 void render_ppm_image_with_back_on_white_color_map(fractal_data_t fractal_data) {
     char img_filename[50];
@@ -25,7 +28,23 @@ void render_ppm_image_with_back_on_white_color_map(fractal_data_t fractal_data) 
             fractal_data.resolution.height
     );
 
-    render_and_write_out_image(img_filename, fractal_data);
+    render_and_write_out_image(img_filename, fractal_data, BLACK_ON_WHITE);
+}
+
+/**
+ * It renders a Mandelbrot fractal image in PPM format.
+ * Inside -> white
+ * Outside -> black
+ */
+void render_ppm_image_with_white_on_black_color_map(fractal_data_t fractal_data) {
+    char img_filename[50];
+
+    sprintf(img_filename, "./output/mandelbrot-white_on-black-%dx%d.ppm",
+            fractal_data.resolution.width,
+            fractal_data.resolution.height
+    );
+
+    render_and_write_out_image(img_filename, fractal_data, WHITE_ON_BLACK);
 }
 
 /**
@@ -122,6 +141,8 @@ int main(int argc, const char *argv[]) {
     // Render images
 
     render_ppm_image_with_back_on_white_color_map(fractal_data);
+
+    render_ppm_image_with_white_on_black_color_map(fractal_data);
 
     // Render ascii graphs
 
