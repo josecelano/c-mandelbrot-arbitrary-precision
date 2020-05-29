@@ -161,6 +161,10 @@ void fractal_data_init(fractal_data_t *fractal_data, resolution_t resolution) {
     // Calculated points matrix
     matrix_size = resolution.width * resolution.height * sizeof(calculated_point_t);
     fractal_data->calculated_points = malloc(matrix_size);
+    if (fractal_data->calculated_points == NULL) {
+        printf("Exception (fractal_data init). Unable to allocate memory.\n");
+        abort();
+    }
 
     // TODO: Code Review, Should we initialize the calculated_points matrix with a state?
     // Maybe a new member in calculated_point.is_calculated?
