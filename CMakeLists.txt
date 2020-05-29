@@ -31,6 +31,7 @@ file(GLOB PRODUCTION_CODE
 file(GLOB TEST_CODE
         ${PROJECT_SOURCE_DIR}/tests/lib/*.c
         ${PROJECT_SOURCE_DIR}/tests/lib/*.h
+        ${PROJECT_SOURCE_DIR}/tests/cycle-detection/*.c
         ${PROJECT_SOURCE_DIR}/tests/mandelbrot/*.c
         ${PROJECT_SOURCE_DIR}/tests/mandelbrot/*.h
         ${PROJECT_SOURCE_DIR}/tests/mandelbrot/application/*.c
