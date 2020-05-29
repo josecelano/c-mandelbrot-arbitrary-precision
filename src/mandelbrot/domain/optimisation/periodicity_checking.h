@@ -6,6 +6,6 @@
 #include "../../application/config.h"
 #include "../calculated_point.h"
 
-void execute_iterations_with_period_checking(acb_t c, config_t config, calculated_point_t *calculated_point);
+void execute_iterations_with_period_checking(acb_t c, config_t *config, calculated_point_t *calculated_point);
 
 #endif //C_MANDELBROT_ARBITRARY_PRECISION_PERIODICITY_CHECKING_H

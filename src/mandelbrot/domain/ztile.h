@@ -26,6 +26,6 @@ void ztile_set_from_str(
 /**
  * Initialize tile with the completed Mandelbrot from point (-2,-2) to (2,2)
  */
-void ztile_set_completed_mandelbrot_set(ztile_t *tile, config_t config);
+void ztile_set_completed_mandelbrot_set(ztile_t *tile, config_t *config);
 
 #endif //C_MANDELBROT_ARBITRARY_PRECISION_ZTILE_H

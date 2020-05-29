@@ -24,9 +24,9 @@ void calculate_completed_mandelbrot(resolution_t resolution, fractal_data_t *fra
 
     ztile_init(&tile);
 
-    ztile_set_completed_mandelbrot_set(&tile, config);
+    ztile_set_completed_mandelbrot_set(&tile, &config);
 
-    fractal_data_calculate_points(fractal_data, tile, config);
+    fractal_data_calculate_points(fractal_data, tile, &config);
 
     ztile_clean(&tile);
 }

@@ -7,6 +7,12 @@
 
 void print_loop_iteration(
         int i,
+        acb_t f, acb_t z, acb_t c,
+        arb_t z_re, arb_t z_im
+);
+
+void print_loop_iteration_with_periodicity_checking(
+        int i,
         int check, int check_counter, int update, int update_counter,
         acb_t f, acb_t z, acb_t c,
         arb_t z_re, arb_t z_im,
@@ -20,7 +26,7 @@ void print_period_found(int period, int i);
 
 void print_render_progress(int y, int height);
 
-void print_performance_data(clock_t time, resolution_t resolution, config_t config);
+void print_performance_data(clock_t time, resolution_t resolution, config_t *config);
 
 void print_fractal_matrix_data(fractal_data_t fractal_data);
 

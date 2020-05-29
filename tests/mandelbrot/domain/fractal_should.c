@@ -73,9 +73,9 @@ TEST(fractal_should, calculate_complex_points_for_a_given_resolution_and_check_i
     fractal_data_set_iterations_taken_for_all_points(&expected_fractal_data, expected_iterations_taken_matrix_data);
 
     ztile_init(&tile);
-    ztile_set_completed_mandelbrot_set(&tile, config);
+    ztile_set_completed_mandelbrot_set(&tile, &config);
 
-    fractal_data_calculate_points(&fractal_data, tile, config);
+    fractal_data_calculate_points(&fractal_data, tile, &config);
 
     ztile_clean(&tile);
 
@@ -114,7 +114,7 @@ TEST(fractal_should, calculate_iterations_taken_matrix_for_a_non_symmetrical_ima
             config.precision
     );
 
-    fractal_data_calculate_points(&fractal_data, tile, config);
+    fractal_data_calculate_points(&fractal_data, tile, &config);
 
     ztile_clean(&tile);
 

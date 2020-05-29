@@ -140,15 +140,20 @@ int main(int argc, const char *argv[]) {
 
     ztile_init(&tile);
 
-    ztile_set_completed_mandelbrot_set(&tile, config);
+    ztile_set_completed_mandelbrot_set(&tile, &config);
+
+    // Disable optimisation options (enabled by default)
+    //app_config_disable_optimisation_option(&config, OO_MAIN_CARDIOID_DETECTION);
+    //app_config_disable_optimisation_option(&config, OO_PERIOD2_DETECTION);
+    //app_config_disable_optimisation_option(&config, OO_PERIODICITY_CHECKING);
 
     time = clock();
-    fractal_data_calculate_points(&fractal_data, tile, config);
+    fractal_data_calculate_points(&fractal_data, tile, &config);
     time = clock() - time;
 
     ztile_clean(&tile);
 
-    print_performance_data(time, resolution, config);
+    print_performance_data(time, resolution, &config);
 
     print_fractal_matrix_data(fractal_data);
 

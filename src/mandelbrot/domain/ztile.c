@@ -22,12 +22,12 @@ void ztile_set_from_str(
     zpoint_set_from_re_im_str(&tile->right_top_point, right_top_re, right_top_im, prec);
 }
 
-void ztile_set_completed_mandelbrot_set(ztile_t *tile, config_t config) {
+void ztile_set_completed_mandelbrot_set(ztile_t *tile, config_t *config) {
     ztile_set_from_str(
             tile,
             "-2", "-2",
             "2", "2",
-            config.precision
+            config->precision
     );
 }
 

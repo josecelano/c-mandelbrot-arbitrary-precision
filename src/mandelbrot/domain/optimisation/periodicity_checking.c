@@ -10,7 +10,7 @@
 #include "../set.h"
 
 int check_for_period(int iter, acb_t c, arb_t z_re, arb_t z_im, arb_t old_re, arb_t old_im, arb_t period_tolerance,
-                     int check_counter, config_t config) {
+                     int check_counter, config_t *config) {
     int ret = 0;
 
     arb_t re_diff, im_diff;
@@ -19,11 +19,11 @@ int check_for_period(int iter, acb_t c, arb_t z_re, arb_t z_im, arb_t old_re, ar
     arb_init(im_diff);
 
     // re_diff = abs(re - h_re)
-    arb_sub(re_diff, z_re, old_re, config.precision);
+    arb_sub(re_diff, z_re, old_re, config->precision);
     arb_abs(re_diff, re_diff);
 
     // im_diff = abs(im - h_im)
-    arb_sub(im_diff, z_im, old_im, config.precision);
+    arb_sub(im_diff, z_im, old_im, config->precision);
     arb_abs(im_diff, im_diff);
 
     if (app_config_verbose_option_enabled(config, VO_PRINT_PERIODS)) {
@@ -44,7 +44,7 @@ int check_for_period(int iter, acb_t c, arb_t z_re, arb_t z_im, arb_t old_re, ar
     return ret;
 }
 
-void execute_iterations_with_period_checking(acb_t c, config_t config, calculated_point_t *calculated_point) {
+void execute_iterations_with_period_checking(acb_t c, config_t *config, calculated_point_t *calculated_point) {
     int i;
     acb_t f, z;
 
@@ -72,8 +72,8 @@ void execute_iterations_with_period_checking(acb_t c, config_t config, calculate
     arb_init(period_tolerance);
 
     // Period checking
-    arb_set_str(old_re, "0.0", config.precision);
-    arb_set_str(old_im, "0.0", config.precision);
+    arb_set_str(old_re, "0.0", config->precision);
+    arb_set_str(old_im, "0.0", config->precision);
 
     // TODO: calculate period tolerance & max number of iterations.
     // * We need to know how to calculate the period tolerance
@@ -87,22 +87,21 @@ void execute_iterations_with_period_checking(acb_t c, config_t config, calculate
     // https://en.wikipedia.org/wiki/Cycle_detection#Brent's_algorithm
     //
     // Testing different tolerances ...
-    arb_set_str(period_tolerance, "0", config.precision);           // Period checking disabled
-    arb_set_str(period_tolerance, "1e-9", config.precision);        // Initial value for Gnofract4D
-    arb_set_str(period_tolerance, "1e-17", config.precision);       // Some samples use this value
-    arb_set_str(period_tolerance, "0.000000001", config.precision); // With this value we reach max iter
-    arb_set_str(period_tolerance, "0.00000001", config.precision);  // Iter 35.
-    arb_set_str(period_tolerance, "0.0015625", config.precision);   // Iter 14.   4/256/10 = 0,015625
+    arb_set_str(period_tolerance, "0", config->precision);           // Period checking disabled
+    arb_set_str(period_tolerance, "1e-9", config->precision);        // Initial value for Gnofract4D
+    arb_set_str(period_tolerance, "1e-17", config->precision);       // Some samples use this value
+    arb_set_str(period_tolerance, "0.000000001", config->precision); // With this value we reach max iter
+    arb_set_str(period_tolerance, "0.00000001", config->precision);  // Iter 35.
+    arb_set_str(period_tolerance, "0.0015625", config->precision);   // Iter 14.   4/256/10 = 0,015625
 
-    for (i = 1; i <= config.max_iterations; ++i) {
+    for (i = 1; i <= config->max_iterations; ++i) {
 
         calculated_point->iterations_taken = (unsigned int) i;
 
-        mandelbrot_formula(f, z, c, config.precision);
+        mandelbrot_formula(f, z, c, config->precision);
 
         if (app_config_verbose_option_enabled(config, VO_PRINT_ITERATIONS)) {
-            // Print iteration
-            print_loop_iteration(
+            print_loop_iteration_with_periodicity_checking(
                     i,
                     check, check_counter, update, update_counter,
                     f, z, c,
@@ -112,7 +111,7 @@ void execute_iterations_with_period_checking(acb_t c, config_t config, calculate
             );
         }
 
-        if (bailout(f, config.precision)) {
+        if (bailout(f, config->precision)) {
             calculated_point->is_inside = FALSE;
             break;
         }
@@ -130,6 +129,7 @@ void execute_iterations_with_period_checking(acb_t c, config_t config, calculate
 
         if (period_found) {
             calculated_point->period = (unsigned int) check_counter;
+            calculated_point->period_was_found = TRUE;
             break;
         }
         // End check for period

@@ -67,7 +67,7 @@ void calculate_real_and_imaginary_increments_per_point(
 void calculate_matrix_point(
         zpoint_t z_current_point,
         point_t pt,
-        config_t config,
+        config_t *config,
         fractal_data_t *fractal_data
 ) {
     calculated_point_t calculated_point;
@@ -86,7 +86,7 @@ void calculate_next_point_to_the_right(zpoint_t *z, zpoint_t z_current_point, zp
 
 void calculate_matrix_row(
         zpoint_t zx_point_increment,
-        config_t config,
+        config_t *config,
         int y,
         fractal_data_t *fractal_data,
         zpoint_t *z_current_point
@@ -103,14 +103,14 @@ void calculate_matrix_row(
                 config,
                 fractal_data);
 
-        calculate_next_point_to_the_right(z_current_point, *z_current_point, zx_point_increment, config.precision);
+        calculate_next_point_to_the_right(z_current_point, *z_current_point, zx_point_increment, config->precision);
     }
 }
 
 void calculate_points(
         zpoint_t left_bottom_point,
         zpoint_t zx_point_increment, zpoint_t zy_point_increment,
-        config_t config, fractal_data_t *fractal_data
+        config_t *config, fractal_data_t *fractal_data
 ) {
     int y;
     zpoint_t z_current_point; // Represents the pixel being calculated
@@ -139,7 +139,7 @@ void calculate_points(
         zpoint_set_re(&z_current_point, left_bottom_point.re);
 
         // Increase imaginary part to move one pixel to the top
-        zpoint_add(&z_current_point, z_current_point, zy_point_increment, config.precision);
+        zpoint_add(&z_current_point, z_current_point, zy_point_increment, config->precision);
     }
 
     zpoint_clean(&z_current_point);
@@ -189,7 +189,7 @@ void fractal_data_get_calculated_point(fractal_data_t fractal_data, point_t poin
     *calculated_point = fractal_data.calculated_points[(point.y * fractal_data.resolution.width) + point.x];
 }
 
-void fractal_data_calculate_points(fractal_data_t *fractal_data, ztile_t tile, config_t config) {
+void fractal_data_calculate_points(fractal_data_t *fractal_data, ztile_t tile, config_t *config) {
     zpoint_t zx_point_increment, zy_point_increment;
 
     zpoint_init(&zx_point_increment);
@@ -198,7 +198,7 @@ void fractal_data_calculate_points(fractal_data_t *fractal_data, ztile_t tile, c
     calculate_real_and_imaginary_increments_per_point(
             tile,
             fractal_data->resolution,
-            config.precision,
+            config->precision,
             // Output
             &zx_point_increment,
             &zy_point_increment
