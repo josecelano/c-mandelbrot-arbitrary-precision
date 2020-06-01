@@ -1,5 +1,3 @@
 #!/usr/bin/env bash
-
-# TODO. WIP. See app.c for pending arguments
-
-./mandelbrot -prfcoy 256 256
+# Option "A" generates all samples with all optimisation options enabled
+./mandelbrot -prfcoyA 256 256 0 0
