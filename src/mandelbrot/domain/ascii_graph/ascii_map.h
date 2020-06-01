@@ -20,4 +20,6 @@ void write_point_with_full_iterations_ascii_map(point_t point, fractal_data_t fr
 
 void write_point_with_periods_ascii_map(point_t point, fractal_data_t fractal_data, FILE *fp);
 
+void get_ascii_map_name(char *ascii_map_name, ascii_map_t ascii_map);
+
 #endif //C_MANDELBROT_ARBITRARY_PRECISION_ASCII_MAP_H

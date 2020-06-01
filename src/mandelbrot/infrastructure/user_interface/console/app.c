@@ -117,17 +117,7 @@ void render_ppm_image(fractal_data_t fractal_data, color_map_t color_map) {
     char color_map_name[50];
     char img_filename[50];
 
-    switch (color_map) {
-        case CM_BLACK_ON_WHITE:
-            strcpy(color_map_name, "black-on-white");
-            break;
-        case CM_WHITE_ON_BLACK:
-            strcpy(color_map_name, "white-on-black");
-            break;
-        case CM_COLORED_PERIODS:
-            strcpy(color_map_name, "colored-periods");
-            break;
-    }
+    get_color_map_name(color_map_name, color_map);
 
     sprintf(img_filename, "./output/mandelbrot-%s-%dx%d.ppm",
             color_map_name,
@@ -142,20 +132,7 @@ void render_ascii_graph(fractal_data_t fractal_data, ascii_map_t ascii_map) {
     char ascii_map_name[50];
     char img_filename[50];
 
-    switch (ascii_map) {
-        case AM_AT_SIGN:
-            strcpy(ascii_map_name, "at-sign");
-            break;
-        case AM_ITERATIONS:
-            strcpy(ascii_map_name, "iterations");
-            break;
-        case AM_FULL_ITERATIONS:
-            strcpy(ascii_map_name, "full-iterations");
-            break;
-        case AM_PERIODS:
-            strcpy(ascii_map_name, "periods");
-            break;
-    }
+    get_ascii_map_name(ascii_map_name, ascii_map);
 
     sprintf(img_filename, "./output/mandelbrot-%s-%dx%d.txt",
             ascii_map_name,

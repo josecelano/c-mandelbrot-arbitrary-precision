@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "../calculated_point.h"
 #include "../fractal.h"
@@ -91,5 +92,22 @@ void write_point_with_periods_ascii_map(point_t point, fractal_data_t fractal_da
         fwrite(period_str, sizeof(char), 2, fp);
     } else {
         fwrite("  ", sizeof(char), 2, fp);
+    }
+}
+
+void get_ascii_map_name(char *ascii_map_name, ascii_map_t ascii_map) {
+    switch (ascii_map) {
+        case AM_AT_SIGN:
+            strcpy(ascii_map_name, "at-sign");
+            break;
+        case AM_ITERATIONS:
+            strcpy(ascii_map_name, "iterations");
+            break;
+        case AM_FULL_ITERATIONS:
+            strcpy(ascii_map_name, "full-iterations");
+            break;
+        case AM_PERIODS:
+            strcpy(ascii_map_name, "periods");
+            break;
     }
 }

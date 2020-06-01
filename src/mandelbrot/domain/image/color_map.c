@@ -78,3 +78,17 @@ void color_pixel_with_periods_color_map(pixel *px, fractal_data_t fractal_data) 
 
     pixel_set_color(px, white);
 }
+
+void get_color_map_name(char *color_map_name, color_map_t color_map) {
+    switch (color_map) {
+        case CM_BLACK_ON_WHITE:
+            strcpy(color_map_name, "black-on-white");
+            break;
+        case CM_WHITE_ON_BLACK:
+            strcpy(color_map_name, "white-on-black");
+            break;
+        case CM_COLORED_PERIODS:
+            strcpy(color_map_name, "colored-periods");
+            break;
+    }
+}

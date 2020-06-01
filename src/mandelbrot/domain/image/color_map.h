@@ -16,4 +16,6 @@ void color_pixel_with_white_on_black_color_map(pixel *px, fractal_data_t fractal
 
 void color_pixel_with_periods_color_map(pixel *px, fractal_data_t fractal_data);
 
+void get_color_map_name(char *color_map_name, color_map_t color_map);
+
 #endif //C_MANDELBROT_ARBITRARY_PRECISION_COLOR_MAP_H
