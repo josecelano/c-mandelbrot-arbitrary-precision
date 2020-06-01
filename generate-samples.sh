@@ -7,4 +7,4 @@
 
 # TODO. WIP. Only verbose options are added as console options
 
-./mandelbrot -p
+./mandelbrot -prfcoy

@@ -35,13 +35,18 @@ static char doc[] = "Mandelbrot Set image and ASCII graph generator.";
 static char args_doc[] = "[FILENAME]...";
 static struct argp_option options[] = {
         // Output format
-        {"image",            'i', 0, 0, "Output format: Image PPM"},
-        {"ascii_graph",      'a', 0, 0, "Output format: ASCII graph"},
+        {"image",                   'i', 0, 0, "Output format: Image PPM"},
+        {"ascii_graph",             'a', 0, 0, "Output format: ASCII graph"},
         // Verbose options
-        {"print_progress",   'p', 0, 0, "Verbose option: Print progress"},
-        {"print_periods",    'e', 0, 0, "Verbose option: Print periods"},
-        {"print_iterations", 't', 0, 0, "Verbose option: Print iterations"},
+        {"print_progress",          'p', 0, 0, "Verbose option: Print progress"},
+        {"print_periods",           'e', 0, 0, "Verbose option: Print periods"},
+        {"print_iterations",        't', 0, 0, "Verbose option: Print iterations"},
+        {"print_performance_data",  'r', 0, 0, "Verbose option: Print performance data"},
+        {"print_fractal_data",      'f', 0, 0, "Verbose option: Print fractal data"},
         // Optimisation options
+        {"main_cardioid_detection", 'c', 0, 0, "Optimisation option: Main cardioid detection"},
+        {"period2_detection",       'o', 0, 0, "Optimisation option: Period 2 detection"},
+        {"periodicity_checking",    'y', 0, 0, "Optimisation option: Periodicity checking"},
         {0}
 };
 
@@ -71,6 +76,22 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state) {
             break;
         case 't':
             app_config_enable_verbose_option(arguments->config, VO_PRINT_ITERATIONS);
+            break;
+        case 'r':
+            app_config_enable_verbose_option(arguments->config, VO_PRINT_PERFORMANCE_DATA);
+            break;
+        case 'f':
+            app_config_enable_verbose_option(arguments->config, VO_PRINT_FRACTAL_DATA);
+            break;
+
+        case 'c':
+            app_config_optimisation_option_enabled(arguments->config, OO_MAIN_CARDIOID_DETECTION);
+            break;
+        case 'o':
+            app_config_optimisation_option_enabled(arguments->config, OO_PERIOD2_DETECTION);
+            break;
+        case 'y':
+            app_config_optimisation_option_enabled(arguments->config, OO_PERIODICITY_CHECKING);
             break;
 
         case ARGP_KEY_ARG:
@@ -172,9 +193,12 @@ int console_app_handle_command(int argc, char *argv[]) {
 
     ztile_clean(&tile);
 
-    // TODO: create verbose options
-    print_performance_data(time, resolution, &config);
-    print_fractal_data(fractal_data);
+    if (app_config_verbose_option_enabled(&config, VO_PRINT_PERFORMANCE_DATA)) {
+        print_performance_data(time, resolution, &config);
+    }
+    if (app_config_verbose_option_enabled(&config, VO_PRINT_FRACTAL_DATA)) {
+        print_fractal_data(fractal_data);
+    }
 
     // Render images
     render_ppm_image(fractal_data, CM_BLACK_ON_WHITE);

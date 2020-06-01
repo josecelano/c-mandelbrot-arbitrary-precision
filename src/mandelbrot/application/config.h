@@ -20,9 +20,11 @@ void app_config_init_test(config_t *config);
 
 // Verbose options
 typedef enum {
-    VO_PRINT_PROGRESS = 1,     // Print progress like: Progress: 99.609375%
-    VO_PRINT_PERIODS = 2,      // Print period info when period checking is used
-    VO_PRINT_ITERATIONS = 4    // Print debug info for each loop iteration
+    VO_PRINT_PROGRESS = 1,          // Print progress like: Progress: 99.609375%
+    VO_PRINT_PERIODS = 2,           // Print period info when period checking is used
+    VO_PRINT_ITERATIONS = 4,        // Print debug info for each loop iteration
+    VO_PRINT_PERFORMANCE_DATA = 8,
+    VO_PRINT_FRACTAL_DATA = 16
 } verbose_option_t;
 
 void app_config_enable_verbose_option(config_t *config, verbose_option_t option);
