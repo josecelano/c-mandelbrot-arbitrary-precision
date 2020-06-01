@@ -20,19 +20,19 @@
  * TODO: WIP. Only verbose options are obtained from console arguments.
  *
  * CONSOLE COMMAND:
- * mandelbrot [OUTPUT_FORMAT] [CENTER_X] [CENTER_Y] [WIDTH] [HEIGHT] [RES_X] [RES_Y] [COLOR_MAP|ASCII_MAP] [FILENAME]
+ * mandelbrot [OUTPUT_FORMAT] [Z_CENTER_X] [Z_CENTER_Y] [Z_WIDTH] [Z_HEIGHT] [RES_X] [RES_Y] [COLOR_MAP|ASCII_MAP] [FILENAME]
  *
  * IMAGE:
- * mandelbrot -i -2 -2 4 4 256 256 cm_black_on_white ./output/mandelbrot-256x256.ppm
+ * mandelbrot -i -2 -2 4 4 256 256 cm_black_on_white ./output/mandelbrot-black-on-white-256x256.ppm
  *
  * ASCII GRAPH:
- * mandelbrot -a -2 -2 4 4 256 256 am_at_sign ./output/mandelbrot-256x256.txt
+ * mandelbrot -a -2 -2 4 4 256 256 am_at_sign ./output/mandelbrot-at-sign-256x256.txt
  */
 
 const char *argp_program_version = "mandelbrot 1.0.0";
 const char *argp_program_bug_address = "<josecelano@gmail.com>";
 static char doc[] = "Mandelbrot Set image and ASCII graph generator.";
-static char args_doc[] = "[FILENAME]...";
+static char args_doc[] = "[RES_X]... [RES_Y]...";
 static struct argp_option options[] = {
         // Output format
         {"image",                   'i', 0, 0, "Output format: Image PPM"},
@@ -56,6 +56,7 @@ struct arguments {
         OF_ASCII_GRAPH
     } output_format;
     config_t *config;
+    resolution_t *resolution;
 };
 
 static error_t parse_opt(int key, char *arg, struct argp_state *state) {
@@ -95,7 +96,15 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state) {
             break;
 
         case ARGP_KEY_ARG:
-            return 0;
+            switch (state->arg_num) {
+                case 0: // RES_X
+                    arguments->resolution->width = atoi(arg);
+                    break;
+                case 1: // RES_Y
+                    arguments->resolution->height = atoi(arg);
+                    break;
+            }
+            break;
         default:
             return ARGP_ERR_UNKNOWN;
     }
@@ -160,7 +169,7 @@ void render_ascii_graph(fractal_data_t fractal_data, ascii_map_t ascii_map) {
 int console_app_handle_command(int argc, char *argv[]) {
 
     // Resolution for output image and ASCII graph
-    resolution_t resolution = {256, 256};
+    resolution_t resolution;
 
     // Matrix with number of Mandelbrot formula iterations needed for each pixel to diverge.
     fractal_data_t fractal_data;
@@ -175,9 +184,11 @@ int console_app_handle_command(int argc, char *argv[]) {
 
     struct arguments arguments;
 
+
     app_config_init(&config);
 
     arguments.config = &config;
+    arguments.resolution = &resolution;
 
     // Parse arguments
     argp_parse(&argp, argc, argv, 0, 0, &arguments);
