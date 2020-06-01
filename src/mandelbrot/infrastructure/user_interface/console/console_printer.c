@@ -4,7 +4,7 @@
 #include "acb.h"
 #include "arb.h"
 
-#include "console.h"
+#include "./console_printer.h"
 
 int console_printf(const char *format, ...)
 {

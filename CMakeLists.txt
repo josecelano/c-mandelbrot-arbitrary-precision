@@ -22,24 +22,28 @@ file(GLOB PRODUCTION_CODE
         ${PROJECT_SOURCE_DIR}/src/mandelbrot/domain/image/*.h
         ${PROJECT_SOURCE_DIR}/src/mandelbrot/domain/optimisation/*.c
         ${PROJECT_SOURCE_DIR}/src/mandelbrot/domain/optimisation/*.h
-        ${PROJECT_SOURCE_DIR}/src/mandelbrot/infrastructure/*.c
-        ${PROJECT_SOURCE_DIR}/src/mandelbrot/infrastructure/*.h
+        ${PROJECT_SOURCE_DIR}/src/mandelbrot/infrastructure/user_interface/console/*.c
+        ${PROJECT_SOURCE_DIR}/src/mandelbrot/infrastructure/user_interface/console/*.h
+        ${PROJECT_SOURCE_DIR}/src/mandelbrot/infrastructure/user_interface/files/*.c
+        ${PROJECT_SOURCE_DIR}/src/mandelbrot/infrastructure/user_interface/files/*.h
         ${PROJECT_SOURCE_DIR}/src/mandelbrot/presentation/*.c
         ${PROJECT_SOURCE_DIR}/src/mandelbrot/presentation/*.h
         )
 
 file(GLOB TEST_CODE
+        ${PROJECT_SOURCE_DIR}/tests/cycle-detection/*.c
         ${PROJECT_SOURCE_DIR}/tests/lib/*.c
         ${PROJECT_SOURCE_DIR}/tests/lib/*.h
-        ${PROJECT_SOURCE_DIR}/tests/cycle-detection/*.c
         ${PROJECT_SOURCE_DIR}/tests/mandelbrot/*.c
         ${PROJECT_SOURCE_DIR}/tests/mandelbrot/*.h
         ${PROJECT_SOURCE_DIR}/tests/mandelbrot/application/*.c
         ${PROJECT_SOURCE_DIR}/tests/mandelbrot/application/*.h
         ${PROJECT_SOURCE_DIR}/tests/mandelbrot/domain/*.c
         ${PROJECT_SOURCE_DIR}/tests/mandelbrot/domain/*.h
-        ${PROJECT_SOURCE_DIR}/tests/mandelbrot/infrastructure/*.c
-        ${PROJECT_SOURCE_DIR}/tests/mandelbrot/infrastructure/*.h
+        ${PROJECT_SOURCE_DIR}/tests/mandelbrot/infrastructure/user_interface/console/*.c
+        ${PROJECT_SOURCE_DIR}/tests/mandelbrot/infrastructure/user_interface/console/*.h
+        ${PROJECT_SOURCE_DIR}/tests/mandelbrot/infrastructure/user_interface/files/*.c
+        ${PROJECT_SOURCE_DIR}/tests/mandelbrot/infrastructure/user_interface/files/*.h
         )
 
 add_executable(

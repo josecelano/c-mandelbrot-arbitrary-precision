@@ -3,7 +3,7 @@
 #include <time.h>
 
 #include "../domain/fractal_data.h"
-#include "../infrastructure/console.h"
+#include "../infrastructure/user_interface/console/console_printer.h"
 
 void print_loop_iteration(
         int i,

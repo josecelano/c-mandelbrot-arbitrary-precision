@@ -32,7 +32,7 @@ TEST(app_config_should, allow_to_enable_and_disable_a_verbose_option) {
     TEST_ASSERT_FALSE(ret);
 }
 
-TEST(app_config_should, have_a_verbose_option_to_print_progress_enabled_by_default) {
+TEST(app_config_should, have_a_verbose_option_to_print_progress_disabled_by_default) {
 
     config_t config;
     int enabled;
@@ -41,7 +41,7 @@ TEST(app_config_should, have_a_verbose_option_to_print_progress_enabled_by_defau
 
     enabled = app_config_verbose_option_enabled(&config, VO_PRINT_PROGRESS);
 
-    TEST_ASSERT_TRUE(enabled);
+    TEST_ASSERT_FALSE(enabled);
 }
 
 TEST(app_config_should, have_a_verbose_option_to_print_periods_disabled_by_default) {
@@ -113,7 +113,7 @@ TEST(app_config_should, have_a_optimisation_option_to_use_periodicity_checking_e
 TEST_GROUP_RUNNER(app_config_should) {
     // Verbose options
     RUN_TEST_CASE(app_config_should, allow_to_enable_and_disable_a_verbose_option);
-    RUN_TEST_CASE(app_config_should, have_a_verbose_option_to_print_progress_enabled_by_default);
+    RUN_TEST_CASE(app_config_should, have_a_verbose_option_to_print_progress_disabled_by_default);
     RUN_TEST_CASE(app_config_should, have_a_verbose_option_to_print_periods_disabled_by_default);
     // Optimisation options
     RUN_TEST_CASE(app_config_should, allow_to_enable_and_disable_a_optimisation_option);

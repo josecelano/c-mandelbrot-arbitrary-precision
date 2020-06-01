@@ -11,7 +11,7 @@ static void RunAllTests(void)
     RUN_TEST_GROUP(brent_algorithm_should);
 
     // Integration tests
-    RUN_TEST_GROUP(ascii_graph_should);
+    RUN_TEST_GROUP(ascii_graph_file_should);
 }
 
 int main(int argc, const char *argv[]) {

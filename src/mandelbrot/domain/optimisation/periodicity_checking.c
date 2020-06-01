@@ -2,7 +2,7 @@
 #include "acb.h"
 
 #include "../../application/config.h"
-#include "../../infrastructure/console.h"
+#include "../../infrastructure/user_interface/console/console_printer.h"
 #include "../../presentation/output.h"
 #include "../calculated_point.h"
 #include "../formula.h"

@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "../domain/fractal.h"
-#include "../domain/image/color.h"
-#include "../domain/image/color_map.h"
-#include "../domain/image/image.h"
-#include "../domain/set.h"
+#include "../../../domain/fractal.h"
+#include "../../../domain/image/color.h"
+#include "../../../domain/image/color_map.h"
+#include "../../../domain/image/image.h"
+#include "../../../domain/set.h"
 #include "./ppm_image_file.h"
 
 void print_ppm_image_header(FILE *fp, resolution_t resolution) {

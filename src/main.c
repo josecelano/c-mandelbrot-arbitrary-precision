@@ -1,19 +1,85 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <argp.h>
+#include <stdbool.h>
 
 #include "mandelbrot/application/config.h"
 #include "mandelbrot/domain/fractal.h"
 #include "mandelbrot/domain/set.h"
 #include "mandelbrot/domain/ztile.h"
-#include "mandelbrot/infrastructure/ascii_graph_file.h"
-#include "mandelbrot/infrastructure/ppm_image_file.h"
+#include "mandelbrot/infrastructure/user_interface/files/ascii_graph_file.h"
+#include "mandelbrot/infrastructure/user_interface/files/ppm_image_file.h"
 #include "mandelbrot/presentation/output.h"
 #include "mandelbrot/domain/ascii_graph/ascii_map.h"
 #include "mandelbrot/domain/ascii_graph/ascii_graph.h"
 #include "mandelbrot/domain/image/color_map.h"
 
-// TODO: Hexagonal architecture refactor in progress.
-//  * Move render_* functions to application/command and presentation/console-command folders.
+/*
+ * TODO: WIP. Only verbose options are obtained from console arguments.
+ *
+ * CONSOLE COMMAND:
+ * mandelbrot [OUTPUT_FORMAT] [CENTER_X] [CENTER_Y] [WIDTH] [HEIGHT] [RES_X] [RES_Y] [COLOR_MAP|ASCII_MAP] [FILENAME]
+ *
+ * IMAGE:
+ * mandelbrot -i -2 -2 4 4 256 256 cm_black_on_white ./output/mandelbrot-256x256.ppm
+ *
+ * ASCII GRAPH:
+ * mandelbrot -a -2 -2 4 4 256 256 am_at_sign ./output/mandelbrot-256x256.txt
+ */
+
+const char *argp_program_version = "mandelbrot 1.0.0";
+const char *argp_program_bug_address = "<josecelano@gmail.com>";
+static char doc[] = "Mandelbrot Set image and ASCII graph generator.";
+static char args_doc[] = "[FILENAME]...";
+static struct argp_option options[] = {
+        // Output format
+        {"image",            'i', 0, 0, "Image PPM"},
+        {"ascii_graph",      'a', 0, 0, "ASCII graph"},
+        // Verbose options
+        {"print_progress",   'p', 0, 0, "Print progress"},
+        {"print_periods",    'e', 0, 0, "Print periods"},
+        {"print_iterations", 't', 0, 0, "Print iterations"},
+        // Optimisation options
+        {0}
+};
+
+struct arguments {
+    enum {
+        OF_IMAGE,
+        OF_ASCII_GRAPH
+    } output_format;
+    config_t *config;
+};
+
+static error_t parse_opt(int key, char *arg, struct argp_state *state) {
+    struct arguments *arguments = state->input;
+    switch (key) {
+        case 'i':
+            arguments->output_format = OF_IMAGE;
+            break;
+        case 'a':
+            arguments->output_format = OF_ASCII_GRAPH;
+            break;
+
+        case 'p':
+            app_config_enable_verbose_option(arguments->config, VO_PRINT_PROGRESS);
+            break;
+        case 'e':
+            app_config_enable_verbose_option(arguments->config, VO_PRINT_PERIODS);
+            break;
+        case 't':
+            app_config_enable_verbose_option(arguments->config, VO_PRINT_ITERATIONS);
+            break;
+
+        case ARGP_KEY_ARG:
+            return 0;
+        default:
+            return ARGP_ERR_UNKNOWN;
+    }
+    return 0;
+}
+
+static struct argp argp = {options, parse_opt, args_doc, doc, 0, 0, 0};
 
 /**
  * It renders a Mandelbrot fractal image in PPM format.
@@ -118,7 +184,7 @@ void render_ascii_graph_with_periods_ascii_map(fractal_data_t fractal_data) {
     render_fractal_and_write_out_the_text_file(txt_filename, fractal_data, AM_PERIODS);
 }
 
-int main(int argc, const char *argv[]) {
+int main(int argc, char *argv[]) {
 
     // Resolution for output image and ASCII graph
     resolution_t resolution = {256, 256};
@@ -134,18 +200,19 @@ int main(int argc, const char *argv[]) {
 
     config_t config;
 
+    struct arguments arguments;
+
     app_config_init(&config);
+
+    arguments.config = &config;
+
+    argp_parse(&argp, argc, argv, 0, 0, &arguments);
 
     fractal_data_init(&fractal_data, resolution);
 
     ztile_init(&tile);
 
     ztile_set_completed_mandelbrot_set(&tile, &config);
-
-    // Disable optimisation options (enabled by default)
-    app_config_disable_optimisation_option(&config, OO_MAIN_CARDIOID_DETECTION);
-    app_config_disable_optimisation_option(&config, OO_PERIOD2_DETECTION);
-    app_config_disable_optimisation_option(&config, OO_PERIODICITY_CHECKING);
 
     time = clock();
     fractal_data_calculate_points(&fractal_data, tile, &config);

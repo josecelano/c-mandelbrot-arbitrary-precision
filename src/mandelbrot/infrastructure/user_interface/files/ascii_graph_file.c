@@ -1,9 +1,9 @@
 #include <stdio.h>
 
-#include "../domain/ascii_graph/ascii_graph.h"
-#include "../domain/ascii_graph/ascii_map.h"
-#include "../domain/calculated_point.h"
-#include "../domain/set.h"
+#include "../../../domain/ascii_graph/ascii_graph.h"
+#include "../../../domain/ascii_graph/ascii_map.h"
+#include "../../../domain/calculated_point.h"
+#include "../../../domain/set.h"
 #include "./ascii_graph_file.h"
 
 void write_line(int y, char *filename, FILE *fp, fractal_data_t fractal_data, ascii_map_t ascii_map) {
