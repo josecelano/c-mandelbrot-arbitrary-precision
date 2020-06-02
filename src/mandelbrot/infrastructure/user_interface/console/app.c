@@ -167,10 +167,16 @@ void generate_all_samples(fractal_data_t fractal_data) {
     render_ascii_graph(fractal_data, AM_PERIODS);
 }
 
+void fractal_data_calculate(fractal_data_t *fractal_data, ztile_t tile, config_t *config, clock_t *time) {
+    *time = clock();
+    fractal_data_calculate_points(fractal_data, tile, config);
+    *time = clock() - *time;
+}
+
 int console_app_handle_command(int argc, char *argv[]) {
 
     // Resolution for output image and ASCII graph
-    resolution_t resolution;
+    resolution_t resolution = {256, 256};
 
     // Matrix with number of Mandelbrot formula iterations needed for each pixel to diverge.
     fractal_data_t fractal_data;
@@ -203,10 +209,8 @@ int console_app_handle_command(int argc, char *argv[]) {
     // Calculate fractal data
 
     fractal_data_init(&fractal_data, resolution);
-    // TODO: time -> output parameter
-    time = clock();
-    fractal_data_calculate_points(&fractal_data, tile, &config);
-    time = clock() - time;
+
+    fractal_data_calculate(&fractal_data, tile, &config, &time);
 
     ztile_clean(&tile);
 
