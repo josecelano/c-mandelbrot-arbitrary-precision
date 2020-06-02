@@ -2,8 +2,8 @@
 #define C_MANDELBROT_ARBITRARY_PRECISION_FRACTAL_H
 
 typedef struct {
-    int width;
-    int height;
+    unsigned int width;
+    unsigned int height;
 } resolution_t;
 
 typedef enum {

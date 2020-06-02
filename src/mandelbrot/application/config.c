@@ -5,10 +5,6 @@ void app_set_initial_config_state(config_t *config) {
     config->max_iterations = 100;
     config->verbose_options = 0;
     config->optimisation_options = 0;
-
-    config->optimisation_options = config->optimisation_options | OO_MAIN_CARDIOID_DETECTION;
-    config->optimisation_options = config->optimisation_options | OO_PERIOD2_DETECTION;
-    config->optimisation_options = config->optimisation_options | OO_PERIODICITY_CHECKING;
 }
 
 void app_set_default_production_config(config_t *config) {
@@ -17,6 +13,9 @@ void app_set_default_production_config(config_t *config) {
 
 void app_set_default_test_config(config_t *config) {
     app_set_initial_config_state(config);
+    config->optimisation_options = config->optimisation_options | OO_MAIN_CARDIOID_DETECTION;
+    config->optimisation_options = config->optimisation_options | OO_PERIOD2_DETECTION;
+    config->optimisation_options = config->optimisation_options | OO_PERIODICITY_CHECKING;
 }
 
 void app_config_init(config_t *config) {

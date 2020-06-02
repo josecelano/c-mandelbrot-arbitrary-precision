@@ -74,7 +74,7 @@ TEST(app_config_should, allow_to_enable_and_disable_a_optimisation_option) {
     TEST_ASSERT_FALSE(ret);
 }
 
-TEST(app_config_should, have_a_optimisation_option_to_use_main_cardioid_detection_enabled_by_default) {
+TEST(app_config_should, have_a_optimisation_option_to_use_main_cardioid_detection_disabled_by_default) {
 
     config_t config;
     int enabled;
@@ -83,10 +83,10 @@ TEST(app_config_should, have_a_optimisation_option_to_use_main_cardioid_detectio
 
     enabled = app_config_optimisation_option_enabled(&config, OO_MAIN_CARDIOID_DETECTION);
 
-    TEST_ASSERT_TRUE(enabled);
+    TEST_ASSERT_FALSE(enabled);
 }
 
-TEST(app_config_should, have_a_optimisation_option_to_use_period2_detection_enabled_by_default) {
+TEST(app_config_should, have_a_optimisation_option_to_use_period2_detection_disabled_by_default) {
 
     config_t config;
     int enabled;
@@ -95,10 +95,10 @@ TEST(app_config_should, have_a_optimisation_option_to_use_period2_detection_enab
 
     enabled = app_config_optimisation_option_enabled(&config, OO_PERIOD2_DETECTION);
 
-    TEST_ASSERT_TRUE(enabled);
+    TEST_ASSERT_FALSE(enabled);
 }
 
-TEST(app_config_should, have_a_optimisation_option_to_use_periodicity_checking_enabled_by_default) {
+TEST(app_config_should, have_a_optimisation_option_to_use_periodicity_checking_disabled_by_default) {
 
     config_t config;
     int enabled;
@@ -107,7 +107,7 @@ TEST(app_config_should, have_a_optimisation_option_to_use_periodicity_checking_e
 
     enabled = app_config_optimisation_option_enabled(&config, OO_PERIODICITY_CHECKING);
 
-    TEST_ASSERT_TRUE(enabled);
+    TEST_ASSERT_FALSE(enabled);
 }
 
 TEST_GROUP_RUNNER(app_config_should) {
@@ -117,7 +117,7 @@ TEST_GROUP_RUNNER(app_config_should) {
     RUN_TEST_CASE(app_config_should, have_a_verbose_option_to_print_periods_disabled_by_default);
     // Optimisation options
     RUN_TEST_CASE(app_config_should, allow_to_enable_and_disable_a_optimisation_option);
-    RUN_TEST_CASE(app_config_should, have_a_optimisation_option_to_use_main_cardioid_detection_enabled_by_default);
-    RUN_TEST_CASE(app_config_should, have_a_optimisation_option_to_use_period2_detection_enabled_by_default);
-    RUN_TEST_CASE(app_config_should, have_a_optimisation_option_to_use_periodicity_checking_enabled_by_default);
+    RUN_TEST_CASE(app_config_should, have_a_optimisation_option_to_use_main_cardioid_detection_disabled_by_default);
+    RUN_TEST_CASE(app_config_should, have_a_optimisation_option_to_use_period2_detection_disabled_by_default);
+    RUN_TEST_CASE(app_config_should, have_a_optimisation_option_to_use_periodicity_checking_disabled_by_default);
 }

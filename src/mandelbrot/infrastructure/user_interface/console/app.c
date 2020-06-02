@@ -17,40 +17,63 @@
 #include "./app.h"
 
 /*
- * TODO: WIP. Only verbose options are obtained from console arguments.
+ * Sample commands:
  *
- * CONSOLE COMMAND:
- * mandelbrot [Z_CENTER_X] [Z_CENTER_Y] [Z_WIDTH] [Z_HEIGHT] [RES_X] [RES_Y] [FORMAT] [COLOR_MAP|ASCII_MAP] [FILENAME]
+ * IMAGE: full mandelbrot 256x256px black on white color map
+ * ./mandelbrot -p -- -2.0 -2.0 2.0 2.0 256 256 0 0
  *
- * IMAGE:
- * mandelbrot -2 -2 4 4 256 256 0 0 ./output/mandelbrot-black-on-white-256x256.ppm
- *
- * ASCII GRAPH:
- * mandelbrot -2 -2 4 4 256 256 0 0 ./output/mandelbrot-at-sign-256x256.txt
+ * ASCII GRAPH: full mandelbrot 256x256char @ ascii map
+ * ./mandelbrot -p -- -2.0 -2.0 2.0 2.0 256 256 0 0
  */
 
 const char *argp_program_version = "mandelbrot 1.0.0";
 const char *argp_program_bug_address = "https://github.com/josecelano/c-mandelbrot-arbitrary-precision/issues";
-static char doc[] = "Mandelbrot Set image and ASCII graph generator.";
-static char args_doc[] = "[RES_X]... [RES_Y]... [FORMAT]... [COLOR_MAP|ASCII_MAP]...";
+static char doc[] = "\nMandelbrot Set image and ASCII graph generator.\n" \
+    "\n" \
+    "ARGUMENTS:\n\n" \
+    "[LEFT_BOTTOM_ZX]:   Left bottom tile x coordinate. For example -2.0\n" \
+    "[LEFT_BOTTOM_ZY]:   Left bottom tile y coordinate. For example -2.0\n" \
+    "[TOP_RIGHT_ZX]:     Right top tile x coordinate\n" \
+    "[TOP_RIGHT_ZY]:     Right top tile y coordinate\n" \
+    "[RES_X]:            Fractal resolution width\n" \
+    "[RES_Y]:            Fractal resolution height\n" \
+    "[FORMAT]:           PPM image = 0, ASCII graph = 1\n" \
+    "[COLOR_MAP]:\n" \
+    "   CM_BLACK_ON_WHITE = 0\n" \
+    "   CM_WHITE_ON_BLACK = 1\n" \
+    "   CM_COLORED_PERIODS = 2\n" \
+    "[ASCII_MAP]:\n" \
+    "   AM_AT_SIGN = 0\n" \
+    "   AM_ITERATIONS = 1\n" \
+    "   AM_FULL_ITERATIONS = 2\n" \
+    "   AM_PERIODS = 2\n" \
+    "\nOPTIONS:";
+static char args_doc[] = "[LEFT_BOTTOM_ZX]... [LEFT_BOTTOM_ZY]... [TOP_RIGHT_ZX]... [TOP_RIGHT_ZY]... [RES_X]... [RES_Y]... [FORMAT]... [COLOR_MAP|ASCII_MAP]...";
 static struct argp_option options[] = {
         // Verbose options
-        {"print_progress",          'p', 0, 0, "Verbose opt: Print progress"},
-        {"print_periods",           'e', 0, 0, "Verbose opt: Print periods"},
-        {"print_iterations",        't', 0, 0, "Verbose opt: Print iterations"},
-        {"print_performance_data",  'r', 0, 0, "Verbose opt: Print performance data"},
-        {"print_fractal_data",      'f', 0, 0, "Verbose opt: Print fractal data"},
+        {"vo_progress",         'p', 0, 0, "Verbose opt: Print progress"},
+        {"vo_periods",          'e', 0, 0, "Verbose opt: Print periods"},
+        {"vo_iterations",       't', 0, 0, "Verbose opt: Print iterations"},
+        {"vo_performance_data", 'r', 0, 0, "Verbose opt: Print performance data"},
+        {"vo_fractal_data",     'f', 0, 0, "Verbose opt: Print fractal data"},
         // Optimisation options
-        {"main_cardioid_detection", 'c', 0, 0, "Optimisation opt: Main cardioid detection"},
-        {"period2_detection",       'o', 0, 0, "Optimisation opt: Period 2 detection"},
-        {"periodicity_checking",    'y', 0, 0, "Optimisation opt: Periodicity checking"},
+        {"op_main_cardioid",    'c', 0, 0, "Optimisation opt: Main cardioid detection"},
+        {"op_period2",          'o', 0, 0, "Optimisation opt: Period 2 detection"},
+        {"op_periodicity",      'y', 0, 0, "Optimisation opt: Periodicity checking"},
         // Dev extras
-        {"generate_all_samples",    'A', 0, 0, "Generate samples with all color/ascii maps"},
+        {"render_all_samples",  'A', 0, 0, "Generate samples with all color/ascii maps"},
         {0}
 };
 
 struct arguments {
+    // Options
     config_t *config;
+    int render_all_samples;
+    // Arguments
+    char *left_bottom_zx;
+    char *left_bottom_zy;
+    char *top_right_zx;
+    char *top_right_zy;
     resolution_t *resolution;
     enum {
         FORMAT_PPM = 0,
@@ -58,7 +81,6 @@ struct arguments {
     } format;
     color_map_t color_map;
     ascii_map_t ascii_map;
-    int generate_all_samples;
 };
 
 static error_t parse_opt(int key, char *arg, struct argp_state *state) {
@@ -82,31 +104,47 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state) {
             break;
 
         case 'c':
-            app_config_optimisation_option_enabled(arguments->config, OO_MAIN_CARDIOID_DETECTION);
+            app_config_enable_optimisation_option(arguments->config, OO_MAIN_CARDIOID_DETECTION);
             break;
         case 'o':
-            app_config_optimisation_option_enabled(arguments->config, OO_PERIOD2_DETECTION);
+            app_config_enable_optimisation_option(arguments->config, OO_PERIOD2_DETECTION);
             break;
         case 'y':
-            app_config_optimisation_option_enabled(arguments->config, OO_PERIODICITY_CHECKING);
+            app_config_enable_optimisation_option(arguments->config, OO_PERIODICITY_CHECKING);
             break;
 
         case 'A':
-            arguments->generate_all_samples = 1;
+            arguments->render_all_samples = 1;
             break;
 
         case ARGP_KEY_ARG:
+            if (arguments->render_all_samples == 1) {
+                // Arguments not needed for samples generation
+                break;
+            }
             switch (state->arg_num) {
-                case 0: // RES_X
+                case 0: // LEFT_BOTTOM_ZX
+                    arguments->left_bottom_zx = arg;
+                    break;
+                case 1: // LEFT_BOTTOM_ZY
+                    arguments->left_bottom_zy = arg;
+                    break;
+                case 2: // TOP_RIGHT_ZX
+                    arguments->top_right_zx = arg;
+                    break;
+                case 3: // TOP_RIGHT_ZY
+                    arguments->top_right_zy = arg;
+                    break;
+                case 4: // RES_X
                     arguments->resolution->width = atoi(arg);
                     break;
-                case 1: // RES_Y
+                case 5: // RES_Y
                     arguments->resolution->height = atoi(arg);
                     break;
-                case 2: // FORMAT
+                case 6: // FORMAT
                     arguments->format = atoi(arg);
                     break;
-                case 3: // COLOR_MAP | ASCII_MAP
+                case 7: // COLOR_MAP | ASCII_MAP
                     if (arguments->format == FORMAT_PPM) {
                         arguments->color_map = atoi(arg);
                     }
@@ -154,7 +192,7 @@ void render_ascii_graph(fractal_data_t fractal_data, ascii_map_t ascii_map) {
     render_fractal_and_write_out_the_text_file(img_filename, fractal_data, ascii_map);
 }
 
-void generate_all_samples(fractal_data_t fractal_data) {
+void render_all_samples(fractal_data_t fractal_data) {
     // Render images
     render_ppm_image(fractal_data, CM_BLACK_ON_WHITE);
     render_ppm_image(fractal_data, CM_WHITE_ON_BLACK);
@@ -167,69 +205,72 @@ void generate_all_samples(fractal_data_t fractal_data) {
     render_ascii_graph(fractal_data, AM_PERIODS);
 }
 
-void fractal_data_calculate(fractal_data_t *fractal_data, ztile_t tile, config_t *config, clock_t *time) {
-    *time = clock();
+void fractal_data_calculate(fractal_data_t *fractal_data, ztile_t tile, config_t *config, clock_t *execution_time) {
+    *execution_time = clock();
     fractal_data_calculate_points(fractal_data, tile, config);
-    *time = clock() - *time;
+    *execution_time = clock() - *execution_time;
 }
 
 int console_app_handle_command(int argc, char *argv[]) {
 
-    // Resolution for output image and ASCII graph
-    resolution_t resolution = {256, 256};
-
-    // Matrix with number of Mandelbrot formula iterations needed for each pixel to diverge.
-    fractal_data_t fractal_data;
-
-    // The tile we want to draw with complex points coordinates
-    ztile_t tile;
-
-    // Calculate the time taken for fractal matrix generation
-    clock_t time;
-
-    // App config
-    config_t config;
-
-    // Console command arguments
-    struct arguments arguments;
+    config_t config;                        // App config.
+    ztile_t tile;                           // The tile we want to draw with complex points coordinates.
+    resolution_t resolution = {256, 256};   // Resolution for output image and ASCII graph. Default 256x256.
+    fractal_data_t fractal_data;            // Matrix with calculated points.
+    clock_t fractal_data_generation_time;   // Calculate the time taken for fractal data generation.
+    struct arguments arguments;             // Console command arguments.
 
     app_config_init(&config);
 
-    // Parse arguments
+    /* Parse arguments */
+
     arguments.config = &config;
     arguments.resolution = &resolution;
     argp_parse(&argp, argc, argv, 0, 0, &arguments);
 
-    // Define tile
+    /* Set the tile */
 
-    // TODO: ge tile pos/size from console arguments
     ztile_init(&tile);
-    ztile_set_completed_mandelbrot_set(&tile, &config);
 
-    // Calculate fractal data
+    if (arguments.render_all_samples) {
+        ztile_set_completed_mandelbrot_set(&tile, &config);
+    } else {
+        ztile_set_from_str(
+                &tile,
+                arguments.left_bottom_zx, arguments.left_bottom_zy,
+                arguments.top_right_zx, arguments.top_right_zy,
+                config.precision
+        );
+    }
+
+    /* Calculate fractal data */
 
     fractal_data_init(&fractal_data, resolution);
 
-    fractal_data_calculate(&fractal_data, tile, &config, &time);
+    if (arguments.render_all_samples) {
+        app_config_enable_optimisation_option(&config, OO_MAIN_CARDIOID_DETECTION);
+        app_config_enable_optimisation_option(&config, OO_PERIOD2_DETECTION);
+        app_config_enable_optimisation_option(&config, OO_PERIODICITY_CHECKING);
+    }
 
-    ztile_clean(&tile);
+    fractal_data_calculate(&fractal_data, tile, &config, &fractal_data_generation_time);
 
-    // Print extra metadata output
+    /* Print extra metadata */
 
     if (app_config_verbose_option_enabled(&config, VO_PRINT_PERFORMANCE_DATA)) {
-        print_performance_data(time, resolution, &config);
+        print_performance_data(fractal_data_generation_time, resolution, &config);
     }
 
     if (app_config_verbose_option_enabled(&config, VO_PRINT_FRACTAL_DATA)) {
         print_fractal_data(fractal_data);
     }
 
-    // Write out output files
+    /* Write out output files */
 
-    if (arguments.generate_all_samples) {
-        generate_all_samples(fractal_data);
+    if (arguments.render_all_samples) {
+        render_all_samples(fractal_data);
     } else {
-        switch(arguments.format) {
+        switch (arguments.format) {
             case FORMAT_PPM:
                 render_ppm_image(fractal_data, arguments.color_map);
                 break;
@@ -242,6 +283,9 @@ int console_app_handle_command(int argc, char *argv[]) {
         }
     }
 
+    /* Clean data */
+
+    ztile_clean(&tile);
     fractal_data_clean(&fractal_data);
 
     return 0;
