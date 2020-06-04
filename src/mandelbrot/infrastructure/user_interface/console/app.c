@@ -157,44 +157,33 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state) {
 
 static struct argp argp = {options, parse_opt, args_doc, doc, 0, 0, 0};
 
-int console_app_handle_command(int argc, char *argv[]) {
+void arguments_init(struct arguments *arguments, config_t *config, resolution_t *resolution) {
+    arguments->render_all_samples = 0;
+    arguments->config = config;
+    arguments->resolution = resolution;
+}
 
-    config_t config;                        // App config.
-    resolution_t resolution = {256, 256};   // Resolution for output image and ASCII graph. Default 256x256.
-    struct arguments arguments;             // Console command arguments.
-
-    app_config_init(&config);
-
-    // Arguments init
-    arguments.render_all_samples = 0;
-    arguments.config = &config;
-    arguments.resolution = &resolution;
-
-    // Parse arguments
-    argp_parse(&argp, argc, argv, 0, 0, &arguments);
-
-    // Handle command
-
-    if (arguments.render_all_samples) {
-        return render_all_samples_command(&config, resolution);
+int handle_command(struct arguments *arguments, config_t *config, resolution_t resolution) {
+    if (arguments->render_all_samples) {
+        return render_all_samples_command(config, resolution);
     } else {
-        switch (arguments.format) {
+        switch (arguments->format) {
             case FORMAT_PPM:
                 return render_ppm_image_command(
-                        &config,
+                        config,
                         resolution,
-                        arguments.left_bottom_zx, arguments.left_bottom_zy,
-                        arguments.top_right_zx, arguments.top_right_zy,
-                        arguments.color_map
+                        arguments->left_bottom_zx, arguments->left_bottom_zy,
+                        arguments->top_right_zx, arguments->top_right_zy,
+                        arguments->color_map
                 );
                 break;
             case FORMAT_ASCII_GRAPH:
                 return render_ascii_graph_command(
-                        &config,
+                        config,
                         resolution,
-                        arguments.left_bottom_zx, arguments.left_bottom_zy,
-                        arguments.top_right_zx, arguments.top_right_zy,
-                        arguments.ascii_map
+                        arguments->left_bottom_zx, arguments->left_bottom_zy,
+                        arguments->top_right_zx, arguments->top_right_zy,
+                        arguments->ascii_map
                 );
                 break;
             default:
@@ -202,4 +191,19 @@ int console_app_handle_command(int argc, char *argv[]) {
                 abort();
         }
     }
+}
+
+int console_app_run(int argc, char **argv) {
+
+    config_t config;                        // App config.
+    resolution_t resolution = {256, 256};   // Resolution for output image and ASCII graph. Default 256x256.
+    struct arguments arguments;             // Console command arguments.
+
+    app_config_init(&config);
+    arguments_init(&arguments, &config, &resolution);
+
+    // Parse arguments
+    argp_parse(&argp, argc, argv, 0, 0, &arguments);
+
+    return handle_command(&arguments, &config, resolution);
 }
