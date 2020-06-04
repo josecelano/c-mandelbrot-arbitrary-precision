@@ -19,6 +19,8 @@ void fractal_data_clean(fractal_data_t *fractal_data);
 
 void fractal_data_calculate_points(fractal_data_t *fractal_data, ztile_t tile, config_t *config);
 
+void fractal_data_calculate(fractal_data_t *fractal_data, ztile_t tile, config_t *config, clock_t *execution_time);
+
 void fractal_data_set_calculated_point(fractal_data_t *fractal_data, point_t point, calculated_point_t calculated_point);
 
 void fractal_data_get_calculated_point(fractal_data_t fractal_data, point_t point, calculated_point_t *calculated_point);

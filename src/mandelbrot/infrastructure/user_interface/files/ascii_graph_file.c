@@ -30,3 +30,18 @@ void render_fractal_and_write_out_the_text_file(char *filename, fractal_data_t f
 
     fclose(fp);
 }
+
+void render_ascii_graph(fractal_data_t fractal_data, ascii_map_t ascii_map) {
+    char ascii_map_name[50];
+    char img_filename[50];
+
+    get_ascii_map_name(ascii_map_name, ascii_map);
+
+    sprintf(img_filename, "./output/mandelbrot-%s-%dx%d.txt",
+            ascii_map_name,
+            fractal_data.resolution.width,
+            fractal_data.resolution.height
+    );
+
+    render_fractal_and_write_out_the_text_file(img_filename, fractal_data, ascii_map);
+}

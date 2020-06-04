@@ -90,5 +90,8 @@ void get_color_map_name(char *color_map_name, color_map_t color_map) {
         case CM_COLORED_PERIODS:
             strcpy(color_map_name, "colored-periods");
             break;
+        default:
+            printf("Exception. Invalid color map %d\n", color_map);
+            abort();
     }
 }

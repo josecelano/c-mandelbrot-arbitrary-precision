@@ -43,3 +43,18 @@ void render_and_write_out_image(char *filename, fractal_data_t fractal_data, col
 
     fclose(fp);
 }
+
+void render_ppm_image(fractal_data_t fractal_data, color_map_t color_map) {
+    char color_map_name[50];
+    char img_filename[50];
+
+    get_color_map_name(color_map_name, color_map);
+
+    sprintf(img_filename, "./output/mandelbrot-%s-%dx%d.ppm",
+            color_map_name,
+            fractal_data.resolution.width,
+            fractal_data.resolution.height
+    );
+
+    render_and_write_out_image(img_filename, fractal_data, color_map);
+}

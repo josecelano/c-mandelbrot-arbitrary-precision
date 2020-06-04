@@ -6,4 +6,6 @@
 
 void render_fractal_and_write_out_the_text_file(char *filename, fractal_data_t fractal_data, ascii_map_t ascii_map);
 
+void render_ascii_graph(fractal_data_t fractal_data, ascii_map_t ascii_map);
+
 #endif //C_MANDELBROT_ARBITRARY_PRECISION_ASCII_GRAPH_FILE_H

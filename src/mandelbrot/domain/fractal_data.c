@@ -220,3 +220,9 @@ void fractal_data_calculate_points(fractal_data_t *fractal_data, ztile_t tile, c
     zpoint_clean(&zx_point_increment);
     zpoint_clean(&zy_point_increment);
 }
+
+void fractal_data_calculate(fractal_data_t *fractal_data, ztile_t tile, config_t *config, clock_t *execution_time) {
+    *execution_time = clock();
+    fractal_data_calculate_points(fractal_data, tile, config);
+    *execution_time = clock() - *execution_time;
+}

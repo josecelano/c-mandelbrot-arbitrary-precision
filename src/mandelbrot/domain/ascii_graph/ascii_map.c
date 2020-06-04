@@ -109,5 +109,8 @@ void get_ascii_map_name(char *ascii_map_name, ascii_map_t ascii_map) {
         case AM_PERIODS:
             strcpy(ascii_map_name, "periods");
             break;
+        default:
+            printf("Exception. Invalid ascii map %d\n", ascii_map);
+            abort();
     }
 }

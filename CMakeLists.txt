@@ -24,6 +24,8 @@ file(GLOB PRODUCTION_CODE
         ${PROJECT_SOURCE_DIR}/src/mandelbrot/domain/optimisation/*.h
         ${PROJECT_SOURCE_DIR}/src/mandelbrot/infrastructure/user_interface/console/*.c
         ${PROJECT_SOURCE_DIR}/src/mandelbrot/infrastructure/user_interface/console/*.h
+        ${PROJECT_SOURCE_DIR}/src/mandelbrot/infrastructure/user_interface/console/commands/*.c
+        ${PROJECT_SOURCE_DIR}/src/mandelbrot/infrastructure/user_interface/console/commands/*.h
         ${PROJECT_SOURCE_DIR}/src/mandelbrot/infrastructure/user_interface/files/*.c
         ${PROJECT_SOURCE_DIR}/src/mandelbrot/infrastructure/user_interface/files/*.h
         ${PROJECT_SOURCE_DIR}/src/mandelbrot/presentation/*.c
@@ -42,6 +44,8 @@ file(GLOB TEST_CODE
         ${PROJECT_SOURCE_DIR}/tests/mandelbrot/domain/*.h
         ${PROJECT_SOURCE_DIR}/tests/mandelbrot/infrastructure/user_interface/console/*.c
         ${PROJECT_SOURCE_DIR}/tests/mandelbrot/infrastructure/user_interface/console/*.h
+        ${PROJECT_SOURCE_DIR}/tests/mandelbrot/infrastructure/user_interface/console/commands/*.c
+        ${PROJECT_SOURCE_DIR}/tests/mandelbrot/infrastructure/user_interface/console/commands/*.h
         ${PROJECT_SOURCE_DIR}/tests/mandelbrot/infrastructure/user_interface/files/*.c
         ${PROJECT_SOURCE_DIR}/tests/mandelbrot/infrastructure/user_interface/files/*.h
         )
