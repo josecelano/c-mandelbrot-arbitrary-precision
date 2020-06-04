@@ -1,6 +1,7 @@
 #include "../../../../domain/fractal_data.h"
 #include "../../../../presentation/output.h"
 #include "../../files/ppm_image_file.h"
+#include "./console_messages.h"
 #include "./render_ppm_image_command.h"
 
 int render_ppm_image_command(
@@ -24,26 +25,12 @@ int render_ppm_image_command(
             config->precision
     );
 
-    /* Calculate fractal data */
-
     fractal_data_init(&fractal_data, resolution);
     fractal_data_calculate(&fractal_data, tile, config, &render_time);
 
-    /* Print extra metadata */
-
-    if (app_config_verbose_option_enabled(config, VO_PRINT_PERFORMANCE_DATA)) {
-        print_performance_data(render_time, resolution, config);
-    }
-
-    if (app_config_verbose_option_enabled(config, VO_PRINT_FRACTAL_DATA)) {
-        print_fractal_data(fractal_data);
-    }
-
-    /* Write out output file */
+    print_message_after_calculation(fractal_data, config, resolution, render_time);
 
     render_ppm_image(fractal_data, color_map);
-
-    /* Clean data */
 
     fractal_data_clean(&fractal_data);
     ztile_clean(&tile);
