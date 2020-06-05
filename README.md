@@ -41,9 +41,7 @@ Help:
 ```
 ./mandelbrot --help
 ```
-You will see the list of options and arguments.
-
-for example if you want to generate the full Mandelbrot Set in PPM format with color map "black on white":
+You will see the list of options and arguments. And, for example, if you want to generate the full Mandelbrot Set in PPM format with color map "black on white":
 ```
 ./mandelbrot -prfy -- -2.0 -2.0 2.0 2.0 256 256 0 0
 ```
@@ -57,27 +55,16 @@ This command generates one sample file in `output` folder for each color and asc
 
 See more command samples in [here](bin/samples/generate-samples.sh).
 
-## Development requirements
-
-* Docker version 18.09.7
-
 ## Development
+
+Requirements:
+* Docker version 18.09.7
 
 All commands use docker under the hood.
 
 Setup:
 ```
 ./bin/dev-setup
-```
-
-Compile code:
-```
-./bin/compile
-```
-
-Run main program:
-```
-./bin/dev-run
 ```
 
 Execute tests:

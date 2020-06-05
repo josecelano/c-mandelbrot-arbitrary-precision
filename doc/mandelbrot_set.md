@@ -26,4 +26,4 @@ You can represent those complex number in a graph where x-axis is the real part 
 It draws the portion of the graph between -2 and 2 real and imaginary parts.
 Mandelbrot Set is inside those limits.
 
-![Mandelbrot Graph](doc/img/mandelbrot-graph.png)
+![Mandelbrot Graph](img/mandelbrot-graph.png)
