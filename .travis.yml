@@ -11,5 +11,5 @@ compiler:
   - gcc
 
 script:
-  - ./bin/dev_setup
+  - ./bin/dev-setup
   - ./bin/test
