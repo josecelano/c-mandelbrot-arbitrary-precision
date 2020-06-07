@@ -17,9 +17,18 @@ void ztile_set_from_str(
         const char *right_top_re, const char *right_top_im,
         slong prec
 ) {
-    // TODO: validate points
     zpoint_set_from_re_im_str(&tile->left_bottom_point, left_bottom_re, left_bottom_im, prec);
     zpoint_set_from_re_im_str(&tile->right_top_point, right_top_re, right_top_im, prec);
+
+    if (arb_gt(tile->left_bottom_point.re, tile->right_top_point.re)) {
+        printf("Exception. The left bottom point of ztile is not on the left of right top point\n");
+        abort();
+    }
+
+    if (arb_gt(tile->left_bottom_point.im, tile->right_top_point.im)) {
+        printf("Exception. The right top point of ztile is not above the left bottom point\n");
+        abort();
+    }
 }
 
 void ztile_set_completed_mandelbrot_set(ztile_t *tile, config_t *config) {
