@@ -51,6 +51,13 @@ void execute_iterations_with_period_checking(acb_t c, config_t *config, calculat
     acb_init(f);
     acb_init(z);
 
+    // Period checking variables
+
+    // Minimum number of iterations before using period checking.
+    // It takes some iterations before the loop starts stabilising on the points.
+    // TODO: what is the right number? is it a fix number?
+    int min_iter_period_checking = 20;
+
     int check = 1;
     int check_counter = 0;
 
@@ -59,40 +66,28 @@ void execute_iterations_with_period_checking(acb_t c, config_t *config, calculat
 
     arb_t z_re, z_im;
 
-    // Period checking
     arb_t old_re, old_im;
     arb_t period_tolerance;
+
+    // End period checking variables
 
     arb_init(z_re);
     arb_init(z_im);
 
-    // Period checking
+    // Period checking initialization
+
     arb_init(old_re);
     arb_init(old_im);
     arb_init(period_tolerance);
 
-    // Period checking
     arb_set_str(old_re, "0.0", config->precision);
     arb_set_str(old_im, "0.0", config->precision);
 
-    // TODO: calculate period tolerance & max number of iterations.
-    // * We need to know how to calculate the period tolerance
-    // * Adn how to calculate the max number of iterations dynamically.
-    // * And only apply period checking after a minimum number of iterations
-    // See other examples:
-    // * https://github.com/HyveInnovate/gnofract4d/blob/master/examples/cpp/custom_mandelbrot_formula.c#L356-L389
-    // * https://github.com/josch/mandelbrot/blob/master/mandel_mpfr.c#L109-L133
-    //
-    // I think this is the algorithm used but we need need the position of the first cycle:
-    // https://en.wikipedia.org/wiki/Cycle_detection#Brent's_algorithm
-    //
-    // Testing different tolerances ...
-    arb_set_str(period_tolerance, "0", config->precision);           // Period checking disabled
-    arb_set_str(period_tolerance, "1e-9", config->precision);        // Initial value for Gnofract4D
-    arb_set_str(period_tolerance, "1e-17", config->precision);       // Some samples use this value
-    arb_set_str(period_tolerance, "0.000000001", config->precision); // With this value we reach max iter
-    arb_set_str(period_tolerance, "0.00000001", config->precision);  // Iter 35.
-    arb_set_str(period_tolerance, "0.0015625", config->precision);   // Iter 14.   4/256/10 = 0,015625
+    // TODO: this value should be calculated dynamically.
+    // Gnofract 4D uses 0.00000001 at zoom 0 but with that value it does not detect a lot of periods.
+    arb_set_str(period_tolerance, "0.01", config->precision);
+
+    // End period checking initialization
 
     for (i = 1; i <= config->max_iterations; ++i) {
 
@@ -118,44 +113,47 @@ void execute_iterations_with_period_checking(acb_t c, config_t *config, calculat
 
         acb_set(z, f);
 
-        // Periodicity check
+        if (i >= min_iter_period_checking) {
+            // Periodicity check
 
-        // Get real and imaginary parts
-        acb_get_real(z_re, z);
-        acb_get_imag(z_im, z);
+            // Get real and imaginary parts
+            acb_get_real(z_re, z);
+            acb_get_imag(z_im, z);
 
-        // Check for period
-        int period_found = check_for_period(i, c, z_re, z_im, old_re, old_im, period_tolerance, check_counter, config);
+            // Check for period
+            int period_found = check_for_period(i, c, z_re, z_im, old_re, old_im, period_tolerance, check_counter,
+                                                config);
 
-        if (period_found) {
-            calculated_point->period = (unsigned int) check_counter;
-            calculated_point->period_was_found = TRUE;
-            break;
-        }
-        // End check for period
-
-        // Update history
-        if (check == check_counter) {
-            check_counter = 0;
-
-            // Double the value of check
-            if (update == update_counter) {
-                update_counter = 0;
-                check <<= 1; // check * 2
+            if (period_found) {
+                calculated_point->period = (unsigned int) check_counter;
+                calculated_point->period_was_found = TRUE;
+                break;
             }
-            update_counter++;
+            // End check for period
 
-            if (app_config_verbose_option_enabled(config, VO_PRINT_PERIODS)) {
-                console_printf("->update old\n");
+            // Update history
+            if (check == check_counter) {
+                check_counter = 0;
+
+                // Double the value of check
+                if (update == update_counter) {
+                    update_counter = 0;
+                    check <<= 1; // check * 2
+                }
+                update_counter++;
+
+                if (app_config_verbose_option_enabled(config, VO_PRINT_PERIODS)) {
+                    console_printf("->update old\n");
+                }
+
+                arb_set(old_re, z_re);
+                arb_set(old_im, z_im);
             }
+            // End of update history
+            check_counter++;
 
-            arb_set(old_re, z_re);
-            arb_set(old_im, z_im);
+            // End periodicity check
         }
-        // End of update history
-        check_counter++;
-
-        // End periodicity check
     }
 
     arb_clear(z_re);

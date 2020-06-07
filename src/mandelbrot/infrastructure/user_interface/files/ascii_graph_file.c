@@ -20,10 +20,11 @@ void render_fractal_and_write_out_the_text_file(char *filename, fractal_data_t f
     resolution_t resolution = fractal_data.resolution;
     FILE *fp;
     int x, y;
+    int height = fractal_data.resolution.height;
 
     fp = fopen(filename, "w");
 
-    for (y = 0; y < resolution.height; y++) {
+    for (y = height - 1; y >= 0; y--) {
         write_line(y, filename, fp, fractal_data, ascii_map);
         fwrite("\n", sizeof(char), 1, fp);
     }

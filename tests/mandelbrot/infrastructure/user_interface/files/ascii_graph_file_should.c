@@ -61,7 +61,7 @@ TEST(ascii_graph_file_should, generate_an_ascii_version_of_the_mandelbrot_set) {
     render_fractal_and_write_out_the_text_file(filename, fractal_data, AM_AT_SIGN);
 
     // We get the expected content for the file
-    sprintf(expected_filename, "./tests/fixtures/mandelbrot-%dx%d.txt", resolution.width, resolution.height);
+    sprintf(expected_filename, "./tests/fixtures/mandelbrot-at-sign-%dx%d.txt", resolution.width, resolution.height);
     test_assert_txt_files_equal(expected_filename, filename);
 
     fractal_data_clean(&fractal_data);
@@ -81,11 +81,11 @@ TEST(ascii_graph_file_should, generate_a_text_version_of_the_iterations_taken_ma
     calculate_completed_mandelbrot(resolution, &fractal_data);
 
     // When we write out the iterations taken matrix
-    sprintf(filename, "./tests/output/mandelbrot-iter-%dx%d.txt", resolution.width, resolution.height);
+    sprintf(filename, "./tests/output/mandelbrot-iterations-%dx%d.txt", resolution.width, resolution.height);
     render_fractal_and_write_out_the_text_file(filename, fractal_data, AM_ITERATIONS);
 
     // We get the expected content for the file
-    sprintf(expected_filename, "./tests/fixtures/mandelbrot-iter-%dx%d.txt", resolution.width, resolution.height);
+    sprintf(expected_filename, "./tests/fixtures/mandelbrot-iterations-%dx%d.txt", resolution.width, resolution.height);
     test_assert_txt_files_equal(expected_filename, filename);
 
     fractal_data_clean(&fractal_data);
@@ -105,11 +105,11 @@ TEST(ascii_graph_file_should, generate_a_text_version_of_the_full_iterations_tak
     calculate_completed_mandelbrot(resolution, &fractal_data);
 
     // When we write out the iterations taken matrix including iterations for points inside the Mandelbrot Set
-    sprintf(filename, "./tests/output/mandelbrot-full-iter-%dx%d.txt", resolution.width, resolution.height);
+    sprintf(filename, "./tests/output/mandelbrot-full-iterations-%dx%d.txt", resolution.width, resolution.height);
     render_fractal_and_write_out_the_text_file(filename, fractal_data, AM_FULL_ITERATIONS);
 
     // We get the expected content for the file
-    sprintf(expected_filename, "./tests/fixtures/mandelbrot-full-iter-%dx%d.txt", resolution.width, resolution.height);
+    sprintf(expected_filename, "./tests/fixtures/mandelbrot-full-iterations-%dx%d.txt", resolution.width, resolution.height);
     test_assert_txt_files_equal(expected_filename, filename);
 
     fractal_data_clean(&fractal_data);
