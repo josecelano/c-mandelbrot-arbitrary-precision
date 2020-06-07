@@ -24,7 +24,7 @@ void print_ppm_image_pixels(FILE *fp, fractal_data_t fractal_data, color_map_t c
     int height = fractal_data.resolution.height;
     pixel px;
 
-    for (y = 0; y < height; y++) {
+    for (y = height - 1; y >= 0; y--) {
         for (x = 0; x < width; x++) {
             pixel_set_coordinates(&px, x, y);
             set_pixel_color(&px, fractal_data, color_map);
