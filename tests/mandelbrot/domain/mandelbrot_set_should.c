@@ -48,7 +48,7 @@ TEST(mandelbrot_set_should, contain_known_points_inside) {
         TEST_ASSERT_EQUAL_MESSAGE(INSIDE, ret, message);
     }
 
-    zpoint_clean(&point);
+    zpoint_clear(&point);
 }
 
 TEST(mandelbrot_set_should, not_contain_known_points_outside) {
@@ -83,7 +83,7 @@ TEST(mandelbrot_set_should, not_contain_known_points_outside) {
         TEST_ASSERT_EQUAL_MESSAGE(OUTSIDE, ret, message);
     }
 
-    zpoint_clean(&point);
+    zpoint_clear(&point);
 }
 
 TEST(mandelbrot_set_should, check_if_point_is_inside_main_cardioid_in_order_to_increase_performace) {

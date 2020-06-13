@@ -10,7 +10,7 @@ typedef struct {
 
 void zpoint_init(zpoint_t *c);
 
-void zpoint_clean(zpoint_t *c);
+void zpoint_clear(zpoint_t *c);
 
 void zpoint_set(zpoint_t *y, zpoint_t *x);
 

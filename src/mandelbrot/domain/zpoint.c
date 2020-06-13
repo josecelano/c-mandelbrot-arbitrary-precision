@@ -5,7 +5,7 @@ void zpoint_init(zpoint_t *c) {
     arb_init(c->im);
 }
 
-void zpoint_clean(zpoint_t *c) {
+void zpoint_clear(zpoint_t *c) {
     arb_clear(c->re);
     arb_clear(c->im);
 }

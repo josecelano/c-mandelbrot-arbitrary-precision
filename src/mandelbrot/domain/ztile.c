@@ -7,8 +7,8 @@ void ztile_init(ztile_t *tile) {
 }
 
 void ztile_clean(ztile_t *tile) {
-    zpoint_clean(&tile->left_bottom_point);
-    zpoint_clean(&tile->right_top_point);
+    zpoint_clear(&tile->left_bottom_point);
+    zpoint_clear(&tile->right_top_point);
 }
 
 void ztile_set_from_str(

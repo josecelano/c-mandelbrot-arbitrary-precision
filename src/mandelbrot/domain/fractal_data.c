@@ -142,7 +142,7 @@ void calculate_points(
         zpoint_add(&z_current_point, z_current_point, zy_point_increment, config->precision);
     }
 
-    zpoint_clean(&z_current_point);
+    zpoint_clear(&z_current_point);
 }
 
 /** Public functions **/
@@ -217,8 +217,8 @@ void fractal_data_calculate_points(fractal_data_t *fractal_data, ztile_t tile, c
             fractal_data
     );
 
-    zpoint_clean(&zx_point_increment);
-    zpoint_clean(&zy_point_increment);
+    zpoint_clear(&zx_point_increment);
+    zpoint_clear(&zy_point_increment);
 }
 
 void fractal_data_calculate(fractal_data_t *fractal_data, ztile_t tile, config_t *config, clock_t *execution_time) {
