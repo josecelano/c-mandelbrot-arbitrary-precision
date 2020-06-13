@@ -65,5 +65,13 @@ add_executable(
         ${PRODUCTION_CODE}
         )
 
+add_executable(
+        mandelbrot-orbit
+        src/mandelbrot_orbit.c
+        ${EXTERNAL_CODE}
+        ${PRODUCTION_CODE}
+)
+
 target_link_libraries(mandelbrot-test gmp mpfr flint arb)
 target_link_libraries(mandelbrot gmp mpfr flint arb)
+target_link_libraries(mandelbrot-orbit gmp mpfr flint arb)

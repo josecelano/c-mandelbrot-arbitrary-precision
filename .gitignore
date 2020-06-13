@@ -47,7 +47,11 @@ cmake-build-debug
 # Output files
 /output/*.ppm
 /output/*.txt
+/output/*.png
 
 # Test output files
 /tests/output/*.ppm
 /tests/output/*.txt
+
+# Pipenv
+venv
