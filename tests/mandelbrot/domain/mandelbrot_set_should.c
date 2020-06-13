@@ -205,11 +205,11 @@ TEST(mandelbrot_set_should, detect_periods_to_increase_performace_decreasing_ite
 
     // Pre-selected points with known period from period 0 to 4
     complex_dto_t points[5] = {
-            {"0",    "0"},
-            {"-0.1", "0.1"},
-            {"0",    "1"},
-            {"-0.1", "0.7"},
-            {"-1.3", "0"},
+            {"0",    "0"},      // Period 0
+            {"-0.1", "0.1"},    // Period 1
+            {"0",    "1"},      // Period 2
+            {"-0.1", "0.7"},    // Period 3
+            {"-1.3", "0"},      // Period 4
     };
 
     for (expected_period = 0; expected_period < 5; expected_period++) {
