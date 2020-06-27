@@ -42,8 +42,6 @@ int main(int argc, char *argv[]) {
     int max_iterations = 100;
     resolution_t resolution = {256, 256};
     FILE *fp;
-    char white[3] = {255, 255, 255};
-    char black[3] = {0, 0, 0};
     int x, y, i;
     acb_t c;
     zpoint_t point;
