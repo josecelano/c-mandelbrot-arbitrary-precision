@@ -16,7 +16,7 @@ void write_line(int y, char *filename, FILE *fp, fractal_data_t fractal_data, as
     }
 }
 
-void render_fractal_and_write_out_the_text_file(char *filename, fractal_data_t fractal_data, ascii_map_t ascii_map) {
+void write_out_text_file(fractal_data_t fractal_data, ascii_map_t ascii_map, char *filename) {
     resolution_t resolution = fractal_data.resolution;
     FILE *fp;
     int x, y;
@@ -24,25 +24,15 @@ void render_fractal_and_write_out_the_text_file(char *filename, fractal_data_t f
 
     fp = fopen(filename, "w");
 
+    if (fp == NULL) {
+        printf("Exception. Can't open file: %s\n", filename);
+        abort();
+    }
+
     for (y = height - 1; y >= 0; y--) {
         write_line(y, filename, fp, fractal_data, ascii_map);
         fwrite("\n", sizeof(char), 1, fp);
     }
 
     fclose(fp);
-}
-
-void render_ascii_graph(fractal_data_t fractal_data, ascii_map_t ascii_map) {
-    char ascii_map_name[50];
-    char img_filename[50];
-
-    get_ascii_map_name(ascii_map_name, ascii_map);
-
-    sprintf(img_filename, "./output/mandelbrot-%s-%dx%d.txt",
-            ascii_map_name,
-            fractal_data.resolution.width,
-            fractal_data.resolution.height
-    );
-
-    render_fractal_and_write_out_the_text_file(img_filename, fractal_data, ascii_map);
 }

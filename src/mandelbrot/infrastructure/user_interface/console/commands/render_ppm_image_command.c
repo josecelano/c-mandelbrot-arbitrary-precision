@@ -7,9 +7,12 @@
 int render_ppm_image_command(
         config_t *config,
         resolution_t resolution,
-        char *left_bottom_zx, char *left_bottom_zy,
-        char *top_right_zx, char *top_right_zy,
-        color_map_t color_map
+        char *left_bottom_zx,
+        char *left_bottom_zy,
+        char *top_right_zx,
+        char *top_right_zy,
+        color_map_t color_map,
+        char *output_file_path
 ) {
     ztile_t tile;                   // The tile we want to draw with complex points coordinates.
     fractal_data_t fractal_data;    // Matrix with calculated points.
@@ -30,7 +33,7 @@ int render_ppm_image_command(
 
     print_message_after_calculation(fractal_data, config, resolution, render_time);
 
-    render_ppm_image(fractal_data, color_map);
+    render_ppm_image(fractal_data, color_map, output_file_path);
 
     fractal_data_clean(&fractal_data);
     ztile_clean(&tile);

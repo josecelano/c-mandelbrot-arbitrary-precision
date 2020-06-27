@@ -15,10 +15,10 @@
  * Sample commands:
  *
  * IMAGE: full mandelbrot 256x256px black on white color map
- * ./mandelbrot -p -- -2.0 -2.0 2.0 2.0 256 256 0 0
+ * ./mandelbrot -p -- -2.0 -2.0 2.0 2.0 256 256 0 0 ./output/mandelbrot-black-on-white-256x256.ppm
  *
  * ASCII GRAPH: full mandelbrot 256x256char @ ascii map
- * ./mandelbrot -p -- -2.0 -2.0 2.0 2.0 256 256 0 0
+ * ./mandelbrot -p -- -2.0 -2.0 2.0 2.0 256 256 1 0 ./output/mandelbrot-at-sign-256x256.txt
  */
 
 const char *argp_program_version = "mandelbrot 1.0.0";
@@ -42,8 +42,9 @@ static char doc[] = "\nMandelbrot Set image and ASCII graph generator.\n" \
     "   AM_ITERATIONS = 1\n" \
     "   AM_FULL_ITERATIONS = 2\n" \
     "   AM_PERIODS = 2\n" \
+    "[OUTPUT_FILE_PATH]: Output file path\n" \
     "\nOPTIONS:";
-static char args_doc[] = "[LEFT_BOTTOM_ZX]... [LEFT_BOTTOM_ZY]... [TOP_RIGHT_ZX]... [TOP_RIGHT_ZY]... [RES_X]... [RES_Y]... [FORMAT]... [COLOR_MAP|ASCII_MAP]...";
+static char args_doc[] = "[LEFT_BOTTOM_ZX]... [LEFT_BOTTOM_ZY]... [TOP_RIGHT_ZX]... [TOP_RIGHT_ZY]... [RES_X]... [RES_Y]... [FORMAT]... [COLOR_MAP|ASCII_MAP]... [OUTPUT_FILE_PATH]...";
 static struct argp_option options[] = {
         // Verbose options
         {"vo_progress",         'p', 0, 0, "Verbose opt: Print progress"},
@@ -76,6 +77,7 @@ struct arguments {
     } format;
     color_map_t color_map;
     ascii_map_t ascii_map;
+    char *output_file_path;
 };
 
 static error_t parse_opt(int key, char *arg, struct argp_state *state) {
@@ -147,6 +149,9 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state) {
                         arguments->ascii_map = atoi(arg);
                     }
                     break;
+                case 8: // OUTPUT_FILE_PATH
+                    arguments->output_file_path = arg;
+                    break;
             }
             break;
         default:
@@ -174,7 +179,8 @@ int handle_command(struct arguments *arguments, config_t *config, resolution_t r
                         resolution,
                         arguments->left_bottom_zx, arguments->left_bottom_zy,
                         arguments->top_right_zx, arguments->top_right_zy,
-                        arguments->color_map
+                        arguments->color_map,
+                        arguments->output_file_path
                 );
                 break;
             case FORMAT_ASCII_GRAPH:
@@ -183,7 +189,8 @@ int handle_command(struct arguments *arguments, config_t *config, resolution_t r
                         resolution,
                         arguments->left_bottom_zx, arguments->left_bottom_zy,
                         arguments->top_right_zx, arguments->top_right_zy,
-                        arguments->ascii_map
+                        arguments->ascii_map,
+                        arguments->output_file_path
                 );
                 break;
             default:

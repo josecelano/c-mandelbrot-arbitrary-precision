@@ -33,28 +33,18 @@ void print_ppm_image_pixels(FILE *fp, fractal_data_t fractal_data, color_map_t c
     }
 }
 
-void render_and_write_out_image(char *filename, fractal_data_t fractal_data, color_map_t color_map) {
+void render_ppm_image(fractal_data_t fractal_data, color_map_t color_map, char *output_file_path) {
     FILE *fp;
 
-    fp = fopen(filename, "wb");
+    fp = fopen(output_file_path, "wb");
+
+    if (fp == NULL) {
+        printf("Exception. Can't open file: %s\n", output_file_path);
+        abort();
+    }
 
     print_ppm_image_header(fp, fractal_data.resolution);
     print_ppm_image_pixels(fp, fractal_data, color_map);
 
     fclose(fp);
-}
-
-void render_ppm_image(fractal_data_t fractal_data, color_map_t color_map) {
-    char color_map_name[50];
-    char img_filename[50];
-
-    get_color_map_name(color_map_name, color_map);
-
-    sprintf(img_filename, "./output/mandelbrot-%s-%dx%d.ppm",
-            color_map_name,
-            fractal_data.resolution.width,
-            fractal_data.resolution.height
-    );
-
-    render_and_write_out_image(img_filename, fractal_data, color_map);
 }

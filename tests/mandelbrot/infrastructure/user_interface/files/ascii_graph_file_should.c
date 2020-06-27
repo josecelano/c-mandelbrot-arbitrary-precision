@@ -58,7 +58,7 @@ TEST(ascii_graph_file_should, generate_an_ascii_version_of_the_mandelbrot_set) {
 
     // When we write out the ASCII graph
     sprintf(filename, "./tests/output/mandelbrot-%dx%d.txt", resolution.width, resolution.height);
-    render_fractal_and_write_out_the_text_file(filename, fractal_data, AM_AT_SIGN);
+    write_out_text_file(fractal_data, AM_AT_SIGN, filename);
 
     // We get the expected content for the file
     sprintf(expected_filename, "./tests/fixtures/mandelbrot-at-sign-%dx%d.txt", resolution.width, resolution.height);
@@ -82,7 +82,7 @@ TEST(ascii_graph_file_should, generate_a_text_version_of_the_iterations_taken_ma
 
     // When we write out the iterations taken matrix
     sprintf(filename, "./tests/output/mandelbrot-iterations-%dx%d.txt", resolution.width, resolution.height);
-    render_fractal_and_write_out_the_text_file(filename, fractal_data, AM_ITERATIONS);
+    write_out_text_file(fractal_data, AM_ITERATIONS, filename);
 
     // We get the expected content for the file
     sprintf(expected_filename, "./tests/fixtures/mandelbrot-iterations-%dx%d.txt", resolution.width, resolution.height);
@@ -106,7 +106,7 @@ TEST(ascii_graph_file_should, generate_a_text_version_of_the_full_iterations_tak
 
     // When we write out the iterations taken matrix including iterations for points inside the Mandelbrot Set
     sprintf(filename, "./tests/output/mandelbrot-full-iterations-%dx%d.txt", resolution.width, resolution.height);
-    render_fractal_and_write_out_the_text_file(filename, fractal_data, AM_FULL_ITERATIONS);
+    write_out_text_file(fractal_data, AM_FULL_ITERATIONS, filename);
 
     // We get the expected content for the file
     sprintf(expected_filename, "./tests/fixtures/mandelbrot-full-iterations-%dx%d.txt", resolution.width, resolution.height);
@@ -130,7 +130,7 @@ TEST(ascii_graph_file_should, generate_a_text_version_of_periods_matrix) {
 
     // When we write out the periods found for points inside the Mandelbrot Set
     sprintf(filename, "./tests/output/mandelbrot-periods-%dx%d.txt", resolution.width, resolution.height);
-    render_fractal_and_write_out_the_text_file(filename, fractal_data, AM_PERIODS);
+    write_out_text_file(fractal_data, AM_PERIODS, filename);
 
     // We get the expected content for the file
     sprintf(expected_filename, "./tests/fixtures/mandelbrot-periods-%dx%d.txt", resolution.width, resolution.height);

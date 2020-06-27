@@ -59,6 +59,11 @@ int main(int argc, char *argv[]) {
 
     fp = fopen(filename, "wb");
 
+    if (fp == NULL) {
+        printf("Exception. Can't open file: %s\n", filename);
+        abort();
+    }
+
     write_out_orbit(c, max_iterations, precision, fp);
 
     fclose(fp);
