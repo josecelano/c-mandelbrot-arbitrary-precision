@@ -20,7 +20,7 @@ Point (0,1), period 2:
 Point (-0.1,0.7), period 3  
 ![Orbit with cycle of period 3](img/orbit-period-3.png)
 
-Point (-1.3,0), perido 4:  
+Point (-1.3,0), period 4:  
 ![Orbit with cycle of period 4](img/orbit-period-4.png)
 
 Mandelbrot coloured with periodicities:
