@@ -1,10 +1,11 @@
-## Performance
+# Performance
 
-### Tests
+## Tests
 
 Full mandelbrot from (-2,2) to (2,2).
 
 For 256x256px image:
+
 * Size: 256x256px (65536)
 * Max iter: 100
 * Precision: 32
@@ -15,6 +16,7 @@ For 256x256px image:
 * Number of found periods: 5610
 
 For 512x512px image:
+
 * Size: 512x512px (262144)
 * Max iter: 100
 * Precision: 32
@@ -25,6 +27,7 @@ For 512x512px image:
 * Number of found periods: 22496
 
 For 1024x1024px image:
+
 * Size: 1024x1024px (1048576)
 * Max iter: 100
 * Precision: 32
@@ -35,6 +38,7 @@ For 1024x1024px image:
 * Number of found periods: 90046
 
 For 4096x4096px image:
+
 * Size: 4096x4096px (16777216)
 * Max iter: 100
 * Precision: 32
@@ -45,6 +49,7 @@ For 4096x4096px image:
 * Number of found periods: 1441140
 
 For 8192x8192px image:
+
 * Size: 8192x8192px (67108864)
 * Max iter: 100
 * Precision: 32
@@ -55,6 +60,7 @@ For 8192x8192px image:
 * Number of found periods: 5764706
 
 For 11024x11024px image:
+
 * Size: 11024x11024px (121528576)
 * Max iter: 100
 * Precision: 32

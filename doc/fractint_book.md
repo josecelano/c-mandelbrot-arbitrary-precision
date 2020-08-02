@@ -1,13 +1,13 @@
-## Fractint web/book
+# Fractint web/book
 
 This is only a backup of this page: https://web.archive.org/web/20150220012221/http://www.reocities.com/CapeCanaveral/5003/mandel.htm
 It contains information about how Fractint software implemented periodicity checking.
 
-### Mandelbrot Set code
+## Mandelbrot Set code
 
 The C programs shown use Allegro for graphics output. Since the only graphical function required is putpixel, it should be trivial to modify the code for other graphics libraries. Qbasic no longer ships with winders, but is available to download from the microsoft webpage. Somewhere... If you can find it.
 
-### Longwinded method
+## Longwinded method
 
 [Speedy Mandelbrot set code](https://web.archive.org/web/20150220012221/http://www.reocities.com/CapeCanaveral/5003/Mandel.txt)
 
@@ -16,7 +16,7 @@ This c function contains a fast implementation of the main loop for the Mandelbr
 [Qbasic single pass Mandelbrot set code](https://web.archive.org/web/20150220012221/http://www.reocities.com/CapeCanaveral/5003/qmand.txt)
 This complete program draws an unzoomed mandelbrot set image on the screen.
 
-### Integer calculation method
+## Integer calculation method
 
 [C integer Mandelbrot set code](https://web.archive.org/web/20150220012221/http://www.reocities.com/CapeCanaveral/5003/cint.txt)
 
@@ -38,7 +38,7 @@ Which is the answer to the above sum. Integer fractal programs work in the same 
 
 The "function" fixpt(a) converts a fixed point number to a long integer, mul (a,b) returns the product of a and b (both large integers) and rescales the answer. Integer (a) converts a long integer number into a small fixed point number. (not needed in my program). Notice how the program is identical to the other singlepass C program, but over twice as fast! FIXSIZE is the "fudge factor" (represents 2^25). If is is made bigger, then the program malfunctions, since some numbers suddenly become negative for no apparent reason! (Actually because the sign bit in the 2s complement representation becomes altered by bit shifting.) Making it smaller makes the numbers more inaccurate.
 
-### Boundary tracing method
+## Boundary tracing method
 
 [Qbasic boundary tracing code](https://web.archive.org/web/20150220012221/http://www.reocities.com/CapeCanaveral/5003/qbound.txt)
 
@@ -61,7 +61,7 @@ How it works
 
 Start off with the full screen. Have a sub which accepts the co-ordinates of the corners of the screen. This sub then divides the screen into 4 quarters. Next, the function checks the colours all around the edges of each of the 4 rectangles, by working out those particular points using the standard 1 pass algorithm (the subroutine mand in the program). If the colours all around a rectangle are ALL the same, then that rectangle is filled in with that colour. This is repeated for all the 4 rectangles. If the colours around a particular rectangle are not all identical, then the sub calls itself (recurses), and repeats the whole divide procedure for that one rectangle. If a rectangle is smaller than 2*2 then it is worked out fully. This procedure is repeated for all the rectangles. When all 4 rectangles have been filled in, the sub exits. Eventually the screen is completely drawn, and the program ends.
 
-### Periodicity Checking
+## Periodicity Checking
 Sorry, no sample programs! This section is taken from Fractint book, written by the authors of Fractint.
 
 Periodicity checking is a small check which is done every iteration to see if Z becomes periodic. If Z becomes periodic, then there is no point carrying on with the iteration, since it represents a point which MUST be inside the M set. Sample code:
@@ -97,6 +97,7 @@ If the line which checks if x=aX and y=aY is replaced with x~aX and y~aY then th
 Note all these programs are old, and so are not commented. Sorry. Where necessary I have explained how they work in this doc
 
 General notes:
+
 * Consider obtaining Microsoft QuickBasic, it uses the coprocessor, and is about 10 times faster than Qbasic - more on a really good PC ;). Also it allows compiling programs which makes them even faster.
 * For all real mode software (i.e. QuickBasic etc. but NOT DJGPP), boot your computer bare, or avoid emm386. This nasty program SLOWS DOWN THE COMPUTER, and these programs can go 2-3 times faster without it!
 * Don't run DOS programs from Windows (ANY Windows)

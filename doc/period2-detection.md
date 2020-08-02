@@ -1,3 +1,3 @@
-## Period 2 detection
+# Period 2 detection
 
 TODO

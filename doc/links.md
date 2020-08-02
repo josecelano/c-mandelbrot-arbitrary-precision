@@ -1,6 +1,6 @@
-## Links
+# Links
 
-### Mandelbrot online explorers
+## Mandelbrot online explorers
 
 This is a list of sites where you can explore Mandelbrot Set. Some of them let you easily get z real and imaginary parts and maximum number of iterations so you can use them with this program to try to reproduce the same result.
 
@@ -14,4 +14,3 @@ This is a list of sites where you can explore Mandelbrot Set. Some of them let y
 
 * [Another C Mandelbrot implementation with arbitrary precision](https://github.com/josch/mandelbrot/blob/master/mandel_mpfr.c)
 * [PHP Mandelbrot implementation with arbitrary precision](https://github.com/josecelano/php-mandelbrot-arbitrary-precision)
-

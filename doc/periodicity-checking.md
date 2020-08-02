@@ -1,17 +1,18 @@
-## Periodicity checking
+# Periodicity checking
 
 TODO
 
 Types of orbits:
+
 * Tends to a fixed point (inside)
 * Chaotic behavior (inside)
 * Chaotic behavior close to n-cycle (inside)
 * Period n (inside)
 * Go to infinite (outside)
-           
+
 In the plots below, we have displayed the iteration series for `z² + c` for the orbit of 0, with different orbits types.
-           
-Point (-0.1,0.1), tends to a fixed point:           
+
+Point (-0.1,0.1), tends to a fixed point:
 ![Orbit tends to a fixed point](img/orbit-period-1.png)
 
 Point (0,1), period 2:  
@@ -26,7 +27,7 @@ Point (-1.3,0), period 4:
 Mandelbrot coloured with periodicities:
 ![Orbit with cycle of period 4](img/mandelbrot-set–periodicities-coloured.png)
 
-### Links
+## Links
 
 Cycle detection:
 
