@@ -16,63 +16,70 @@ If you color points inside with black you get something like:
 
 ![Mandelbrot Set Black on White 1024 pixels](img/mandelbrot-black-on-white-1024.png)
 
-We can calculate some points for that picture. For example, the complex number (0,0) belongs to the set and this is the series:
+We can calculate some points for that picture. For example, the complex number `(0,0)` belongs to the set and this is the series:
 
 ```math
 z = (0,0)
 c = (0,0)
+f(z) = z² + c
 
-f0 = 0
-f1 = 0
-f2 = 0
-f3 = 0
-f4 = 0
-f5 = 0
-f6 = 0
+f(0) = 0
+f(1) = 0
+f(2) = 0
+f(3) = 0
+f(4) = 0
+f(5) = 0
+f(6) = 0
 ...
 ```
 
 Obviously the series does not tend to infinite.
 
-Point (0,i) also belongs to the set:
+Point `(0,i)` also belongs to the set:
 
 ```math
 z = (0,0)
 c = (0,i)
+f(z) = z² + c
 
-x0 = z² + c = (0,0)² + (0,i)
-x0 =  0 + 1i
-x1 = -1 + 1i
-x2 =  0 - 1i
-x3 = -1 + 1i
-x4 =  0 - 1i
-x5 = -1 + 1i
+f(0) =  0 + 1i
+f(1) = -1 + 1i
+f(2) =  0 - 1i
+f(3) = -1 + 1i
+f(4) =  0 - 1i
+f(5) = -1 + 1i
 ...
 ```
 
 This series values are: i, -1, -i, -1, -i, -1, ...
 
-This is the [orbit for c = (0,i)]((https://mandelbrot-set-periods.online/api/orbits?zx=0&zy=1)):
+This is the [orbit for `c = (0,i)`]((https://mandelbrot-set-periods.online/api/orbits?zx=0&zy=1)):
+
 ![Orbit goes to infinite](img/orbit-i.png)
+
 Orange is the real part and blue the imaginary part.
 
-Point (0,2i) not belonging to the set:
+Point `(0,2i)` not belonging to the set:
 
 ```math
 z = (0,0)
 c = (-1,0)
+f(z) = z² + c
 
-x0 = 0
-x1 = 2i
-x2 = -4 + 2i
-x3 = 12 - 14i
-x4 = -52 - 334i
-x5 = BIG (meaning far from the origin)
-x6 = BIGGER
+f(0) = 0
+f(1) = 2i
+f(2) = -4 + 2i
+f(3) = 12 - 14i
+f(4) = -52 - 334i
+f(5) = BIG (meaning far from the origin)
+f(6) = BIGGER
+...
 ```
 
-This is the [orbit for c = (0,2i)]((https://mandelbrot-set-periods.online/api/orbits?zx=0&zy=2)):
+This is the [orbit for `c = (0,2i)`]((https://mandelbrot-set-periods.online/api/orbits?zx=0&zy=2)):
+
 ![Orbit goes to infinite](img/orbit-2i.png)
+
 Orange is the real part and blue the imaginary part.
 
 We always start with `z = 0` and that's called the orbit of `0` under iteration of `z² + c`. Under iteration of `f(z) = z² + c`, either the orbit of `0` goes to infinity, or it does not. The Mandelbrot Set represents the set of complex numbers whose fate for the orbit of `0` under iteration of `f(z) = z² + c` does not diverge, that's to say it does tend to infinite.
@@ -89,56 +96,61 @@ When the orbit does not go to infinity, it may behave in different ways. It may 
 
 In the plots below, we have displayed the iteration series for `z² + c` for the orbit of `0`, with different orbits periods. You can see two different graph types: real and imaginary vales and orbit lines (lines beetween the points in the series).
 
-Point (-0.495,0.396), tends to a fixed point (period 1):
+Point `(-0.495,0.396)`, tends to a fixed point (period 1):
+
 ![Orbit tends to a fixed point](img/orbit-period-1.png)
+
 <https://mandelbrot-set-periods.online/api/orbits?zx=-0.495&zy=0.396>
+
 ![Orbit tends to a fixed point](img/orbit-period-1-lines.png)
 
-Point (-1.101,0.100), period 2:  
+Point `(-1.101,0.100)`, period 2:
+
 ![Orbit with cycle of period 2](img/orbit-period-2.png)
+
 <https://mandelbrot-set-periods.online/api/orbits?zx=-1.101&zy=0.100>
+
 ![Orbit tends to a fixed point](img/orbit-period-2-lines.png)
 
-Point (-0.100,0.764), period 3:
+Point `(-0.100,0.764)`, period 3:
+
 ![Orbit with cycle of period 3](img/orbit-period-3.png)
+
 <https://mandelbrot-set-periods.online/api/orbits?zx=-0.100&zy=0.764>
+
 ![Orbit with cycle of period 3](img/orbit-period-3-lines.png)
 
-Point (0.286,0.538), period 4:
+Point `(0.286,0.538)`, period 4:
+
 ![Orbit with cycle of period 4](img/orbit-period-4.png)
+
 <https://mandelbrot-set-periods.online/api/orbits?zx=0.286&zy=0.538>
+
 ![Orbit with cycle of period 4](img/orbit-period-4-lines.png)
 
-Point (-0.506,0.566), period 5:
+Point `(-0.506,0.566)`, period 5:
+
 ![Orbit with cycle of period 4](img/orbit-period-5.png)
+
 <https://mandelbrot-set-periods.online/api/orbits?zx=-0.506&zy=0.566>
+
 ![Orbit with cycle of period 4](img/orbit-period-5-lines.png)
 
-As you can see points inside the set have orbits which are trapped inside the limits of the Mandelbrot Set. You can use this site to see the orbits with lines:
-
-<http://www.stefanbion.de/fraktal-generator/mandeliteration.htm>
-
-Or this one:
-
-<https://mandelbrot-set-periods.online>
-
-which is a Mandelbrot Periods Explorer.
+As you can see, points inside the set have orbits which are trapped inside the limits of the Mandelbrot Set. You can use [this site](http://www.stefanbion.de/fraktal-generator/mandeliteration.htm) to see the orbits with lines or [this one](https://mandelbrot-set-periods.online) which is a Mandelbrot Periods Explorer.
 
 If you want to know the cycle length for the different bulbs (a bulb is a cardioid or circle section of the Mandelbrot Set), this is how it looks like:
 
 ![Orbit with cycle of period 4](img/mandelbrot-set–periodicities-coloured.png)
 
-There are different algorithms for cycle detection. One of them is the Brent's algorithm. You can find an implementation here: <https://github.com/josecelano/c-mandelbrot-arbitrary-precision/blob/master/src/cycle-detection/brent.c>
+There are different algorithms for cycle detection. One of them is the Brent's algorithm. You can find an implementation [here](https://github.com/josecelano/c-mandelbrot-arbitrary-precision/blob/master/src/cycle-detection/brent.c).
 
 One of the properties of this cycles is the more you are closer to the fractal border the more iterations you need to became a stable cycle. You also need to increase the tolerance to detect cycles, that means cycles are not pure, the repeated values is not exactly the same.
 
-In fact this application is not able to detect correctly all the periods. If you want to contribute there is an open issue:
-
-<https://github.com/josecelano/c-mandelbrot-arbitrary-precision/issues/2>
+In fact, this application is not able to detect correctly all the periods. If you want to contribute there is an [open issue](https://github.com/josecelano/c-mandelbrot-arbitrary-precision/issues/2).
 
 There are some fixed and hardcoded values for minimum number of iterations before checking periodicity, the period tolerance and the maximum number of interations. Those values should be calculated dinamically depending on the area, zoom, or other parameters of the image you are rendering.
 
-We have not found a formula for that. We think most of the formulas out there are not exact. And we think it's not possible to find a formula for that in order to draw a perfect Mandelbrot Set with colored periods. This is the best approximation we have been able to generate:
+We have not found a formula for that. We think most of the formulas out there are not exact and it's not possible to find a formula for that in order to draw a perfect Mandelbrot Set with colored periods. This is the best approximation we have been able to generate:
 
 ![Mandelbrot Set image with colored periods using the C console tile generator](img/mandelbrot-colored-periods-1024.png)
 
