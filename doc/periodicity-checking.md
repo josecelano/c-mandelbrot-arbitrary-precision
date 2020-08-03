@@ -1,6 +1,6 @@
 # Periodicity checking
 
-"Periodicity checking" is a performace optimisation techniche used in fractal image generation. This techniche is used to reduce the number of calculations needed to calculate a pixel in the image, therefore reducing the time to generate the full fractal image. For the classic way of generating a Mandelbrot Set image you need to calculate a series of values applying the Mandelbrot formula recursively.
+"Periodicity checking" is a performance optimisation technique used in fractal image generation. This technique is used to reduce the number of calculations needed to calculate a pixel in the image, therefore reducing the time to generate the full fractal image. For the classic way of generating a Mandelbrot Set image you need to calculate a series of values applying the Mandelbrot formula recursively.
 
 The basic Mandelbrot Set formula is:
 
@@ -16,7 +16,7 @@ If you color points inside with black you get something like:
 
 ![Mandelbrot Set Black on White 1024 pixels](img/mandelbrot-black-on-white-1024.png)
 
-We can calculate some points for that picture. For example, the complex number (0,0) belongs to the Set and this is the series:
+We can calculate some points for that picture. For example, the complex number (0,0) belongs to the set and this is the series:
 
 ```math
 z = (0,0)
@@ -34,7 +34,7 @@ f6 = 0
 
 Obviously the series does not tend to infinite.
 
-Point (0,i) also belongs to the Set:
+Point (0,i) also belongs to the set:
 
 ```math
 z = (0,0)
@@ -56,7 +56,7 @@ This is the [orbit for c = (0,i)]((https://mandelbrot-set-periods.online/api/orb
 ![Orbit goes to infinite](img/orbit-i.png)
 Orange is the real part and blue the imaginary part.
 
-Point (0,2i) not belonging to the Set:
+Point (0,2i) not belonging to the set:
 
 ```math
 z = (0,0)
@@ -75,7 +75,7 @@ This is the [orbit for c = (0,2i)]((https://mandelbrot-set-periods.online/api/or
 ![Orbit goes to infinite](img/orbit-2i.png)
 Orange is the real part and blue the imaginary part.
 
-We always start with `z = 0` and that's called the orbit of `0` under iteration of `z² + c`. Under iteration of `f(z) = z² + c`, either the orbit of `0` goes to infinity, or it does not. The Mandelbrot Set represents the Set of complex numbers whose fate for the orbit of `0` under iteration of `f(z) = z² + c` does not diverge, that's to say it does tend to infinite.
+We always start with `z = 0` and that's called the orbit of `0` under iteration of `z² + c`. Under iteration of `f(z) = z² + c`, either the orbit of `0` goes to infinity, or it does not. The Mandelbrot Set represents the set of complex numbers whose fate for the orbit of `0` under iteration of `f(z) = z² + c` does not diverge, that's to say it does tend to infinite.
 
 When the orbit does not go to infinity, it may behave in different ways. It may be fixed or cyclic or behave chaotically. This is the list of possible behaviors:
 
@@ -85,7 +85,7 @@ When the orbit does not go to infinity, it may behave in different ways. It may 
 * Period n (inside)
 * Go to infinite (outside)
 
-"Periodicity Checking" tecniche consist on detecting the cycles when we are calculating the orbit for a point `c`, that way we can stop iterations, becuase we know that the series is not going to diverge.
+"Periodicity Checking" technique consist on detecting the cycles when we are calculating the orbit for a point `c`, that way we can stop iterations, becuase we know that the series is not going to diverge.
 
 In the plots below, we have displayed the iteration series for `z² + c` for the orbit of `0`, with different orbits periods. You can see two different graph types: real and imaginary vales and orbit lines (lines beetween the points in the series).
 
@@ -132,19 +132,19 @@ There are different algorithms for cycle detection. One of them is the Brent's a
 
 One of the properties of this cycles is the more you are closer to the fractal border the more iterations you need to became a stable cycle. You also need to increase the tolerance to detect cycles, that means cycles are not pure, the repeated values is not exactly the same.
 
-If fact this application is not able to detect correctly all the periods. If you want to contribute there is an open issue:
+In fact this application is not able to detect correctly all the periods. If you want to contribute there is an open issue:
 
 <https://github.com/josecelano/c-mandelbrot-arbitrary-precision/issues/2>
 
-There are some fixed and hardcoded values for minimum number of iterations before checkinng periodicity, the period tolerance and the maximum number of interations. Those values should be calculated dinamically depending on the area, zoom, or other parameters of the image you are rendering.
+There are some fixed and hardcoded values for minimum number of iterations before checking periodicity, the period tolerance and the maximum number of interations. Those values should be calculated dinamically depending on the area, zoom, or other parameters of the image you are rendering.
 
-We have not found a formula for that. We think most of the formulas out there are not exact. And we think it's not posible to find a formula for that in order to draw a perfect Mandelbrot Set with colored periods. This is the best approximation we have been able to generate:
+We have not found a formula for that. We think most of the formulas out there are not exact. And we think it's not possible to find a formula for that in order to draw a perfect Mandelbrot Set with colored periods. This is the best approximation we have been able to generate:
 
 ![Mandelbrot Set image with colored periods using the C console tile generator](img/mandelbrot-colored-periods-1024.png)
 
 ## Acknowledgements
 
-Two articles where spaceilly useful for us to understand periods in MandelbBrot Set. In fact, we would say this article explanation is very similar to the one by Robert L. Devaney, simply adding more graphs.
+Two articles where specially useful for us to understand periods in Mandelbrot Set. In fact, we would say this article explanation is very similar to the one by Robert L. Devaney, simply adding more graphs.
 
 * [Julien Clinton Sprott](http://sprott.physics.wisc.edu/chaos/manchaos.htm)
 * [Robert L. Devaney](http://math.bu.edu/DYSYS/FRACGEOM/node1.html#SECTION00010000000000000000)
